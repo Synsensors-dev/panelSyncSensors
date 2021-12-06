@@ -12,3 +12,4 @@ export async function startConnection() {
       console.log(error);
     }
   }
+  
