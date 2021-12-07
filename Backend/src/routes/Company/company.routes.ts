@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import * as companyCtrl from './company.controller';
 
 const router = Router();
