@@ -5,7 +5,7 @@ import Station from './station.model';
 
 /**
  * Description
- * @route Post '//'
+ * @route Post '/station'
  * @param req 
  * @param res 
  */
