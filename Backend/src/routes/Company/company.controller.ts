@@ -18,7 +18,7 @@ export const createCompany: RequestHandler = async (req, res) => {
     
     const companyFound = await Company.findOne( { name } );
 
-    //se válida la existencia de la compañia en el sistema
+    //se valida la existencia de la compañia en el sistema
     if ( companyFound )
         return res.status(301).send({ success: false, data:{}, message: 'ERROR: La compañia ya está registrada en el sistema.' })
 
@@ -28,7 +28,7 @@ export const createCompany: RequestHandler = async (req, res) => {
     const companySaved = new Company(newCompany);
     await companySaved.save();
 
-    return res.status(200).send( { success: true, data:{ _id: companySaved._id }, message: 'Compañia agregada con éxito al sistema.'} );
+    return res.status(200).send( { success: true, data:{ _id: companySaved._id }, message: 'Compañía agregada con éxito al sistema.'} );
 };
 
 /**
@@ -38,7 +38,27 @@ export const createCompany: RequestHandler = async (req, res) => {
  * @param res Response, retorna un object con succes: true, data: {_id: ObjectId()}, message: "String" de la compañia actualizada si todo sale bien.
  */
 export const updateCompany: RequestHandler = async (req, res) => {
+    const _idCompany = req.params.id;
+    const updatedCompany = req.body;
+
+    //se valida el _id ingresado de la compañia
+    if ( !Types.ObjectId.isValid( _idCompany ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const companyFound = await Company.findById ( _idCompany );
+
+    //se valida la existencia de la compañia en el sistema
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia a modificar no existe en el sistema.' });
     
+    //se validan los atributos ingresados de la compañia a modificar
+    if ( !updatedCompany.name || !updatedCompany.email || !updatedCompany.address || !updatedCompany.representative_name )
+        return res.status(301).send({ success: false, data:{}, message: 'ERROR: Los datos a modificar son inválidos.' });
+
+    //se actualiza la compañia en el sistema
+    await Company.findByIdAndUpdate( _idCompany, updatedCompany );
+    
+    return res.status(200).send({ success: true, data:{ _id: _idCompany }, message: 'Compañía modificada de manera correcta.' });
 };
 
 /**
