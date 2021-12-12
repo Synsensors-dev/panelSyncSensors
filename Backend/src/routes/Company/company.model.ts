@@ -20,11 +20,6 @@ const companySchema = new Schema({
         required: true,
         type: String,
         trim: true
-    },
-    creation_date: {
-        required: true,
-        type: Date,
-        trim: true
     }
 },{
     versionKey: false,

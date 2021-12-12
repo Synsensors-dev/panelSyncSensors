@@ -10,7 +10,25 @@ import Company from './company.model';
  * @param res Response, retorna un object con succes: true, data: {_id: ObjectId()}, message: "String" de la nueva compañia si todo sale bien.
  */
 export const createCompany: RequestHandler = async (req, res) => {
+    const { name, email, address, representative_name } = req.body;
 
+    //se validan los atributos 
+    if ( !name || !email || !address || !representative_name )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: Datos inválidos.' });
+    
+    const companyFound = await Company.findOne( { name } );
+
+    //se válida la existencia de la compañia en el sistema
+    if ( companyFound )
+        return res.status(301).send({ success: false, data:{}, message: 'ERROR: La compañia ya está registrada en el sistema.' })
+
+    const newCompany = { name, email, address, representative_name };
+
+    //se almacena la compañia en el sistema
+    const companySaved = new Company(newCompany);
+    await companySaved.save();
+
+    return res.status(200).send( { success: false, data:{ _id: companySaved._id }, message: 'Compañia agregada con éxito al sistema.'} );
 };
 
 /**
