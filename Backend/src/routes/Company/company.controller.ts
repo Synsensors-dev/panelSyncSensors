@@ -95,5 +95,20 @@ export const readCompany: RequestHandler = async (req, res) => {
  * @param res Response, retorna un object con succes: true, data: { }, message: "String" de la compañia eliminada si todo sale bien.
  */
 export const deleteCompany: RequestHandler = async (req, res) => {
-    
-};
+    const _idCompany = req.params.id;
+
+    //se valida el _id ingresado de la compañia
+    if ( !Types.ObjectId.isValid( _idCompany ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const companyFound = await Company.findById( _idCompany );
+
+    //se valida la existencia de la compañia en el sistema
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia solicitada no existe en el sistema.' });
+
+    //se elimina la compañia del sistema
+    await Company.findByIdAndRemove( _idCompany );
+
+    return res.status(200).send( { success: true, data:{}, message: 'Compañia eliminada de manera correcta.'});
+}
