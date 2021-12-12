@@ -28,7 +28,7 @@ export const createCompany: RequestHandler = async (req, res) => {
     const companySaved = new Company(newCompany);
     await companySaved.save();
 
-    return res.status(200).send( { success: false, data:{ _id: companySaved._id }, message: 'Compañia agregada con éxito al sistema.'} );
+    return res.status(200).send( { success: true, data:{ _id: companySaved._id }, message: 'Compañia agregada con éxito al sistema.'} );
 };
 
 /**
