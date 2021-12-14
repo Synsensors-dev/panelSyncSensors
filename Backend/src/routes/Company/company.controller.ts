@@ -107,6 +107,8 @@ export const deleteCompany: RequestHandler = async (req, res) => {
     if ( !companyFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia solicitada no existe en el sistema.' });
 
+    /***** Se eliminan las relaciones *****/
+    
     //se elimina la compañia del sistema
     await Company.findByIdAndRemove( _idCompany );
 
