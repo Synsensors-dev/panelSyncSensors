@@ -63,7 +63,50 @@ export const createStation: RequestHandler = async (req, res) => {
  * @param res Response, retorna un object con succes: true, data: {_id: ObjectId()}, message: "String" de la estación actualizada si todo sale bien.
  */
 export const updateStation: RequestHandler = async (req, res) => {
+    const _idStation = req.params.id;
+    const updatedStation = req.body;
+
+    //se valida el _id ingresado de la estación
+    if ( !Types.ObjectId.isValid( _idStation ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
     
+    const stationFound = await Station.findById( _idStation );
+
+    //se valida la existencia de la estación en el sistema
+    if ( !stationFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La estación a modificar no existe en el sistema.' });
+
+    //se valida el gateway_id
+    if ( !Types.ObjectId.isValid( updatedStation.gateway_id ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El gateway_id ingresado no es válido.' });
+
+    //se valida el company_id
+    if ( !Types.ObjectId.isValid( updatedStation.company_id ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El company_id ingresado no es válido.' });
+
+    const companyFound = await Company.findById( updatedStation.company_id );
+
+    //se válida la existencia de la compañía en el sistema
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
+
+    //******** se válida la existencia del gateway en el sistema ********
+
+    const station = {
+        name: updatedStation.data.name,
+        latitude: updatedStation.data.latitude,
+        longitude: updatedStation.data.longitude,
+        type: updatedStation.data.type,
+        status: updatedStation.data.status,
+        location_notes: updatedStation.data.location_notes,
+        gateway_id: updatedStation.gateway_id,
+        company_id: updatedStation.company_id
+    }
+
+    //se actualiza la estación en el sistema
+    await Station.findByIdAndUpdate( _idStation, station );
+
+    return res.status(200).send({ success: true, data:{ _id: _idStation }, message: 'Compañía modificada de manera correcta.' });
 };
 
 /**
