@@ -105,5 +105,22 @@ export const readStation: RequestHandler = async (req, res) => {
  * @param res Response, retorna un object con succes: true, data: { }, message: "String" de la estación eliminada si todo sale bien.
  */
 export const deleteStation: RequestHandler = async (req, res) => {
-    
-};
+    const _idStation = req.params.id;
+
+    //se valida el _id ingresado de la estación
+    if ( !Types.ObjectId.isValid( _idStation ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const stationFound = await Station.findById( _idStation );
+
+    //se valida la existencia de la estación en el sistema
+    if ( !stationFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La estación solicitada no existe en el sistema.' });
+
+    /***** Se eliminan las relaciones (sensors, readings, alerts) asociadas a la estación ingresado *****/
+
+    //se elimina la estación del sistema
+    await Station.findByIdAndRemove( _idStation );
+
+    return res.status(200).send( { success: true, data:{}, message: 'Estación eliminada de manera correcta.'});
+}
