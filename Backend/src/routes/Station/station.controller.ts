@@ -57,7 +57,7 @@ export const createStation: RequestHandler = async (req, res) => {
 };
 
 /**
- * Función encargada de actualizar una compañía del sistema en función de los nuevos valores ingresados.
+ * Función encargada de actualizar una estación del sistema en función de los nuevos valores ingresados.
  * @route Put '/station/:id'
  * @param req Request de la petición, se espera que tenga la nueva información de la estación y su respectivo id por params.
  * @param res Response, retorna un object con succes: true, data: {_id: ObjectId()}, message: "String" de la estación actualizada si todo sale bien.
@@ -67,17 +67,39 @@ export const updateStation: RequestHandler = async (req, res) => {
 };
 
 /**
- * Función encargada de obtener una compañía del sistema y retornar los datos de ella para su posterior visualización.
+ * Función encargada de obtener una estación del sistema y retornar los datos de ella para su posterior visualización.
  * @route Get '/station/:id'
  * @param req Request de la petición, se espera que tenga el id de la estación.
  * @param res Response, retorna un object con succes: true, data: { station:{} }, message: "String" de la estación si todo sale bien.
  */
 export const readStation: RequestHandler = async (req, res) => {
-    
+    const _idStation = req.params.id;
+
+    //se valida el _id ingresado de la estación
+    if ( !Types.ObjectId.isValid( _idStation ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const stationFound = await Station.findById( _idStation );
+
+    //se valida la existencia de la estación en el sistema
+    if ( !stationFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La estación solicitada no existe en el sistema.' });
+
+    return res.status(200).send( { success: true, data:{ 
+        _id: stationFound.id,
+        name: stationFound.name,
+        latitude: stationFound.latitude,
+        longitude: stationFound.longitude,
+        type: stationFound.type,
+        status: stationFound.status,
+        location_notes: stationFound.location_notes,
+        gateway_id: stationFound.gateway_id,
+        company_id: stationFound.company_id
+    }, message: 'Estación encontrada con éxito.'});
 };
 
 /**
- * Función encargada de eliminar una compañía del sistema.
+ * Función encargada de eliminar una estación del sistema.
  * @route Delete '/station/:id'
  * @param req equest de la petición, se espera que tenga el id de la estación.
  * @param res Response, retorna un object con succes: true, data: { }, message: "String" de la estación eliminada si todo sale bien.
