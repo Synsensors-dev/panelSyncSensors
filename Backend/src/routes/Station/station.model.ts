@@ -7,12 +7,12 @@ const stationSchema = new Schema({
         trim: true
     },
     latitude: {
-        required: true,
+        required: false,
         type: String,
         trim: true
     },
     longitude: {
-        required: true,
+        required: false,
         type: String,
         trim: true
     },
