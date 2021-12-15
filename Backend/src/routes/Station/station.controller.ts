@@ -10,7 +10,7 @@ import Company from '../Company/company.model';
  * @param res Response, retorna un object con succes: true, data: {_id: ObjectId()}, message: "String" de la nueva estación si todo sale bien.
  */
 export const createStation: RequestHandler = async (req, res) => {
-    const { gateway_id, company_id, dataNewStation } = req.body;
+    const { gateway_id, company_id, data} = req.body;
 
     //se valida el gateway_id
     if ( !Types.ObjectId.isValid( gateway_id ) )
@@ -29,22 +29,22 @@ export const createStation: RequestHandler = async (req, res) => {
     //******** se válida la existencia del gateway en el sistema ********
 
     //se validan los datos obligatorios de la estación
-    if ( !dataNewStation.name || !dataNewStation.type || !dataNewStation.status  || !dataNewStation.location_notes )
+    if ( !data.name || !data.type || !data.status  || !data.location_notes )
         return res.status(301).send({ success: false, data:{}, message: 'ERROR: Los datos a agregar son inválidos.' });
 
     //se valida que no exista otra estación igual en el sistema
-    const stationFound = await Station.findOne( dataNewStation.name );
+    const stationFound = await Station.findOne( data.name );
 
     if ( stationFound )
         return res.status(301).send({ success: false, data:{}, message: 'ERROR: La estación ya está registrada en el sistema.' });
 
     const newStation = {
-        name: dataNewStation.name,
-        latitude: dataNewStation.latitude,
-        longitude: dataNewStation.longitude,
-        type: dataNewStation.type,
-        status: dataNewStation.status,
-        location_notes: dataNewStation.location_notes,
+        name: data.name,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        type: data.type,
+        status: data.status,
+        location_notes: data.location_notes,
         gateway_id: gateway_id,
         company_id: company_id
     }
