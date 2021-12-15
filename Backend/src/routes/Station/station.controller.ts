@@ -112,7 +112,7 @@ export const updateStation: RequestHandler = async (req, res) => {
     //se actualiza la estación en el sistema
     await Station.findByIdAndUpdate( _idStation, station );
 
-    return res.status(200).send({ success: true, data:{ _id: _idStation }, message: 'Compañía modificada de manera correcta.' });
+    return res.status(200).send({ success: true, data:{ _id: _idStation }, message: 'Estación modificada de manera correcta.' });
 };
 
 /**
@@ -150,7 +150,7 @@ export const readStation: RequestHandler = async (req, res) => {
 /**
  * Función encargada de eliminar una estación del sistema.
  * @route Delete '/station/:id'
- * @param req equest de la petición, se espera que tenga el id de la estación.
+ * @param req Request de la petición, se espera que tenga el id de la estación.
  * @param res Response, retorna un object con succes: true, data: { }, message: "String" de la estación eliminada si todo sale bien.
  */
 export const deleteStation: RequestHandler = async (req, res) => {
