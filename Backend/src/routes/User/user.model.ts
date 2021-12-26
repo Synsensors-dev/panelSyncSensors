@@ -43,7 +43,7 @@ const userSchema = new Schema({
 });
 
 //cifrar contraseña
-userSchema.pre<IUser>( 'save', async function (next) {
+userSchema.pre< IUser >( 'save', async function (next) {
     const user = this;
     if ( !user.isModified('password') ) return next();
 
@@ -54,8 +54,8 @@ userSchema.pre<IUser>( 'save', async function (next) {
 });
 
 //comparar contraseñas encriptadas
-userSchema.methods.comparePassword = async function( password: string): Promise<boolean> {
-    return await bcrypt.compare(password, this.password );
+userSchema.methods.comparePassword = async function( password: string ): Promise<boolean> {
+    return await bcrypt.compare( password, this.password );
 }
 
-export default model<IUser>('User', userSchema);
+export default model< IUser >('User', userSchema);
