@@ -4,10 +4,10 @@ import * as userCtrl from './user.controller';
 const router = Router();
 
 // Agregar nuevo usuario
-router.post( 'user/signup', userCtrl.signUp );
+router.post( '/user/signup', userCtrl.signUp );
 
 // Iniciar sesión
-router.post( 'user/signin', userCtrl.signIn );
+router.post( '/user/signin', userCtrl.signIn );
 
 // Mostrar un usuario
 
