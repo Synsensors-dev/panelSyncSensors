@@ -11,10 +11,12 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginViewComponent implements OnInit {
   public loginForm:FormGroup
+  showErrorMessage:number;
 
   constructor(private fb:FormBuilder , private auth:AuthService) { }
 
   ngOnInit(): void {
+    this.showErrorMessage=1;
     this.loginForm=this.fb.group({
       email:['',[Validators.required,Validators.email]],
       password:['',Validators.required]
@@ -35,7 +37,10 @@ export class LoginViewComponent implements OnInit {
       }
 
 
-    },(error:any)=>console.log(error)
+    },(error:any)=>{
+      console.log(error)
+      this.showErrorMessage=0;
+    }
     
     );
     

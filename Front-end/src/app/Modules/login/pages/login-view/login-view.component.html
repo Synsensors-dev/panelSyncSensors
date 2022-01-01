@@ -9,7 +9,7 @@
                   <form [formGroup]="loginForm">
                     <h1>Login</h1>
                     <p class="text-muted">Sign In to your account</p>
-                    <div class="input-group mb-3">
+                    <div class="input-group mgtop">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="icon-user"></i></span>
                       </div>
@@ -21,7 +21,24 @@
                         placeholder="Email"
                         >
                     </div>
-                    <div class="input-group mb-4">
+
+                    <div class="email-errors">
+
+                      <div *ngIf="loginForm.controls['email']?.hasError('email') && loginForm.get('email').touched">
+                        <div class="invalid-text">
+                          Ingrese un email valido
+                        </div>
+                      </div>
+
+                      <div *ngIf="loginForm.controls['email'].hasError('required') && loginForm.get('email').touched">
+                        <div class="invalid-text">
+                          Ingrese un email
+                        </div>
+                      </div>
+
+                    </div>
+              
+                    <div class="input-group mgtop">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="icon-lock"></i></span>
                       </div>
@@ -33,12 +50,26 @@
                       autocomplete="current-password"
                       [class.is-invalid]="loginForm.get('password').touched && loginForm.get('password').invalid">
                     </div>
-                    <div class="row">
+                    <div class="password-errors">
+
+                      <div *ngIf="loginForm.controls['password'].hasError('required') && loginForm.get('password').touched">
+                        <div class="invalid-text">
+                          Es necesario ingresar un password
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mgtop">
                       <div class="col-6">
-                        <button (click)="logIn(loginForm.get('email').value,loginForm.get('password').value)" type="button" class="btn btn-primary px-4">Login</button>
+                        <button [disabled]="loginForm.invalid" (click)="logIn(loginForm.get('email').value,loginForm.get('password').value)" type="button" class="btn btn-primary px-4">Login</button>
                       </div>
                       <div class="col-6 text-right">
                         <button vlictype="button" class="btn btn-link px-0">Forgot password?</button>
+                      </div>
+                    </div>
+                    <div class="login-errors">
+                      <div *ngIf="showErrorMessage==0" class="invalid-text">
+                        El usuario ingresado no existe
                       </div>
                     </div>
                   </form>
