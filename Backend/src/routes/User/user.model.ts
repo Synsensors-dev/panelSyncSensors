@@ -7,7 +7,7 @@ export interface IUser extends Document {
         password: string;
         id_company: string;
         permission_level: number;
-        comparePassword: () => Promise<boolean>;
+        comparePassword: (password: string) => Promise<boolean>;
 }
 
 const userSchema = new Schema({
