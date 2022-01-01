@@ -5,7 +5,7 @@ import { LoginViewComponent } from './pages/login-view/login-view.component';
 
 const routes: Routes = [
   {
-    path: 'prueba',
+    path: 'login',
     component: LoginViewComponent,
     data: {
       title: 'Login Page'
