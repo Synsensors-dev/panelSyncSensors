@@ -18,7 +18,8 @@ export class AuthService {
    * 
    */
   signUp(user:typeUser){
-    return this.http.post<apiResponse>(this.apiURL + '/user/signup',user)
+    console.log(user)
+    return this.http.post<apiResponse>(this.apiURL + 'user/signup',user)
   }
 
   /**
@@ -27,6 +28,7 @@ export class AuthService {
    * 
    */
   signIn(loginData:loginReq){
-    return this.http.post<apiResponse>(this.apiURL + '/user/signup',loginData)
+    console.log(loginData)
+    return this.http.post<apiResponse>(this.apiURL + 'user/signin',loginData)
   }
 }
