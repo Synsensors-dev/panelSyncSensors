@@ -62,5 +62,5 @@ import { signToken } from "../jwt";
 
     const token = signToken( userFound._id );
 
-    return res.status(200).send({ success: true, data:{ token }, message: 'Inicio de sesión exitoso.' });
+    return res.status(200).send({ success: true, data:{ token, userFound }, message: 'Inicio de sesión exitoso.' });
 }
