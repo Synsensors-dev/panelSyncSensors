@@ -28,7 +28,8 @@ export class LoginViewComponent implements OnInit {
     }
     this.auth.signIn(loginData).subscribe((response:apiResponse)=>{
       if(response.success){
-        console.log(response);
+        localStorage.setItem('token',response.data.token)
+        console.log(response.data.token);
       }else{
         console.log(response.message);
       }
@@ -41,6 +42,6 @@ export class LoginViewComponent implements OnInit {
   }
   
   signUp(){
-    
+
   }
 }
