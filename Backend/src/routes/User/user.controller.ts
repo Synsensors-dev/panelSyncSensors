@@ -40,7 +40,7 @@ import { signToken } from "../jwt";
  * Funcion que maneja el inicio de sesión de un usuario del sistema
  * @route Post /user/signin
  * @param req Request, se espera que tenga la información del usuario
- * @param res Response, retornará succes: true, data: {token}, message: "String" del usuario si todo sale bien.
+ * @param res Response, retornará succes: true, data: {token, user}, message: "String" del usuario si todo sale bien.
  */
  export const signIn: RequestHandler = async (req, res) => {
     const { email, password } = req.body;
@@ -57,6 +57,7 @@ import { signToken } from "../jwt";
 
     const isMatch:boolean = await userFound.comparePassword( password );
 
+    //se valida la password
     if ( !isMatch )
         return res.status(400).send({ success: false, data:{}, message: 'Error: La contraseña es incorrecta.' });
 
