@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy, PathLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -36,7 +36,7 @@ import {
 } from '@coreui/angular';
 
 // Import routing module
-import { AppRoutingModule } from './app.routing';
+import { AppRoutingModule, routes } from './app.routing';
 
 // Import 3rd party components
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -47,6 +47,7 @@ import { AdminModule } from './Modules/admin/admin.module';
 import { CoreModule } from './Modules/core/core.module';
 import { SharedModule } from './Modules/shared/shared.module';
 import { StationsModule } from './Modules/stations/stations.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -68,7 +69,8 @@ import { StationsModule } from './Modules/stations/stations.module';
     AdminModule,
     CoreModule,
     SharedModule,
-    StationsModule
+    StationsModule,
+    RouterModule.forRoot(routes)
   ],
   declarations: [
     AppComponent,
@@ -81,7 +83,7 @@ import { StationsModule } from './Modules/stations/stations.module';
   providers: [
     {
       provide: LocationStrategy,
-      useClass: HashLocationStrategy
+      useClass: PathLocationStrategy
     },
     IconSetService,
   ],
