@@ -9,7 +9,9 @@ dotenv.config();
  * @returns token del usuario
  */
 export function signToken(id: any) {
-	const token = jwt.sign({ _id: id }, process.env.TOKEN_SECRET || 'secret_key');
+	const token = jwt.sign({ _id: id }, process.env.TOKEN_SECRET || 'secret_key', {
+		expiresIn: 86400
+	});
 
 	return token;
 }
