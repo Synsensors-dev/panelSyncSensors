@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import User, { IUser } from './user.model';
-import { signToken } from "../jwt";
+import { signToken } from "../../middlewares/jwt";
 
 /**
  * Funcion que maneja la petición de agregar un nuevo usuario al sistema

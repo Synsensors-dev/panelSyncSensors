@@ -2,6 +2,8 @@ import express from 'express';
 import morgan from 'morgan';
 import cors, { CorsOptions } from 'cors';
 import dotenv from 'dotenv';
+import passport from 'passport';
+import passportMiddleware from './middlewares/passport'
 
 // Load enviroments variables
 dotenv.config();
@@ -24,6 +26,8 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors(corsConfig));
+app.use(passport.initialize());
+passport.use(passportMiddleware);
 
 // Routes
 app.use(indexRoutes);
