@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import config from '../config/config';
 
 dotenv.config();
 
@@ -9,7 +10,9 @@ dotenv.config();
  * @returns token del usuario
  */
 export function signToken(id: any) {
-	const token = jwt.sign({ _id: id }, process.env.TOKEN_SECRET || 'secret_key');
+	const token = jwt.sign({ _id: id }, config.jwtSecret, {
+		expiresIn: 86400
+	});
 
 	return token;
 }
