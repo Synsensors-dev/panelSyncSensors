@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { apiResponse } from '../../../shared/interfaces/apiResponse';
+import { loginReq, typeUser } from '../../interfaces/user';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login-view',
@@ -8,18 +11,42 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginViewComponent implements OnInit {
   public loginForm:FormGroup
+  showErrorMessage:number;
 
-  constructor(private fb:FormBuilder) { }
+  constructor(private fb:FormBuilder , private auth:AuthService) { }
 
   ngOnInit(): void {
+    this.showErrorMessage=1;
     this.loginForm=this.fb.group({
-      email:['',Validators.required],
+      email:['',[Validators.required,Validators.email]],
       password:['',Validators.required]
     })
 
   }
-  logIn(){
-    console.log(this.loginForm.value)
-  }
+  logIn(email:any,password:any){
+    let loginData:loginReq={
+      email:email,
+      password:password
+    }
+    this.auth.signIn(loginData).subscribe((response:apiResponse)=>{
+      if(response.success){
+        localStorage.setItem('token',response.data.token)
+        console.log(response);
+      }else{
+        console.log(response.message);
+      }
 
+
+    },(error:any)=>{
+      console.log(error)
+      this.showErrorMessage=0;
+    }
+    
+    );
+    
+  }
+  
+  signUp(){
+
+  }
 }

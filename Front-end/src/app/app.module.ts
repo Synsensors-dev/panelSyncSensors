@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LocationStrategy, HashLocationStrategy, PathLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -48,6 +49,7 @@ import { CoreModule } from './Modules/core/core.module';
 import { SharedModule } from './Modules/shared/shared.module';
 import { StationsModule } from './Modules/stations/stations.module';
 import { RouterModule } from '@angular/router';
+import { TokenInterceptorService } from './Modules/login/services/token-interceptor.service';
 
 @NgModule({
   imports: [
@@ -86,6 +88,11 @@ import { RouterModule } from '@angular/router';
       useClass: PathLocationStrategy
     },
     IconSetService,
+    {
+      provide:HTTP_INTERCEPTORS,
+      useClass:TokenInterceptorService,
+      multi:true
+    }
   ],
   bootstrap: [ AppComponent ]
 })
