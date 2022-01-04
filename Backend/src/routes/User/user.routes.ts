@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as userCtrl from './user.controller';
+import passport from 'passport';
 
 const router = Router();
 
@@ -14,5 +15,11 @@ router.post( '/user/signin', userCtrl.signIn );
 // Modificar un usuario
 
 // Eliminar un usuario
+
+
+//Ruta de prueba passport (para probar el acceso via token)
+router.get('/special', passport.authenticate('jwt', {session: false}), (req, res) => {
+    res.send('Succes');
+});
 
 export default router;
