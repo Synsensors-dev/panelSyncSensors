@@ -1,7 +1,7 @@
 import { INavData } from '@coreui/angular';
 
 export const navItems: INavData[] = [
-  {
+  /*{
     name: 'Dashboard',
     url: '/dashboard',
     icon: 'icon-speedometer',
@@ -247,5 +247,5 @@ export const navItems: INavData[] = [
     icon: 'icon-layers',
     variant: 'danger',
     attributes: { target: '_blank', rel: 'noopener' }
-  }
+  }*/
 ];
