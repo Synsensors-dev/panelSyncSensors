@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from '../../containers';
-import { DashboardComponent } from '../../views/dashboard/dashboard.component';
 
 const routes: Routes = [
   {

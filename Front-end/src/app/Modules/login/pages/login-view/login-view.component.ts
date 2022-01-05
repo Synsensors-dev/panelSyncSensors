@@ -30,6 +30,7 @@ export class LoginViewComponent implements OnInit {
     }
     this.auth.signIn(loginData).subscribe((response:apiResponse)=>{
       if(response.success){
+        this.showErrorMessage=1;
         localStorage.setItem('token',response.data.token)
         console.log(response);
       }else{
