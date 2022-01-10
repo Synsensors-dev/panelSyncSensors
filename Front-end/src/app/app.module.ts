@@ -50,6 +50,7 @@ import { SharedModule } from './Modules/shared/shared.module';
 import { StationsModule } from './Modules/stations/stations.module';
 import { RouterModule } from '@angular/router';
 import { TokenInterceptorService } from './Modules/login/services/token-interceptor.service';
+import { AuthGuard } from './Modules/login/auth.guard';
 
 @NgModule({
   imports: [
@@ -87,6 +88,7 @@ import { TokenInterceptorService } from './Modules/login/services/token-intercep
       provide: LocationStrategy,
       useClass: PathLocationStrategy
     },
+    AuthGuard,
     IconSetService,
     {
       provide:HTTP_INTERCEPTORS,
