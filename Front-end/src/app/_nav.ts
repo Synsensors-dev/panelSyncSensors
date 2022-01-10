@@ -1,6 +1,56 @@
 import { INavData } from '@coreui/angular';
 
+let estacionesBool={ //ESTO DEBE LLEGAR DESDE EL BACKEND
+  agua:true,
+  aire:true,
+  co2:false
+}
+//------ Como las estaciones van a ser predeterminadas, aca se crea cada ruta
+let agua={
+  name:'Calidad de agua',
+  url:'/calidadDeAgua',
+  icon:'fa fa-cloud'
+}
+let aire={
+  name:'Calidad de aire',
+  url:'/calidadDeAire',
+  icon:'fa fa-cloud'
+}
+let co2={
+  name:'Co2',
+  url:'/Co2',
+  icon:'fa fa-cloud'
+}
+//-------------------
+
+//-------------------Objeto estaciones que se mostrara en la navbar
+let estaciones:INavData={
+  name:'Estaciones',
+  children:[
+  ]
+}
+
+//Se agregan solo las estaciones que existen en la empresa
+if(estacionesBool.agua){
+  estaciones.children.push(agua)
+}
+if(estacionesBool.aire){
+  estaciones.children.push(aire)
+}
+if(estacionesBool.co2){
+  estaciones.children.push(co2)
+}
+
+//Objeto que muestra todo lo de la barra de navegacion
 export const navItems: INavData[] = [
+
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    icon: 'icon-speedometer',
+  },
+  estaciones
+
   /*{
     name: 'Dashboard',
     url: '/dashboard',
