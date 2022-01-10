@@ -11,7 +11,7 @@ dotenv.config();
  */
 export function signToken(id: any) {
 	const token = jwt.sign({ _id: id }, config.jwtSecret, {
-		expiresIn: 86400
+		expiresIn: 86400 //24 hours
 	});
 
 	return token;
