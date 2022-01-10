@@ -9,10 +9,10 @@ import { signToken } from "../../middlewares/jwt";
  * @param res Response, retornará succes: true, data: {token}, message: "String" del nuevo usuario si todo sale bien.
  */
  export const signUp: RequestHandler = async (req, res) => {
-    const { name, email, password, id_company, permission_level } = req.body;
+    const { name, email, id_company, permission_level } = req.body;
 
     //se validan los atributos
-    if ( !name || !email || !password || !id_company || !permission_level) 
+    if ( !name || !email || !id_company || !permission_level) 
         return res.status(400).send({ success: false, data:{}, message: 'Error: datos inválidos'+ req.body });
 
     const userFound = await User.findOne({ email });
@@ -24,7 +24,7 @@ import { signToken } from "../../middlewares/jwt";
     const newUser: IUser = new User({
         name: name,
         email: email,
-        password: password,
+        password: null,
         id_company: id_company,
         permission_level: permission_level
     });
