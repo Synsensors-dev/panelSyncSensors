@@ -5,8 +5,8 @@ export interface IUser extends Document {
         name: string;
         email: string;
         password: string;
-        id_company: string;
-        permission_level: number;
+        id_company: any;
+        roles: any;
         encrypPassword(password: string): Promise<string>;
         comparePassword(password: string): Promise<boolean>;
 }
@@ -30,9 +30,8 @@ const userSchema = new Schema({
         trim: true
     },
     id_company: {
-        required: true, 
-        type: String,
-        trim: true
+        type: Schema.Types.ObjectId,
+        ref: "Company"
     },
     roles: [
         {

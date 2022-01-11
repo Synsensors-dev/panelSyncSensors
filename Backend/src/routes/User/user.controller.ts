@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import User, { IUser } from './user.model';
 import { signToken } from "../../middlewares/jwt";
+import Role from "../../middlewares/role.model";
 
 /**
  * Funcion que maneja la petición de agregar un nuevo usuario al sistema
@@ -9,10 +10,10 @@ import { signToken } from "../../middlewares/jwt";
  * @param res Response, retornará succes: true, data: {token}, message: "String" del nuevo usuario si todo sale bien.
  */
  export const signUp: RequestHandler = async (req, res) => {
-    const { name, email, id_company, permission_level } = req.body;
+    const { name, email, id_company, roles } = req.body;
 
     //se validan los atributos
-    if ( !name || !email || !id_company || !permission_level) 
+    if ( !name || !email || !id_company ) 
         return res.status(400).send({ success: false, data:{}, message: 'Error: datos inválidos'+ req.body });
 
     const userFound = await User.findOne({ email });
@@ -21,12 +22,13 @@ import { signToken } from "../../middlewares/jwt";
     if ( userFound )
         return res.status(301).send({ success: false, data:{}, message: 'Error: el usuario ingresado ya existe en el sistema.' });
 
+    const rolesFound = await Role.find({ name: { $in: roles } });
     const newUser: IUser = new User({
         name: name,
         email: email,
         password: null,
         id_company: id_company,
-        permission_level: permission_level
+        roles: rolesFound.map((role) => role._id)
     });
 
     //se almacena en la BD el usuario nuevo
