@@ -35,6 +35,7 @@ export class AuthService {
   /**
    * 
    * @returns Retorna boolean que indica si hay un usuario logeado o no
+   * True: Hay alguien logeado, False: no hay alguien logeado
    */
   loggedIn():boolean{
     return !!localStorage.getItem('token')

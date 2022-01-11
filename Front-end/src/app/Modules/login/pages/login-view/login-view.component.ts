@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { apiResponse } from '../../../shared/interfaces/apiResponse';
 import { loginReq, typeUser } from '../../interfaces/user';
 import { AuthService } from '../../services/auth.service';
@@ -13,9 +14,12 @@ export class LoginViewComponent implements OnInit {
   public loginForm:FormGroup
   showErrorMessage:number;
 
-  constructor(private fb:FormBuilder , private auth:AuthService) { }
+  constructor(private fb:FormBuilder , private auth:AuthService, private router:Router) { }
 
   ngOnInit(): void {
+    if(this.auth.loggedIn()==true){
+      this.router.navigate(["dashboard"])
+    }
     this.showErrorMessage=1;
     this.loginForm=this.fb.group({
       email:['',[Validators.required,Validators.email]],
@@ -30,7 +34,9 @@ export class LoginViewComponent implements OnInit {
     }
     this.auth.signIn(loginData).subscribe((response:apiResponse)=>{
       if(response.success){
+        this.showErrorMessage=1;
         localStorage.setItem('token',response.data.token)
+        this.router.navigate(["dashboard"])
         console.log(response);
       }else{
         console.log(response.message);
