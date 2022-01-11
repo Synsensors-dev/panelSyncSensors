@@ -24,6 +24,10 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: () => import('./Modules/core/pages/dashboard/dashboard.module').then(m => m.DashboardModule)
+      },
+      {
+        path: 'sensoresTemperatura',
+        loadChildren: () => import('./Modules/stations/stations.module').then(m => m.StationsModule)
       }
     ]
   },
