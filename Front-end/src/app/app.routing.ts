@@ -27,7 +27,7 @@ export const routes: Routes = [
       },
       {
         path: 'sensoresTemperatura',
-        loadChildren: () => import('./Modules/stations/stations.module').then(m => m.StationsModule)
+        loadChildren: () => import('./Modules/stations/pages/temperature-sensors/temperature-sensors.module').then(m=>m.TemperatureSensorsModule)
       }
     ]
   },

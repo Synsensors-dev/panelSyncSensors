@@ -1,7 +1,7 @@
 import { INavData } from '@coreui/angular';
 
 let estacionesBool={ //ESTO DEBE LLEGAR DESDE EL BACKEND
-  agua:true,
+  temperatura:true,
   aire:true,
   co2:false
 }
@@ -37,8 +37,8 @@ let estacionesAire:INavData={
 
 
 //Se agregan solo las estaciones que existen en la empresa
-if(estacionesBool.agua){
-  estacionesAgua.children.push(temperatura)
+if(estacionesBool.temperatura){
+  estacionesAire.children.push(temperatura)
 }
 if(estacionesBool.aire){
   estacionesAire.children.push(aire)
