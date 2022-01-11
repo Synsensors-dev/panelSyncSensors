@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import User, { IUser } from './user.model';
 import { signToken } from "../../middlewares/jwt";
-import Role from "../../middlewares/role.model";
+import Role from "../../models/role.model";
 
 /**
  * Funcion que maneja la petición de agregar un nuevo usuario al sistema
@@ -28,7 +28,7 @@ import Role from "../../middlewares/role.model";
         email: email,
         password: null,
         id_company: id_company,
-        roles: rolesFound.map((role) => role._id)
+        roles: rolesFound.map((role:any) => role._id)
     });
 
     //se almacena en la BD el usuario nuevo

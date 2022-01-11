@@ -1,7 +1,4 @@
-import Role from "../middlewares/Role";
-import User from "../routes/User/user.model";
-
-import bcrypt from "bcrypt";
+import Role from "../models/role.model";
 
 export const createRoles = async () => {
 
