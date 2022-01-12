@@ -1,1 +1,68 @@
-<p>temperature-sensors works!</p>
+<div class="container">
+    <div class="row filtersRow">
+        <div class="btn-group" dropdown>
+            <button type="button" class="btn" dropdownToggle>
+                Filtrar
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+              <a class="dropdown-item">Action</a>
+              <a class="dropdown-item">Another action</a>
+              <a class="dropdown-item">Something else here</a>
+              <a class="dropdown-item">Something else here</a>
+            </div>
+        </div>
+
+        <div class="btn-group" dropdown>
+            <button type="button" class="btn" dropdownToggle>
+                Ordenar Por
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+            <a class="dropdown-item">Action</a>
+            <a class="dropdown-item">Another action</a>
+            <a class="dropdown-item">Something else here</a>
+            <a class="dropdown-item">Something else here</a>
+        </div>
+    </div>
+    <div class="row">
+
+        <div *ngFor="let item of stations" class="card"
+        [ngClass]="{
+            'red': item.reading.temperatura > item.max_config || item.reading.temperatura < item.min_config ,
+            'green': item.reading.temperatura > item.min_config && item.reading.temperatura < item.max_config,
+            'gray': item.status==false,
+            'yellow':item.reading.temperatura==item.min_config || item.reading.temperatura==item.max_config
+            }"
+        >
+            <div class="card-body">
+              <p class="card-text f18">{{item.name}}</p>
+
+              <div class="row">
+                <ul>
+                    <li class="card-text temperature-text">
+                      {{item.reading.temperatura}}
+                    </li>
+                    <li class="card-text celsius">
+                      °C
+                    </li>
+                </ul>
+
+              </div>
+
+              <div class="row rowHumedad f18">
+                <ul>
+                    <li  class="card-text">
+                        Humedad:
+                    </li>
+                    <li class="card-text celsius">
+                        {{item.reading.humedad}}%
+                    </li>
+                </ul>
+
+              </div>
+
+            
+            </div>
+        </div>
+
+    </div>
+</div>
