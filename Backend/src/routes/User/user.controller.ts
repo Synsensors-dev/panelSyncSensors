@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import User, { IUser } from './user.model';
 import { signToken } from "../../middlewares/jwt";
 import Role from "../../models/role.model";
+import { sendFirstRegistrationEmail } from "../../middlewares/sendEmail";
 
 /**
  * Funcion que maneja la petición de agregar un nuevo usuario al sistema
@@ -32,10 +33,12 @@ import Role from "../../models/role.model";
     });
 
     //se almacena en la BD el usuario nuevo
-    const savedUser = await newUser.save();
-    const token = signToken( savedUser._id );
+    //const savedUser = await newUser.save();
+    //const token = signToken( savedUser._id );
 
-    return res.status(201).send({ success: true, data: { token }, message: 'Se ha creado correctamente el nuevo usuario.' });
+    sendFirstRegistrationEmail(newUser);
+
+    return res.status(201).send({ success: true, data: { /*token*/ }, message: 'Se ha creado correctamente el nuevo usuario.' });
 }
 
 /**
