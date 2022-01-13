@@ -16,6 +16,11 @@ router.post( '/user/signin', userCtrl.signIn );
 
 // Eliminar un usuario
 
+// Recuperar contraseña
+router.post('/user/forgotPassword', userCtrl.forgotPassword );
+
+// Reiniciar contraseña
+router.put('/user/resetPassword/:id', userCtrl.resetPassword );
 
 //Ruta de prueba passport (para probar el acceso via token)
 router.get('/special', passport.authenticate('jwt', {session: false}), (req, res) => {

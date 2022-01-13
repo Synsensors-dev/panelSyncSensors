@@ -13,7 +13,7 @@ export async function sendFirstRegistrationEmail( user: any ){
             <li>Email de cuenta: ${user.email}</li>
         </ul>
 
-        <button type="button">Crear contraseña</button> 
+        <button type="button" href= #>Crear contraseña</button> 
 
         <p>Saludos Cordiales,
         Equipo de SyncSensors</p>
@@ -61,6 +61,9 @@ export async function sendEmailForgotPassword( user: any ){
         <p> Estimado/a ${user.name}:</p>
         <p> Hemos recibido una solicitud para recuperar el acceso a la cuenta de SyncSensors ${user.email}.</p>
         <p>Si la has enviado tú, puedes clickear el siguiente botón para poder generar una nueva contraseña.</p>
+
+        <button type="button" href= #>Cambiar Contraseña</button> 
+
         <p>Gracias por tu paciencia.</p>
         <p>Atentamente; el equipo de SyncSensors.</p> 
         `;

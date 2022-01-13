@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import User, { IUser } from './user.model';
 import { signToken } from "../../middlewares/jwt";
 import Role from "../../models/role.model";
-import { sendFirstRegistrationEmail } from "../../middlewares/sendEmail";
+import { sendEmailForgotPassword, sendFirstRegistrationEmail } from "../../middlewares/sendEmail";
 
 /**
  * Funcion que maneja la petición de agregar un nuevo usuario al sistema
@@ -33,10 +33,11 @@ import { sendFirstRegistrationEmail } from "../../middlewares/sendEmail";
     });
 
     //se almacena en la BD el usuario nuevo
-    //const savedUser = await newUser.save();
-    //const token = signToken( savedUser._id );
+    const savedUser = await newUser.save();
+    const token = signToken( savedUser._id );
 
-    sendFirstRegistrationEmail(newUser);
+    //se envía el correo de bienvenida
+    sendFirstRegistrationEmail(savedUser);
 
     return res.status(201).send({ success: true, data: { /*token*/ }, message: 'Se ha creado correctamente el nuevo usuario.' });
 }
@@ -69,4 +70,37 @@ import { sendFirstRegistrationEmail } from "../../middlewares/sendEmail";
     const token = signToken( userFound._id );
 
     return res.status(200).send({ success: true, data:{ token, 'user': userFound }, message: 'Inicio de sesión exitoso.' });
+}
+
+export const forgotPassword: RequestHandler = async (req, res) => {
+    const email = req.body;
+
+    const userFound = await User.findOne({ email});
+
+    //Se valida la existencia del usuario
+    if ( !userFound )
+        return res.status(404).send({ success: false, data:{}, message: 'Error: el usuario ingresado no existe en el sistema.' });
+
+    //se envía el correo para que el usuario restablesca su cuenta
+    sendEmailForgotPassword(userFound);
+
+    return res.status(200).send({ success: true, data:{}, message: 'Se envió un correo al usuario de manera exitosa.' });
+}
+
+export const newPassword: RequestHandler = async (req, res) => {
+    const _id = req.params.id;
+    const newPassword = req.body;
+
+    let userFound = await User.findById( _id );
+
+    //Se valida la existencia del usuario
+    if ( !userFound )
+        return res.status(404).send({ success: false, data:{}, message: 'Error: el usuario ingresado no existe en el sistema.' });
+
+    userFound.password = String(userFound.encryptPassword( newPassword ));
+
+    //se actualiza la password
+    await User.findByIdAndUpdate(_id, userFound );
+    
+    return res.status(200).send({ success: true, data:{}, message: 'Contraseña actualizada con exito.' });
 }
