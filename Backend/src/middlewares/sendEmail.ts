@@ -64,7 +64,7 @@ export async function sendEmailForgotPassword( user: any ){
 
         <button type="button" href= #>Cambiar Contraseña</button> 
 
-        <p>Gracias por tu paciencia.</p>
+        <p>Gracias por su paciencia.</p>
         <p>Atentamente; el equipo de SyncSensors.</p> 
         `;
 
@@ -87,6 +87,53 @@ export async function sendEmailForgotPassword( user: any ){
             from: '"SyncSensors" <developers@syncsensors.com>', // sender address
             to: user.email, // list of receivers
             subject: "Alerta de seguridad crítica", // Subject line
+            html: contentHTML, // html body
+        });
+
+            console.log("Message sent: %s", info.messageId);
+        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+        // Preview only available when sending through an Ethereal account
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function sendEmailNewPassword( user: any ){
+    try {
+        const contentHTML = `
+        <img src = "../../../Front-end/src/assets/img/brand/logo-syncsensors-1.png">  
+        <h1>Solicitud de cambio de contraseña de la cuenta de SyncSensors</h1>
+        <p> Estimado/a ${user.name}:</p>
+        <p> Su contraseña asociada a su cuenta: ${user.email}, ha sido actualizada de manera exitosa.</p>
+        <p>Por favor, cuide de sus contraseñas. Ningún administrador de SyncSensors se la solicitará.</p>
+
+        <p>Gracias por su paciencia.</p>
+        <p>Atentamente; el equipo de SyncSensors.</p> 
+        `;
+
+        const nodemailer = require('nodemailer');
+        const transporter = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
+            secure: true,
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
+        // send mail with defined transport object
+        const info = await transporter.sendMail({
+            from: '"SyncSensors" <developers@syncsensors.com>', // sender address
+            to: user.email, // list of receivers
+            subject: "Actualización de contraseña", // Subject line
             html: contentHTML, // html body
         });
 

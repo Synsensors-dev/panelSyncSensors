@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import User, { IUser } from './user.model';
 import { signToken } from "../../middlewares/jwt";
 import Role from "../../models/role.model";
-import { sendEmailForgotPassword, sendFirstRegistrationEmail } from "../../middlewares/sendEmail";
+import { sendEmailForgotPassword, sendFirstRegistrationEmail, sendEmailNewPassword } from "../../middlewares/sendEmail";
 
 /**
  * Funcion que maneja la petición de agregar un nuevo usuario al sistema
@@ -24,6 +24,7 @@ import { sendEmailForgotPassword, sendFirstRegistrationEmail } from "../../middl
         return res.status(301).send({ success: false, data:{}, message: 'Error: el usuario ingresado ya existe en el sistema.' });
 
     const rolesFound = await Role.find({ name: { $in: roles } });
+
     const newUser: IUser = new User({
         name: name,
         email: email,
@@ -72,10 +73,16 @@ import { sendEmailForgotPassword, sendFirstRegistrationEmail } from "../../middl
     return res.status(200).send({ success: true, data:{ token, 'user': userFound }, message: 'Inicio de sesión exitoso.' });
 }
 
+/**
+ * Funcion que maneja la solicitud de recuperar contraseña
+ * @route Post /user/forgotPassword
+ * @param req Request, se espera que tenga el correo del usuario
+ * @param res Response, retornará succes: true, data: {}, message: "String" de que el correo fué enviado para recuperar la contraseña.
+ */
 export const forgotPassword: RequestHandler = async (req, res) => {
-    const email = req.body;
+    const email = req.body.email;
 
-    const userFound = await User.findOne({ email});
+    const userFound = await User.findOne({ email });
 
     //Se valida la existencia del usuario
     if ( !userFound )
@@ -87,20 +94,29 @@ export const forgotPassword: RequestHandler = async (req, res) => {
     return res.status(200).send({ success: true, data:{}, message: 'Se envió un correo al usuario de manera exitosa.' });
 }
 
+/**
+ * Funcion que maneja la solicitud de crear o reiniciar una contraseña
+ * @route Put /user/resetPassword/:id
+ * @param req Request, se espera el id del usuario por params y la nueva contraseña via body en formato json
+ * @param res Response, retornará succes: true, data: {}, message: "String"; indicando que la contraseña fue actualizada.
+ */
 export const newPassword: RequestHandler = async (req, res) => {
     const _id = req.params.id;
-    const newPassword = req.body;
+    const newPassword = req.body.password;
 
-    let userFound = await User.findById( _id );
+    const userFound = await User.findById( _id );
 
     //Se valida la existencia del usuario
     if ( !userFound )
         return res.status(404).send({ success: false, data:{}, message: 'Error: el usuario ingresado no existe en el sistema.' });
 
-    userFound.password = String(userFound.encryptPassword( newPassword ));
+    userFound.password = await userFound.encryptPassword(newPassword);
 
     //se actualiza la password
     await User.findByIdAndUpdate(_id, userFound );
-    
+
+    //se envía un correo para notificar al usuario
+    sendEmailNewPassword(userFound);
+
     return res.status(200).send({ success: true, data:{}, message: 'Contraseña actualizada con exito.' });
 }

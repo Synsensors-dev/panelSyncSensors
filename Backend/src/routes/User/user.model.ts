@@ -7,7 +7,7 @@ export interface IUser extends Document {
         password: string;
         id_company: any;
         roles: any;
-        encrypPassword(password: string): Promise<string>;
+        encryptPassword(password: string): Promise<string>;
         comparePassword(password: string): Promise<boolean>;
 }
 
@@ -49,7 +49,7 @@ const userSchema = new Schema({
  * @param password contraseña del usuario
  * @returns la password del usuario encriptada
  */
- userSchema.methods.encrypPassword = async (password: string): Promise<string> => {
+ userSchema.methods.encryptPassword = async (password: string): Promise<string> => {
     const salt = await bcrypt.genSalt(10);
     return bcrypt.hash(password, salt);
   };

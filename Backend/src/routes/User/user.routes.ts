@@ -20,7 +20,7 @@ router.post( '/user/signin', userCtrl.signIn );
 router.post('/user/forgotPassword', userCtrl.forgotPassword );
 
 // Reiniciar contraseña
-router.put('/user/resetPassword/:id', userCtrl.resetPassword );
+router.put('/user/resetPassword/:id', userCtrl.newPassword );
 
 //Ruta de prueba passport (para probar el acceso via token)
 router.get('/special', passport.authenticate('jwt', {session: false}), (req, res) => {
