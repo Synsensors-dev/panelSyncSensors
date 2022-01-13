@@ -1,5 +1,8 @@
 import Role from "../models/role.model";
 
+/** 
+ * Se encarga de crear los roles de usuarios en la BD. Verificando la existencia de ellos apenas arranca el software.
+ */
 export const createRoles = async () => {
 
     try {

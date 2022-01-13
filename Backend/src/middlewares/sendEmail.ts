@@ -1,4 +1,8 @@
 
+/**
+ * Envía un correo al usuario cuando es registrado en el sistema para que pueda crear su contraseña.
+ * @param user -> el cual contiene todos los datos del usuario.
+ */
 export async function sendFirstRegistrationEmail( user: any ){
     try {
         const contentHTML = `
@@ -41,7 +45,7 @@ export async function sendFirstRegistrationEmail( user: any ){
             html: contentHTML, // html body
         });
 
-            console.log("Message sent: %s", info.messageId);
+        console.log("Message sent: %s", info.messageId);
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
         // Preview only available when sending through an Ethereal account
@@ -53,6 +57,10 @@ export async function sendFirstRegistrationEmail( user: any ){
     }
 }
 
+/**
+ * Envía un correo al usuario notificandole la solicitud de cambio de contraseña.
+ * @param user -> el cual contiene todos los datos del usuario.
+ */
 export async function sendEmailForgotPassword( user: any ){
     try {
         const contentHTML = `
@@ -90,7 +98,7 @@ export async function sendEmailForgotPassword( user: any ){
             html: contentHTML, // html body
         });
 
-            console.log("Message sent: %s", info.messageId);
+        console.log("Message sent: %s", info.messageId);
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
         // Preview only available when sending through an Ethereal account
@@ -102,6 +110,10 @@ export async function sendEmailForgotPassword( user: any ){
     }
 }
 
+/**
+ * Envía un correo al usuario indicando que su contraseña ha sido actualizada.
+ * @param user -> el cual contiene todos los datos del usuario.
+ */
 export async function sendEmailNewPassword( user: any ){
     try {
         const contentHTML = `
@@ -137,7 +149,7 @@ export async function sendEmailNewPassword( user: any ){
             html: contentHTML, // html body
         });
 
-            console.log("Message sent: %s", info.messageId);
+        console.log("Message sent: %s", info.messageId);
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
         // Preview only available when sending through an Ethereal account
