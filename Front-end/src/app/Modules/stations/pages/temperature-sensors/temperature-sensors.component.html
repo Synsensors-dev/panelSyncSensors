@@ -25,7 +25,7 @@
     </div>
     <div class="row">
 
-        <div *ngFor="let item of stations" class="card"
+        <div (click)="goToSensor()" *ngFor="let item of stations" class="card"
         [ngClass]="{
             'red': item.reading.temperatura > item.max_config || item.reading.temperatura < item.min_config ,
             'green': item.reading.temperatura > item.min_config && item.reading.temperatura < item.max_config,

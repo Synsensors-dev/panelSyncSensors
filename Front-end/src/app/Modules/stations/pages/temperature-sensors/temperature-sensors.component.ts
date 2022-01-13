@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./temperature-sensors.component.scss']
 })
 export class TemperatureSensorsComponent implements OnInit {
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit(): void {
+  }
+
+  goToSensor(){
+    this.router.navigate(['stations/temperature/sensor']);
   }
   //Lo ideal seria hacer un endpoint que traiga el nombre de una estacion, con el reading que se necesite automaticamente
 

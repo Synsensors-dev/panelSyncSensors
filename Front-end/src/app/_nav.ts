@@ -1,6 +1,6 @@
 import { INavData } from '@coreui/angular';
 
-let estacionesBool={ //ESTO DEBE LLEGAR DESDE EL BACKEND
+let estacionesBool={ //ESTO DEBE LLEGAR DESDE EL BACKEND , (en front esto va a tener que pasar al ts de default_layout importado con un serivico)
   temperatura:true,
   aire:true,
   co2:false
@@ -8,8 +8,8 @@ let estacionesBool={ //ESTO DEBE LLEGAR DESDE EL BACKEND
 //------ Como las estaciones van a ser predeterminadas, aca se crea cada ruta
 let temperatura={
   name:'Sensores de temperatura',
-  url:'/sensoresTemperatura',
-  icon:'fa fa-cloud'
+  url:'/stations/temperature',
+  icon:'fa fa-thermometer-half '
 }
 let aire={
   name:'Sensores de calidad de aire',
