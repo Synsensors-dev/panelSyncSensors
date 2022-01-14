@@ -1,8 +1,13 @@
 import { RequestHandler } from "express";
 import User, { IUser } from './user.model';
-import { signToken , verifyToken } from "../../middlewares/jwt";
+import { signToken } from "../../middlewares/jwt";
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import config from '../../config/config';
 import Role from "../../models/role.model";
 import { sendEmailForgotPassword, sendFirstRegistrationEmail, sendEmailNewPassword } from "../../middlewares/sendEmail";
+
+dotenv.config();
 
 /**
  * Funcion que maneja la petición de agregar un nuevo usuario al sistema
@@ -28,7 +33,6 @@ import { sendEmailForgotPassword, sendFirstRegistrationEmail, sendEmailNewPasswo
     const newUser: IUser = new User({
         name: name,
         email: email,
-        password: null,
         id_company: id_company,
         roles: rolesFound.map((role:any) => role._id)
     });
@@ -86,6 +90,10 @@ export const forgotPassword: RequestHandler = async (req, res) => {
     const email = req.body.email;
     const userFound = await User.findOne({ email });
 
+    //se valida el email ingresado
+    if ( !email )
+        return res.status(400).send({ success: false, data:{}, message: 'Error: no se ingresó ningún email.' });
+
     //Se valida la existencia del usuario
     if ( !userFound )
         return res.status(404).send({ success: false, data:{}, message: 'Error: el usuario ingresado no existe en el sistema.' });
@@ -103,33 +111,39 @@ export const forgotPassword: RequestHandler = async (req, res) => {
 /**
  * Funcion que maneja la solicitud de crear o reiniciar una contraseña
  * @route Put /user/resetPassword/:id
- * @param req Request, se espera el id del usuario por params y la nueva contraseña via body en formato json
+ * @param req Request, se espera el token asociado al usuario por params y la nueva contraseña via body en formato json
  * @param res Response, retornará succes: true, data: {}, message: "String"; indicando que la contraseña fue actualizada.
  */
 export const newPassword: RequestHandler = async (req, res) => {
     const token = req.params.token;
     const newPassword = req.body.password;
 
-    const isValidToken = verifyToken(token);
+    //se valida que el token no venga vacío
+    if ( !token )
+        return res.status(404).send({ success: false, data:{}, message: 'Error: No se a ingresado ningún token'})
 
-    //se valida el token
-    if ( !isValidToken ) 
-        return res.status(400).send({ success: false, data:{}, message: 'Error: el token es inválido.' });
+    //se verifica que el token sea válido
+    jwt.verify(token, config.jwtSecret, async function( err: any , decodedToken: any ){
 
-    //se busca el usuario via token
-    const userFound = await User.findOne({ resetToken: token });
+        //se valida si expiró o es defectuoso
+        if ( err )
+            return res.status(400).send({ success: false, data:{}, message:'ERROR: Token incorrecto o expirado'});
 
-    //Se valida la existencia del usuario
-    if ( !userFound )
-        return res.status(404).send({ success: false, data:{}, message: 'Error: el usuario ingresado no existe en el sistema.' });
+        const _id = decodedToken;
+        const userFound = await User.findById(_id);
 
-    userFound.password = await userFound.encryptPassword(newPassword);
+         //Se valida la existencia del usuario
+        if ( !userFound )
+            return res.status(404).send({ success: false, data:{}, message: 'Error: el usuario ingresado no existe en el sistema.' });
 
-    //se actualiza la password
-    await User.findByIdAndUpdate(userFound._id, userFound );
+        userFound.password = await userFound.encryptPassword(newPassword);
 
-    //se envía un correo para notificar al usuario
-    sendEmailNewPassword(userFound);
+        //se actualiza la password
+        await User.findByIdAndUpdate(userFound._id, userFound );
 
-    return res.status(200).send({ success: true, data:{}, message: 'Contraseña actualizada con exito.' });
+        //se envía un correo para notificar al usuario
+        sendEmailNewPassword(userFound);
+
+        return res.status(200).send({ success: true, data:{}, message: 'Contraseña actualizada con exito.' });
+    });   
 }

@@ -16,7 +16,7 @@ export async function sendFirstRegistrationEmail( user: any , token: any){
             <li>Email de cuenta: ${user.email}</li>
         </ul>
 
-        <a href = "https://localhost:4200/user/resetPassword/${token}"</a>
+        <p>https://localhost:4200/user/resetPassword/${token}</p>
 
         <p>Saludos Cordiales,
         Equipo de SyncSensors</p>
@@ -69,7 +69,7 @@ export async function sendEmailForgotPassword( user: any , token: any){
         <p> Hemos recibido una solicitud para recuperar el acceso a la cuenta de SyncSensors ${user.email}.</p>
         <p>Si la has enviado tú, puedes clickear el siguiente enlace para poder generar una nueva contraseña.</p>
 
-        <a href = "https://localhost:4200/user/resetPassword/${token}"</a>
+        <p>https://localhost:4200/user/resetPassword/${token}</p>
 
         <p>Gracias por su paciencia.</p>
         <p>Atentamente; el equipo de SyncSensors.</p> 

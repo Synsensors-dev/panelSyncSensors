@@ -16,7 +16,3 @@ export function signToken(id: any, expiresIn: number) {
 
 	return token;
 }
-
-export function verifyToken( token: any){
-	return jwt.verify(token, config.jwtSecret);
-}
