@@ -19,7 +19,7 @@ router.post( '/user/signin', userCtrl.signIn );
 // Recuperar contraseña
 router.post('/user/forgotPassword', userCtrl.forgotPassword );
 
-// Reiniciar contraseña
+// Reiniciar o crear contraseña
 router.put('/user/resetPassword/:id', userCtrl.newPassword );
 
 //Ruta de prueba passport (para probar el acceso via token)

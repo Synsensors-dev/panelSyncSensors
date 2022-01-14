@@ -7,6 +7,7 @@ export interface IUser extends Document {
         password: string;
         id_company: any;
         roles: any;
+        resetToken: string;
         encryptPassword(password: string): Promise<string>;
         comparePassword(password: string): Promise<boolean>;
 }
@@ -39,6 +40,10 @@ const userSchema = new Schema({
             ref: "Role"
         }
     ],
+    resetToken: {
+        type: String,
+        trim: true
+    }
 },{
     versionKey: false,
     timestamps: true   

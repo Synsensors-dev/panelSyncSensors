@@ -3,24 +3,24 @@
  * Envía un correo al usuario cuando es registrado en el sistema para que pueda crear su contraseña.
  * @param user -> el cual contiene todos los datos del usuario.
  */
-export async function sendFirstRegistrationEmail( user: any ){
+export async function sendFirstRegistrationEmail( user: any , token: any){
     try {
         const contentHTML = `
-        <img src = "../../../Front-end/src/assets/img/brand/logo-syncsensors-1.png">  
         <h1>¡Te damos la bienvenida a SyncSensors!</h1>
         <h2> Estimado/a ${user.name}, es un agrado saber que formarás parte de SyncSensors.</h2>
         <p> Tu cuenta actualmente se encuentra creada dentro de la plataforma de SyncSensors. Sin embargo,
         no se le ha asignado una contraseña, entregandote la libertad a tí como usuario el poder hacerlo.Por lo tanto, a
-        continuación se te dejará un botón el cual deberás clickear para crear tu contraseña y terminar de activar tu cuenta. </p>
+        continuación se te dejará un enlace el cual deberás clickear para crear tu contraseña y terminar de activar tu cuenta. </p>
         <ul>
             <li>Nombre usuario: ${user.name}</li>
             <li>Email de cuenta: ${user.email}</li>
         </ul>
 
-        <button type="button" href= #>Crear contraseña</button> 
+        <a href = "https://localhost:4200/user/resetPassword/${token}"</a>
 
         <p>Saludos Cordiales,
         Equipo de SyncSensors</p>
+        <a href="https://ibb.co/QMH6S51"><img src="https://i.ibb.co/fHNC6cP/logo-syncsensors-1.png" alt="logo-syncsensors-1" border="0"></a>   
         `;
 
         const nodemailer = require('nodemailer');
@@ -61,19 +61,19 @@ export async function sendFirstRegistrationEmail( user: any ){
  * Envía un correo al usuario notificandole la solicitud de cambio de contraseña.
  * @param user -> el cual contiene todos los datos del usuario.
  */
-export async function sendEmailForgotPassword( user: any ){
+export async function sendEmailForgotPassword( user: any , token: any){
     try {
-        const contentHTML = `
-        <img src = "../../../Front-end/src/assets/img/brand/logo-syncsensors-1.png">  
+        const contentHTML = `     
         <h1>Solicitud de cambio de contraseña de la cuenta de SyncSensors</h1>
         <p> Estimado/a ${user.name}:</p>
         <p> Hemos recibido una solicitud para recuperar el acceso a la cuenta de SyncSensors ${user.email}.</p>
-        <p>Si la has enviado tú, puedes clickear el siguiente botón para poder generar una nueva contraseña.</p>
+        <p>Si la has enviado tú, puedes clickear el siguiente enlace para poder generar una nueva contraseña.</p>
 
-        <button type="button" href= #>Cambiar Contraseña</button> 
+        <a href = "https://localhost:4200/user/resetPassword/${token}"</a>
 
         <p>Gracias por su paciencia.</p>
         <p>Atentamente; el equipo de SyncSensors.</p> 
+        <a href="https://ibb.co/QMH6S51"><img src="https://i.ibb.co/fHNC6cP/logo-syncsensors-1.png" alt="logo-syncsensors-1" border="0"></a>   
         `;
 
         const nodemailer = require('nodemailer');
@@ -117,7 +117,6 @@ export async function sendEmailForgotPassword( user: any ){
 export async function sendEmailNewPassword( user: any ){
     try {
         const contentHTML = `
-        <img src = "../../../Front-end/src/assets/img/brand/logo-syncsensors-1.png">  
         <h1>Solicitud de cambio de contraseña de la cuenta de SyncSensors</h1>
         <p> Estimado/a ${user.name}:</p>
         <p> Su contraseña asociada a su cuenta: ${user.email}, ha sido actualizada de manera exitosa.</p>
@@ -125,6 +124,7 @@ export async function sendEmailNewPassword( user: any ){
 
         <p>Gracias por su paciencia.</p>
         <p>Atentamente; el equipo de SyncSensors.</p> 
+        <a href="https://ibb.co/QMH6S51"><img src="https://i.ibb.co/fHNC6cP/logo-syncsensors-1.png" alt="logo-syncsensors-1" border="0"></a>   
         `;
 
         const nodemailer = require('nodemailer');
