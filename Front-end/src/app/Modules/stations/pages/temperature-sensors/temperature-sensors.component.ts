@@ -14,8 +14,8 @@ export class TemperatureSensorsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  goToSensor(id:any){
-    this.router.navigate(['stations/temperature/sensor'],{state:{sensorId:id}});
+  goToSensor(id:any,name:any){
+    this.router.navigate(['stations/temperature/sensor'],{state:{sensorId:id,stationName:name}});
   }
   //Lo ideal seria hacer un endpoint que traiga el nombre de una estacion, con el reading que se necesite automaticamente
 

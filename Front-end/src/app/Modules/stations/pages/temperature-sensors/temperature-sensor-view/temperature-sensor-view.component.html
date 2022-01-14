@@ -1,2 +1,41 @@
-<p>temperature-sensor-view works!</p>
-<h1>{{sensorId}}</h1>
+<div class="container">
+    <!-- Barra superior -->
+    <div class="row">
+
+        <div class="col stationName">
+            <p>{{stationName}} - Temperatura</p>
+        </div>
+
+        <div class="col urIcons">
+
+            <div class="btn-group float-right" dropdown>
+                <button type="button" class="btn btn-transparent" dropdownToggle>
+                  <i class="icon-settings"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+              </div>
+
+        </div>
+        
+
+    </div>
+
+
+    <!-- Grafico -->
+    <div class="row">
+        <app-readings-bar-chart></app-readings-bar-chart>
+
+    </div>
+
+    <!-- Historial de alertas -->
+    <div class="row">
+
+        <app-sensor-alerts-history></app-sensor-alerts-history>
+
+    </div>
+</div>

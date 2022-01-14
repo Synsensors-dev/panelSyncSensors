@@ -8,7 +8,7 @@ import { TemperatureSensorViewComponent } from './temperature-sensor-view.compon
 
 @NgModule({
   declarations: [
-    TemperatureSensorViewComponent
+    TemperatureSensorViewComponent,
   ],
   imports: [
     CommonModule,
