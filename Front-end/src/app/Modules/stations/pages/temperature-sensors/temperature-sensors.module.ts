@@ -7,6 +7,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TemperatureSensorViewComponent } from './temperature-sensor-view/temperature-sensor-view.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 
@@ -20,7 +21,8 @@ import { TemperatureSensorViewComponent } from './temperature-sensor-view/temper
     TemperatureSensorsRoutingModule,
     SharedModule,
     BsDropdownModule,
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
+    ModalModule.forRoot()
   ]
 })
 export class TemperatureSensorsModule {}

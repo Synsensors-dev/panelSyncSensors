@@ -7,13 +7,14 @@ import { TemperatureSensorViewComponent } from './temperature-sensor-view.compon
 
 
 @NgModule({
+
   declarations: [
-    TemperatureSensorViewComponent,
+    TemperatureSensorViewComponent
   ],
   imports: [
     CommonModule,
     TemperatureSensorViewRoutingModule,
-    SharedModule
+    SharedModule,
   ]
 })
 export class TemperatureSensorViewModule { }

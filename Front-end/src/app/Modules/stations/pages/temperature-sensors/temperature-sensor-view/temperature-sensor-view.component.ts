@@ -1,5 +1,8 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewChild} from '@angular/core';
+import {ModalDirective } from 'ngx-bootstrap/modal';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-temperature-sensor-view',
@@ -8,7 +11,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TemperatureSensorViewComponent implements OnInit {
 
-  constructor(private location:Location) { }
+  @ViewChild('myModal') public myModal: ModalDirective;
+  public sensorForm:FormGroup;
+
+
+  constructor(private location:Location , private fb:FormBuilder) { }
   sensorId:any
   retainer:any //Recibe el objeto con la informacion que viene en la ruta
   stationName:any 
@@ -18,8 +25,18 @@ export class TemperatureSensorViewComponent implements OnInit {
     this.retainer=this.location.getState()
     this.sensorId=this.retainer.sensorId
     this.stationName=this.retainer.stationName
+
+    this.sensorForm=this.fb.group({
+      min_value:[''],
+      max_value:[''],
+    })
     
 
   }
+
+  //Variables del modal (popup)
+
+
+
 
 }
