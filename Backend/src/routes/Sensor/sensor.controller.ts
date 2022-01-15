@@ -150,6 +150,45 @@ export const deleteSensor: RequestHandler = async (req, res) => {
 export const typesOfSensors: RequestHandler = async (req, res) => {
 }
 
+/**
+ * Función encargada de actualizar los valores especificos de min_config & max_config
+ * @route Put '/sensor/config/:id'
+ * @param req Request de la petición, se espera que tenga el id de la sensor.
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" del sensor editado correctamente
+ */
 export const updateMinAndMax: RequestHandler = async (req, res) => {
+    const _idSensor = req.params.id;
+    const { min_config, max_config } = req.body;
+
+    //se valida el _id ingresado del sensor
+    if ( !Types.ObjectId.isValid( _idSensor ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+        const sensorFound = await Sensor.findById( _idSensor );
+
+    //se valida la existencia del sensor en el sistema
+    if ( !sensorFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
+
+    //se valida que min tenga valor 
+    if ( !min_config  && !max_config)
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: no se ingresó valores para min y max.' });
+
+    //Se actualiza solo min_config
+    if ( min_config && !max_config ){
+        await Sensor.findByIdAndUpdate( _idSensor, min_config );
+    }
+
+    //Se actualiza solo max_config
+    if ( !min_config && max_config ){
+        await Sensor.findByIdAndUpdate( _idSensor, max_config );
+    }
+
+    //Se actualizan min_config y max_config
+    if ( min_config && max_config ){
+        await Sensor.findByIdAndUpdate( _idSensor, min_config, max_config );
+    }
+
+    return res.status(200).send( { success: true, data:{}, message: 'Min_config y Max_config actualizados de manera correcta.'});
 }
 
