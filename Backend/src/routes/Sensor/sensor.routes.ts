@@ -15,4 +15,10 @@ router.get('/sensor/:id', sensorCtrl.readSensor);
 // Eliminar un sensor
 router.delete('/sensor/:id', sensorCtrl.deleteSensor);
 
+// Obtener lista de sensores existentes asociados a una compañia
+router.get('/sensor/types/:id_company', sensorCtrl.typesOfSensors);
+
+// Modificar min_config & max_config de un sensor
+router.put('/sensor/config/:id', sensorCtrl.updateMinAndMax);
+
 export default router;

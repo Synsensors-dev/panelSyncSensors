@@ -12,18 +12,23 @@ const sensorSchema = new Schema({
         trim: true
     },
     frecuency: {
-        type: Number
+        type: Number,
+        default: null
     },
     min_config: {
-        type: Number
+        type: Number,
+        default: -10^4
     },
     max_config: {
-        type: Number
+        type: Number,
+        default: 10^4
     },
     status: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     id_station: {
+        required: true,
         type: Schema.Types.ObjectId,
         ref: "Station"
     }
