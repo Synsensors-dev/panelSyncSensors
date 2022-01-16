@@ -21,4 +21,7 @@ router.get('/sensor/types/:id_company', sensorCtrl.typesOfSensors);
 // Modificar min_config & max_config de un sensor
 router.put('/sensor/config/:id', sensorCtrl.updateMinAndMax);
 
+//Obtener estaciones asociadas a una compañia (vistaPanel)
+router.get('/panel/stations', sensorCtrl.readPanelStations);
+
 export default router;
