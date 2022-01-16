@@ -32,12 +32,10 @@ const stationSchema = new Schema({
         trim: true
     },
     id_gateway: {
-        required: true,
         type: Schema.Types.ObjectId,
         ref: "Gateway"
     },
     id_company: {
-        required: true,
         type: Schema.Types.ObjectId,
         ref: "Company"
     }
