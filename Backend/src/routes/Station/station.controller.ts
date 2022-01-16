@@ -10,17 +10,17 @@ import Company from '../Company/company.model';
  * @param res Response, retorna un object con succes: true, data: {_id: ObjectId()}, message: "String" de la nueva estación si todo sale bien.
  */
 export const createStation: RequestHandler = async (req, res) => {
-    const { gateway_id, company_id, data} = req.body;
+    const { id_gateway, id_company, data} = req.body;
 
-    //se valida el gateway_id
-    if ( !Types.ObjectId.isValid( gateway_id ) )
-        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El gateway_id ingresado no es válido.' });
+    //se valida el id_gateway
+    if ( !Types.ObjectId.isValid( id_gateway ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id_gateway ingresado no es válido.' });
 
-    //se valida el company_id
-    if ( !Types.ObjectId.isValid( company_id ) )
-        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El company_id ingresado no es válido.' });
+    //se valida el id_company
+    if ( !Types.ObjectId.isValid( id_company ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id_company ingresado no es válido.' });
 
-    const companyFound = await Company.findById( company_id );
+    const companyFound = await Company.findById( id_company );
 
     //se válida la existencia de la compañía en el sistema
     if ( !companyFound )
@@ -47,8 +47,8 @@ export const createStation: RequestHandler = async (req, res) => {
         type: data.type,
         status: data.status,
         location_notes: data.location_notes,
-        gateway_id: gateway_id,
-        company_id: company_id
+        id_gateway: id_gateway,
+        id_company: id_company
     }
 
     //se almacena la estación en el sistema
@@ -78,15 +78,15 @@ export const updateStation: RequestHandler = async (req, res) => {
     if ( !stationFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La estación a modificar no existe en el sistema.' });
 
-    //se valida el gateway_id
-    if ( !Types.ObjectId.isValid( updatedStation.gateway_id ) )
-        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El gateway_id ingresado no es válido.' });
+    //se valida el id_gateway
+    if ( !Types.ObjectId.isValid( updatedStation.id_gateway ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id_gateway ingresado no es válido.' });
 
-    //se valida el company_id
-    if ( !Types.ObjectId.isValid( updatedStation.company_id ) )
-        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El company_id ingresado no es válido.' });
+    //se valida el id_company
+    if ( !Types.ObjectId.isValid( updatedStation.id_company ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id_company ingresado no es válido.' });
 
-    const companyFound = await Company.findById( updatedStation.company_id );
+    const companyFound = await Company.findById( updatedStation.id_company );
 
     //se válida la existencia de la compañía en el sistema
     if ( !companyFound )
@@ -105,8 +105,8 @@ export const updateStation: RequestHandler = async (req, res) => {
         type: updatedStation.data.type,
         status: updatedStation.data.status,
         location_notes: updatedStation.data.location_notes,
-        gateway_id: updatedStation.gateway_id,
-        company_id: updatedStation.company_id
+        id_gateway: updatedStation.id_gateway,
+        id_company: updatedStation.id_company
     }
 
     //se actualiza la estación en el sistema
@@ -142,8 +142,8 @@ export const readStation: RequestHandler = async (req, res) => {
         type: stationFound.type,
         status: stationFound.status,
         location_notes: stationFound.location_notes,
-        gateway_id: stationFound.gateway_id,
-        company_id: stationFound.company_id
+        id_gateway: stationFound.id_gateway,
+        id_company: stationFound.id_company
     }, message: 'Estación encontrada con éxito.'});
 };
 

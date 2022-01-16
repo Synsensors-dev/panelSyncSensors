@@ -29,9 +29,9 @@ const userSchema = new Schema({
         trim: true
     },
     id_company: {
-        required: true, 
-        type: String,
-        trim: true
+        required: true,
+        type: Schema.Types.ObjectId,
+        ref: "Company"
     },
     permission_level: {
         required: true,

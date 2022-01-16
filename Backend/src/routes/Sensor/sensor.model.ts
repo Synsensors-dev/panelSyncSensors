@@ -17,11 +17,11 @@ const sensorSchema = new Schema({
     },
     min_config: {
         type: Number,
-        default: -10^4
+        default: -100
     },
     max_config: {
         type: Number,
-        default: 10^4
+        default: 100
     },
     status: {
         type: Boolean,
@@ -31,6 +31,11 @@ const sensorSchema = new Schema({
         required: true,
         type: Schema.Types.ObjectId,
         ref: "Station"
+    },
+    id_company: {
+        required: true,
+        type: Schema.Types.ObjectId,
+        ref: "Company"
     }
 },{
     versionKey: false,
