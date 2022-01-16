@@ -31,15 +31,13 @@ const stationSchema = new Schema({
         type: String,
         trim: true
     },
-    gateway_id: {
-        required: true,
-        type: String,
-        trim: true
+    id_gateway: {
+        type: Schema.Types.ObjectId,
+        ref: "Gateway"
     },
-    company_id: {
-        required: true,
-        type: String,
-        trim: true
+    id_company: {
+        type: Schema.Types.ObjectId,
+        ref: "Company"
     }
 },{
     versionKey: false,
