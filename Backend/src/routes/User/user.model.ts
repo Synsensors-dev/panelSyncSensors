@@ -32,6 +32,7 @@ const userSchema = new Schema({
         default:null
     },
     id_company: {
+        required: true,
         type: Schema.Types.ObjectId,
         ref: "Company"
     },
