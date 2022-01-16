@@ -19,12 +19,6 @@ export const createSensor: RequestHandler = async (req, res) => {
     //se valida el id_station
     if ( !Types.ObjectId.isValid( id_station ) )
         return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id_station ingresado no es válido.' });
-    
-    const sensorFound = await Sensor.findOne( data.name );
-
-    //se valida que no exista otro sensor con el mismo name
-    if ( sensorFound )
-        return res.status(404).send({ success: false, data:{}, message: 'ERROR: Ya existe un sensor con el name ingresado.' });
 
     const newSensor = {
         name: data.name,
