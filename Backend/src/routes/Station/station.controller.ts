@@ -31,14 +31,6 @@ export const createStation: RequestHandler = async (req, res) => {
     //se validan los datos obligatorios de la estación
     if ( !data.name || !data.type || !data.status  || !data.location_notes )
         return res.status(301).send({ success: false, data:{}, message: 'ERROR: Los datos a agregar son inválidos.' });
-        
-    const name = data.name;
-
-    //se valida que no exista otra estación igual en el sistema
-    const stationFound = await Station.findOne( { name } );
-
-    if ( stationFound )
-        return res.status(301).send({ success: false, data:{}, message: 'ERROR: La estación ya está registrada en el sistema.' });
 
     const newStation = {
         name: data.name,
