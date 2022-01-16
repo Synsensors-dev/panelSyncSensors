@@ -1,18 +1,8 @@
 import { Schema, model } from "mongoose";
 
-const stationSchema = new Schema({
+const sensorSchema = new Schema({
     name: {
         required: true,
-        type: String,
-        trim: true
-    },
-    latitude: {
-        required: false,
-        type: String,
-        trim: true
-    },
-    longitude: {
-        required: false,
         type: String,
         trim: true
     },
@@ -21,20 +11,26 @@ const stationSchema = new Schema({
         type: String,
         trim: true
     },
+    frecuency: {
+        type: Number,
+        default: null
+    },
+    min_config: {
+        type: Number,
+        default: -100
+    },
+    max_config: {
+        type: Number,
+        default: 100
+    },
     status: {
-        required: true,
         type: Boolean,
-        trim: true
+        default: false
     },
-    location_notes: {
-        required: true,
-        type: String,
-        trim: true
-    },
-    id_gateway: {
+    id_station: {
         required: true,
         type: Schema.Types.ObjectId,
-        ref: "Gateway"
+        ref: "Station"
     },
     id_company: {
         required: true,
@@ -46,4 +42,4 @@ const stationSchema = new Schema({
     timestamps: true
 });
 
-export default model('Station', stationSchema);
+export default model('Sensor', sensorSchema);
