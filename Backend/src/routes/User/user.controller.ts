@@ -38,7 +38,7 @@ dotenv.config();
     });
 
     //creación de token
-    const token = signToken( newUser._id , 600); //10min
+    const token = signToken( newUser._id , 86400*3); //10min
     newUser.resetToken = token;
 
     //se almacena en la BD el usuario nuevo
