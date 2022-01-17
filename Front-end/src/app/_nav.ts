@@ -1,6 +1,63 @@
 import { INavData } from '@coreui/angular';
 
+let estacionesBool={ //ESTO DEBE LLEGAR DESDE EL BACKEND , (en front esto va a tener que pasar al ts de default_layout importado con un serivico)
+  temperatura:true,
+  aire:true,
+  co2:false
+}
+//------ Como las estaciones van a ser predeterminadas, aca se crea cada ruta
+let temperatura={
+  name:'Sensores de temperatura',
+  url:'/stations/temperature',
+  icon:'fa fa-thermometer-half '
+}
+let aire={
+  name:'Sensores de calidad de aire',
+  url:'/calidadDeAire',
+  icon:'fa fa-cloud'
+}
+let co2={
+  name:'Sensores de co2',
+  url:'/Co2',
+  icon:'fa fa-cloud'
+}
+//-------------------
+
+//-------------------Objeto estaciones que se mostrara en la navbar
+let estacionesAgua:INavData={
+  name:'Estaciones de agua',
+  children:[
+  ]
+}
+let estacionesAire:INavData={
+  name:'Estaciones de aire',
+  children:[
+  ]
+}
+
+
+//Se agregan solo las estaciones que existen en la empresa
+if(estacionesBool.temperatura){
+  estacionesAire.children.push(temperatura)
+}
+if(estacionesBool.aire){
+  estacionesAire.children.push(aire)
+}
+if(estacionesBool.co2){
+  estacionesAire.children.push(co2)
+}
+
+//Objeto que muestra todo lo de la barra de navegacion
 export const navItems: INavData[] = [
+
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    icon: 'icon-speedometer',
+  },
+  estacionesAgua,
+  estacionesAire
+
   /*{
     name: 'Dashboard',
     url: '/dashboard',

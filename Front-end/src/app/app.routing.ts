@@ -11,7 +11,7 @@ import { P500Component } from './views/error/500.component';
 export const routes: Routes = [
   {
     path:"",
-    redirectTo:"login",
+    redirectTo:"dashboard",
     pathMatch:"full"},
   {
     path: '',
@@ -24,6 +24,10 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: () => import('./Modules/core/pages/dashboard/dashboard.module').then(m => m.DashboardModule)
+      },
+      {
+        path: 'stations',
+        loadChildren: () => import('./Modules/stations/stations.module').then(m=>m.StationsModule)
       }
     ]
   },

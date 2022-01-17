@@ -71,8 +71,6 @@ import { AuthGuard } from './Modules/login/auth.guard';
     LoginModule,
     AdminModule,
     CoreModule,
-    SharedModule,
-    StationsModule,
     RouterModule.forRoot(routes)
   ],
   declarations: [
