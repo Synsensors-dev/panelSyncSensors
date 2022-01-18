@@ -21,11 +21,6 @@ const stationSchema = new Schema({
         type: String,
         trim: true
     },
-    status: {
-        required: true,
-        type: Boolean,
-        trim: true
-    },
     location_notes: {
         required: true,
         type: String,
