@@ -60,7 +60,11 @@ export const sensorReadings: RequestHandler = async (req, res) => {
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
 
     //se obtienen las lecturas asociadas al sensor
-    const sensorReadings = await Reading.find({ id_sensor: id_sensor }).sort({ createdAt: 1 });
+    const sensorReadings = await Reading.find({ id_sensor: id_sensor }).sort({ createdAt: -1 }).limit(100);
+
+    //Se invierte el arreglo para enviarlo desde la lectura mas antigua a la mas nueva
+    sensorReadings.reverse();
+
 
     const sensorReadingsFiltered = sensorReadings.map( reading => { return {
         _id: reading._id,
