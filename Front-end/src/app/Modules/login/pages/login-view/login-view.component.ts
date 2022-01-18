@@ -53,7 +53,8 @@ export class LoginViewComponent implements OnInit {
     
   }
   
-  signUp(){
+  goToForgotPassword(){
+    this.router.navigate(['forgotPassword'])
 
   }
 }

@@ -64,7 +64,7 @@
                         <button [disabled]="loginForm.invalid" (click)="logIn(loginForm.get('email').value,loginForm.get('password').value)" type="button" class="btn btn-primary px-4">Login</button>
                       </div>
                       <div class="col-6 text-right">
-                        <button vlictype="button" class="btn btn-link px-0">Forgot password?</button>
+                        <button (click)="goToForgotPassword()" vlictype="button" class="btn btn-link px-0">Forgot password?</button>
                       </div>
                     </div>
                     <div class="login-errors">
