@@ -35,9 +35,10 @@ export class LoginViewComponent implements OnInit {
     this.auth.signIn(loginData).subscribe((response:apiResponse)=>{
       if(response.success){
         this.showErrorMessage=1;
-        localStorage.setItem('token',response.data.token)
-        this.router.navigate(["dashboard"])
-        console.log(response);
+        localStorage.setItem('token',response.data.token);
+        localStorage.setItem('id_company',response.data.user.id_company);
+        this.router.navigate(["dashboard"]);
+        //console.log(response);
       }else{
         console.log(response.message);
       }

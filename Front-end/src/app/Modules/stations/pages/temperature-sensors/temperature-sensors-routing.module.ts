@@ -7,7 +7,7 @@ const routes: Routes = [
   {path:'',
   data:
     {
-      title:'Temperature'
+      title:'Temperatura'
     },
     children:[
       {
@@ -17,7 +17,7 @@ const routes: Routes = [
       {
         path:'sensors',
         component:TemperatureSensorsComponent,
-        data:{title:'Sensors'}
+        data:{title:'Sensores'}
       },
       {
         path:'sensor',

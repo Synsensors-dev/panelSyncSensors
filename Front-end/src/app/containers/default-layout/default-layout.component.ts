@@ -1,16 +1,76 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import { INavData } from '@coreui/angular';
+import { NavBarService } from '../../Modules/core/services/nav-bar.service';
 import { AuthService } from '../../Modules/login/services/auth.service';
-import { navItems } from '../../_nav';
+import { apiResponse } from '../../Modules/shared/interfaces/apiResponse';
+import { AIR, HUMIDITY, TEMPERATURE } from '../../_navRoutes';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './default-layout.component.html'
 })
-export class DefaultLayoutComponent {
-  public sidebarMinimized = false;
-  public navItems = navItems;
+export class DefaultLayoutComponent implements  OnInit{
 
-  constructor(private authService:AuthService){}
+  temperatureRoute=TEMPERATURE;humidityRoute=HUMIDITY;airRoute=AIR
+
+  public sidebarMinimized = false;
+  flag=0; // Cambia a 1 cuando la navbar esta armada
+
+  public navItems:INavData[] = [
+
+    {
+      name: 'Dashboard',
+      url: '/dashboard',
+      icon: 'icon-speedometer',
+    }
+  ]
+
+  estacionesAgua:INavData={
+    name:'Estaciones de agua',
+    children:[
+    ]
+  }
+  estacionesAire:INavData={
+    name:'Estaciones de aire',
+    children:[
+    ]
+  }
+
+  constructor(private authService:AuthService, private navBarService:NavBarService){
+  }
+  
+
+  ngOnInit(): void {
+
+      this.navBarService.getSensorTypesOfCompany().subscribe((response:apiResponse)=>{
+        console.log(response)
+        for (var item of response.data.typesSensors) {
+          console.log(item)
+          if(item.name=="TEMPERATURE" && item.exist==true){
+            this.estacionesAire.children.push(this.temperatureRoute)
+            continue;
+          }
+          if(item.name=="AIR" && item.exist==true){
+            this.estacionesAire.children.push(this.airRoute)
+            continue;
+          }
+          if(item.name=="HUMIDITY" && item.exist==true){
+            this.estacionesAire.children.push(this.humidityRoute)
+            continue;
+          }
+        }
+
+
+        if(this.estacionesAgua.children.length!=0){
+          this.navItems.push(this.estacionesAgua)
+        }
+        if(this.estacionesAire.children.length!=0){
+          this.navItems.push(this.estacionesAire)
+        }
+        this.flag=1
+      })
+  }
+
 
   toggleMinimize(e) {
     this.sidebarMinimized = e;

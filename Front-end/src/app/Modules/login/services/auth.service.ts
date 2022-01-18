@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   private apiURL= 'http://localhost:4000/'
+  private user_company_id:string;
 
   constructor(private http:HttpClient, private router:Router) { }
 
@@ -55,6 +56,10 @@ export class AuthService {
   logOut(){
     localStorage.removeItem('token')
     this.router.navigate(['/login'])
+  }
+
+  getUserCompanyId(){
+    return localStorage.getItem('id_company')
   }
 }
 
