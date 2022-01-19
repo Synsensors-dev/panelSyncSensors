@@ -1,3 +1,5 @@
+import { INavData } from "@coreui/angular"
+
 export const TEMPERATURE={
     name:'Sensores de temperatura',
     url:'/stations/temperature',
@@ -13,3 +15,21 @@ export const HUMIDITY={
     url:'/humedad',
     icon:'fa fa-cloud'
 }
+export const waterStations:INavData={
+  name:'Estaciones de agua',
+  children:[
+  ]
+}
+export const airStations:INavData={
+  name:'Estaciones de aire',
+  children:[
+  ]
+}
+export const navItems:INavData[] = [
+
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    icon: 'icon-speedometer',
+  }
+]

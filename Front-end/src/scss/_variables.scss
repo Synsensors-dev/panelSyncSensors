@@ -1,3 +1,4 @@
 // Variable overrides
 @import "../node_modules/@coreui/coreui/scss/coreui";
-$sidebar-nav-link-hover-bg:green;
+@import "../scss/colorPalette.scss";
+$sidebar-nav-link-hover-bg:$green;

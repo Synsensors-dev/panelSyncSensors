@@ -1,8 +1,8 @@
 @import '../../../../../../node_modules/@coreui/coreui/scss/_variables.scss';
+@import '../../../../../scss/colorPalette.scss';
 .dot {
     height: min-content;
     width: fit-content;
-    background-color: #bbb;
     display: inline-block;
     padding: 10px;
     border-radius: 10%;
@@ -48,7 +48,7 @@
         .btn{
             padding: 5px;
             width: 120px;
-            background-color: green;
+            background-color: $green;
             color: white;
             border-radius: 10px;
 
@@ -87,13 +87,13 @@ ul {
 
 }
 .green{
-    background-color:lightgreen;
+    background-color:$light-green;
 }
 .gray{
     background-color: gray;
 }
 .yellow{
-    background-color: rgb(224, 209, 1);
+    background-color: $dark-yellow;
 }
 @media (max-width:600px) {
     .card{
