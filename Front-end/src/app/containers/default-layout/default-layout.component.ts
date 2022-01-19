@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import { INavData } from '@coreui/angular';
 import { NavBarService } from '../../Modules/core/services/nav-bar.service';
 import { AuthService } from '../../Modules/login/services/auth.service';
 import { apiResponse } from '../../Modules/shared/interfaces/apiResponse';
