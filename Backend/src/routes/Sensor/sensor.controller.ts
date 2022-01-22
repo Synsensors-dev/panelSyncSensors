@@ -175,9 +175,17 @@ export const typesOfSensors: RequestHandler = async (req, res) => {
     const typesSensors = {
         quantity: 0,
         types: [
-            { name: 'TEMPERATURE', exist: false },
-            { name: 'AIR', exist: false },
-            { name: 'HUMIDITY', exist: false }
+            { name: 'TEMPERATURE_LIQUID ', exist: false },
+            { name: 'TDS', exist: false },
+            { name: 'PH', exist: false },
+            { name: 'CO2_GAS', exist: false },
+            { name: 'TEMPERATURE_AIR', exist: false },
+            { name: 'HUMIDITY_AIR', exist: false },
+            { name: 'SOUND', exist: false },
+            { name: 'DISSOLVED_OXYGEN ', exist: false },
+            { name: 'TURBIDITY ', exist: false },
+            { name: 'CONDUCTIVITY', exist: false },
+            { name: 'OPTICAL_DUST', exist: false },
         ]
     }
 
