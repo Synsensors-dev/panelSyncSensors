@@ -7,7 +7,7 @@ import { TemperatureSensorsComponent } from './pages/temperature-sensors/tempera
 const routes: Routes = [
   {
     path:'',
-    data:{title:'Stations'},
+    data:{title:'Estaciones'},
     children:[
       {
         path:'temperature',

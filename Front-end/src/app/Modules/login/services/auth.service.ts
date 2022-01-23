@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   private apiURL= 'http://localhost:4000/'
+  private user_company_id:string;
 
   constructor(private http:HttpClient, private router:Router) { }
 
@@ -54,7 +55,32 @@ export class AuthService {
 
   logOut(){
     localStorage.removeItem('token')
+    localStorage.removeItem('id_company')
     this.router.navigate(['/login'])
   }
+  /**
+   * 
+   * @returns Id company de usuario logeado
+   */
+
+  getUserCompanyId(){
+    return localStorage.getItem('id_company')
+  }
+
+  /**
+   * Crea o actualiza la password de un usuario
+   */
+
+  resetPassword(newPassword:any,token:any){
+
+    return this.http.put<apiResponse>(this.apiURL + `user/resetPassword/${token}`,{password:newPassword})
+
+  }
+
+  sendResetPasswordRequest(userEmail:any){
+    return this.http.post<apiResponse>(this.apiURL + `user/forgotPassword`,{email:userEmail})
+  }
+
+
 }
 

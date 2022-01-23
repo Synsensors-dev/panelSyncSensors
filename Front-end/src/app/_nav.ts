@@ -17,8 +17,8 @@ let aire={
   icon:'fa fa-cloud'
 }
 let co2={
-  name:'Sensores de co2',
-  url:'/Co2',
+  name:'Sensores de Humedad',
+  url:'/humedad',
   icon:'fa fa-cloud'
 }
 //-------------------

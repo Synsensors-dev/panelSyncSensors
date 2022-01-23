@@ -1,64 +1,83 @@
 <div class="container">
     <div class="row filtersRow">
-        <div class="btn-group" dropdown>
-            <button type="button" class="btn" dropdownToggle>
-                Filtrar
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-              <a class="dropdown-item">Action</a>
-              <a class="dropdown-item">Another action</a>
-              <a class="dropdown-item">Something else here</a>
-              <a class="dropdown-item">Something else here</a>
-            </div>
-        </div>
+        <div class="col glossary">
+            <div class="colorsBg">
+                <span class="dot green">En rango</span>
+                <span class="dot yellow">Cerca de rango</span>
+                <span class="dot red">Fuera de rango</span>
+                <span class="dot gray">Desactivado</span>
 
-        <div class="btn-group" dropdown>
-            <button type="button" class="btn" dropdownToggle>
-                Ordenar Por
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-            <a class="dropdown-item">Action</a>
-            <a class="dropdown-item">Another action</a>
-            <a class="dropdown-item">Something else here</a>
-            <a class="dropdown-item">Something else here</a>
+            </div>
+
+        </div>
+        <div class="col">
+            <div class=optionsBar>
+           
+                <div class="btn-group" dropdown>
+                    <button type="button" class="btn" dropdownToggle>
+                        Filtrar
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                      <a class="dropdown-item">Action</a>
+                      <a class="dropdown-item">Another action</a>
+                      <a class="dropdown-item">Something else here</a>
+                      <a class="dropdown-item">Something else here</a>
+                    </div>
+                </div>
+        
+                <div class="btn-group" dropdown>
+                    <button type="button" class="btn" dropdownToggle>
+                        Ordenar Por
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                        <a class="dropdown-item">Action</a>
+                        <a class="dropdown-item">Another action</a>
+                        <a class="dropdown-item">Something else here</a>
+                        <a class="dropdown-item">Something else here</a>
+                    </div>
+                </div>
+        </div>
+    
+
         </div>
     </div>
+    
     <div class="row">
 
-        <div (click)="goToSensor(item.id,item.name)" *ngFor="let item of stations" class="card"
+        <div (click)="goToSensor(item.sensor.id_sensor,item.name_station,item.sensor.min_config,item.sensor.max_config)" *ngFor="let item of stations" class="card"
         [ngClass]="{
-            'red': item.reading.temperatura > item.max_config || item.reading.temperatura < item.min_config ,
-            'green': item.reading.temperatura > item.min_config && item.reading.temperatura < item.max_config,
-            'gray': item.status==false,
-            'yellow':item.reading.temperatura==item.min_config || item.reading.temperatura==item.max_config
+            'red': item.sensor.last_reading > item.sensor.max_config ||  item.sensor.min_config > item.sensor.last_reading ,
+            'green': item.sensor.last_reading > item.sensor.min_config &&  item.sensor.max_config > item.sensor.last_reading,
+            'gray': item.sensor.status==false,
+            'yellow':item.sensor.last_reading==item.sensor.min_config || item.sensor.last_reading==item.sensor.max_config
             }"
         >
             <div class="card-body">
-              <p class="card-text f18">{{item.name}}</p>
+              <p class="card-text f18">{{item.name_station}}</p>
 
-              <div class="row">
-                <ul>
-                    <li class="card-text temperature-text">
-                      {{item.reading.temperatura}}
-                    </li>
-                    <li class="card-text celsius">
-                      °C
-                    </li>
-                </ul>
+                <div class="row">
+                    <ul>
+                        <li class="card-text temperature-text">
+                            {{item.sensor.last_reading}}
+                        </li>
+                        <li class="card-text celsius">
+                            °C
+                        </li>
+                    </ul>
 
-              </div>
+                </div>
 
-              <div class="row rowHumedad f18">
-                <ul>
-                    <li  class="card-text">
-                        Humedad:
-                    </li>
-                    <li class="card-text celsius">
-                        {{item.reading.humedad}}%
-                    </li>
-                </ul>
+                <div class="row rowHumedad f18">
+                    <ul>
+                        <li  class="card-text">
 
-              </div>
+                        </li>
+                        <li class="card-text celsius">
+                            
+                        </li>
+                    </ul>
+
+                </div>
 
             
             </div>

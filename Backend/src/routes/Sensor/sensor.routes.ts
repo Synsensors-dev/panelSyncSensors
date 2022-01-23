@@ -22,6 +22,6 @@ router.get('/sensor/types/:id_company', sensorCtrl.typesOfSensors);
 router.put('/sensor/config/:id', sensorCtrl.updateMinAndMax);
 
 //Obtener estaciones asociadas a una compañia (vistaPanel)
-router.get('/panel/stations', sensorCtrl.readPanelStations);
+router.post('/panel/stations', sensorCtrl.readPanelStations);
 
 export default router;
