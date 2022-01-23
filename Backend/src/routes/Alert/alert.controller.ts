@@ -3,7 +3,13 @@ import Company from '../Company/company.model';
 import Station from '../Station/station.model';
 import { sendEmailAlert } from '../../middlewares/sendEmail';
 
+/**
+ * Funcion que maneja la solicitud de crear una alerta
+ * @param reading -> es la ultima lectura agregada al sistema y que genera una alerta
+ * @param sensor -> es el sensor que genera la lectura y en consecuencia la alerta
+ */
 export async function createAlert( reading:any, sensor:any ){
+    
     //se crea la alerta
     const newAlert = {
         value: reading.value,

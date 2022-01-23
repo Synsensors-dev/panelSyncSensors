@@ -1,5 +1,5 @@
-
 const nodemailer = require('nodemailer');
+
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
@@ -147,7 +147,7 @@ export async function sendEmailAlert( company: any, station: any, sensor:any, al
         const info = await transporter.sendMail({
             from: '"SyncSensors" <developers@syncsensors.com>', // sender address
             to: company.email, // list of receivers
-            subject: "¡Alerta!", // Subject line
+            subject: "¡Alerta de Sensor!", // Subject line
             html: contentHTML, // html body
         });
 
