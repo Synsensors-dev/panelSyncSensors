@@ -1,4 +1,18 @@
 
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    secure: true,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
+});
+
 /**
  * Envía un correo al usuario cuando es registrado en el sistema para que pueda crear su contraseña.
  * @param user -> el cual contiene todos los datos del usuario.
@@ -23,20 +37,6 @@ export async function sendFirstRegistrationEmail( user: any , token: any){
         <a href="https://ibb.co/QMH6S51"><img src="https://i.ibb.co/fHNC6cP/logo-syncsensors-1.png" alt="logo-syncsensors-1" border="0"></a>   
         `;
 
-        const nodemailer = require('nodemailer');
-        const transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: process.env.EMAIL_PORT,
-            secure: true,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            },
-            tls: {
-                rejectUnauthorized: false
-            }
-        });
-
         // send mail with defined transport object
         const info = await transporter.sendMail({
             from: '"¡Bienvenido/a a SyncSensors!" <developers@syncsensors.com>', // sender address
@@ -46,11 +46,7 @@ export async function sendFirstRegistrationEmail( user: any , token: any){
         });
 
         console.log("Message sent: %s", info.messageId);
-        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-        // Preview only available when sending through an Ethereal account
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 
     } catch (error) {
         console.log(error);
@@ -76,20 +72,6 @@ export async function sendEmailForgotPassword( user: any , token: any){
         <a href="https://ibb.co/QMH6S51"><img src="https://i.ibb.co/fHNC6cP/logo-syncsensors-1.png" alt="logo-syncsensors-1" border="0"></a>   
         `;
 
-        const nodemailer = require('nodemailer');
-        const transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: process.env.EMAIL_PORT,
-            secure: true,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            },
-            tls: {
-                rejectUnauthorized: false
-            }
-        });
-
         // send mail with defined transport object
         const info = await transporter.sendMail({
             from: '"SyncSensors" <developers@syncsensors.com>', // sender address
@@ -99,11 +81,7 @@ export async function sendEmailForgotPassword( user: any , token: any){
         });
 
         console.log("Message sent: %s", info.messageId);
-        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-        // Preview only available when sending through an Ethereal account
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 
     } catch (error) {
         console.log(error);
@@ -127,20 +105,6 @@ export async function sendEmailNewPassword( user: any ){
         <a href="https://ibb.co/QMH6S51"><img src="https://i.ibb.co/fHNC6cP/logo-syncsensors-1.png" alt="logo-syncsensors-1" border="0"></a>   
         `;
 
-        const nodemailer = require('nodemailer');
-        const transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: process.env.EMAIL_PORT,
-            secure: true,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            },
-            tls: {
-                rejectUnauthorized: false
-            }
-        });
-
         // send mail with defined transport object
         const info = await transporter.sendMail({
             from: '"SyncSensors" <developers@syncsensors.com>', // sender address
@@ -150,11 +114,45 @@ export async function sendEmailNewPassword( user: any ){
         });
 
         console.log("Message sent: %s", info.messageId);
-        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-        // Preview only available when sending through an Ethereal account
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+/**
+ * Envía un correo al usuario indicando que su contraseña ha sido actualizada.
+ * @param company -> el cual contiene todos los datos de la compañia
+ * @param station -> el cual contiene todos los datos de la estación
+ * @param sensor -> el cual contiene todos los datos del sensor
+ * @param alert -> el cual contiene todos los datos de la alerta
+ */
+export async function sendEmailAlert( company: any, station: any, sensor:any, alert:any ){
+    try {
+        const contentHTML = `
+        <h1> ¡Alerta de lectura en el sensor ${sensor.name} de la estación ${station.name}! </h1>
+        <p> La última lectura asociada al sensor ${sensor.name} esta fuera de los rangos establecidos. </p>
+        <ul>
+            <li>Rangos establecidos: ${sensor.min_config} (mínimo) y ${sensor.max_config} (máximo).</li>
+            <li>Valor de la lectura obtenido: ${alert.value}.
+        </ul>
+        <p> Por favor, revisar lo antes posible el objetivo de lectura del sensor.</p>
+
+        <p>Atentamente; el equipo de SyncSensors.</p> 
+        <a href="https://ibb.co/QMH6S51"><img src="https://i.ibb.co/fHNC6cP/logo-syncsensors-1.png" alt="logo-syncsensors-1" border="0"></a>   
+        `;
+
+        // send mail with defined transport object
+        const info = await transporter.sendMail({
+            from: '"SyncSensors" <developers@syncsensors.com>', // sender address
+            to: company.email, // list of receivers
+            subject: "¡Alerta!", // Subject line
+            html: contentHTML, // html body
+        });
+
+        console.log("Message sent: %s", info.messageId);
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
     } catch (error) {
         console.log(error);

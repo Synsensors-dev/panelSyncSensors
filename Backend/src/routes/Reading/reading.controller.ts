@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { Types } from 'mongoose';
 import Reading from './reading.model'
 import Sensor from '../Sensor/sensor.model';
-
+import { createAlert } from '../Alert/alert.controller';
 /**
  * Función encargada de agregar una nueva lectura al sistema
  * @route Post '/reading'
@@ -10,7 +10,7 @@ import Sensor from '../Sensor/sensor.model';
  * @param res Response, retorna un object con succes: true, data: {_id: ObjectId()}, message: "String" de la nueva lectura si todo sale bien.
  */
 export const createReading: RequestHandler = async (req, res) => {
-    const { id_sensor, value} = req.body;
+    const { id_sensor, value } = req.body;
 
     //se validan los atributos obligatorios o requeridos
     if ( !id_sensor || !value ) 
@@ -26,6 +26,7 @@ export const createReading: RequestHandler = async (req, res) => {
     if ( !sensorFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
  
+    //se crea la lectura
     const newReading = {
         value: value,
         id_sensor: id_sensor,
@@ -37,7 +38,16 @@ export const createReading: RequestHandler = async (req, res) => {
     const readingSaved = new Reading(newReading);
     await readingSaved.save();
 
-    return res.status(201).send({ success: true, data: { _id: readingSaved._id }, message: 'Lectura agregada con éxito al sistema.' });
+    res.status(201).send({ success: true, data: { _id: readingSaved._id }, message: 'Lectura agregada con éxito al sistema.' });
+
+    //se verifica que la lectura no sea una alerta
+    if ( value >= sensorFound.min_config && value <= sensorFound.max_config ){
+        return;
+    }
+
+    //se genera la alerta
+    createAlert( readingSaved, sensorFound);
+    return;
 }
 
 /**
