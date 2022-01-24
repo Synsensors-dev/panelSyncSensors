@@ -47,12 +47,15 @@ export const createReading: RequestHandler = async (req, res) => {
 
     //se verifica que no se haya enviado una alerta anteriormente dentro del alert_time configurado por el usuario
     const date = new Date();
+    const time_remaining = date.getTime() - sensorFound.last_alert.getTime();
 
-    if ( date.getTime() - sensorFound.last_alert.getTime() <= sensorFound.time_alert.getTime() ){
+    if ( time_remaining <= sensorFound.time_alert.getTime() ){
+
+        console.log("Quedan: "+ time_remaining + "hasta la próxima alerta." );
         return;
     }
     //se genera la alerta
-    createAlert( readingSaved, sensorFound);
+    createAlert( readingSaved, sensorFound );
     return;
 }
 
