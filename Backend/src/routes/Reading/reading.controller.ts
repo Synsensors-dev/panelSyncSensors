@@ -45,6 +45,12 @@ export const createReading: RequestHandler = async (req, res) => {
         return;
     }
 
+    //se verifica que no se haya enviado una alerta anteriormente dentro del alert_time configurado por el usuario
+    const date = new Date();
+
+    if ( date.getTime() - sensorFound.last_alert.getTime() <= sensorFound.time_alert.getTime() ){
+        return;
+    }
     //se genera la alerta
     createAlert( readingSaved, sensorFound);
     return;
