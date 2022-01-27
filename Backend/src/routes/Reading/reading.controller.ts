@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { Types } from 'mongoose';
 import Reading from './reading.model'
 import Sensor from '../Sensor/sensor.model';
-
+import { createAlert } from '../Alert/alert.controller';
 /**
  * Función encargada de agregar una nueva lectura al sistema
  * @route Post '/reading'
@@ -10,7 +10,7 @@ import Sensor from '../Sensor/sensor.model';
  * @param res Response, retorna un object con succes: true, data: {_id: ObjectId()}, message: "String" de la nueva lectura si todo sale bien.
  */
 export const createReading: RequestHandler = async (req, res) => {
-    const { id_sensor, value} = req.body;
+    const { id_sensor, value } = req.body;
 
     //se validan los atributos obligatorios o requeridos
     if ( !id_sensor || !value ) 
@@ -26,6 +26,7 @@ export const createReading: RequestHandler = async (req, res) => {
     if ( !sensorFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
  
+    //se crea la lectura
     const newReading = {
         value: value,
         id_sensor: id_sensor,
@@ -33,11 +34,34 @@ export const createReading: RequestHandler = async (req, res) => {
         id_company: sensorFound.id_company
     };
 
-    //se almacena la lectura en el sistema
     const readingSaved = new Reading(newReading);
-    await readingSaved.save();
 
-    return res.status(201).send({ success: true, data: { _id: readingSaved._id }, message: 'Lectura agregada con éxito al sistema.' });
+    //se verifica que la lectura no sea una alerta
+    if ( value >= sensorFound.min_config && value <= sensorFound.max_config ){
+
+        await readingSaved.save();
+        return res.status(201).send({ success: true, data: { _id: readingSaved._id }, message: 'Lectura agregada con éxito al sistema.' });
+    }
+
+    const date = new Date();
+
+    //se verifica que se haya enviado una alerta anteriormente
+    if ( sensorFound.last_alert ){
+        const time_remaining = date.getTime() - sensorFound.last_alert.getTime();
+
+        if ( time_remaining <= sensorFound.alert_time ){
+            const min_remaining = ((sensorFound.alert_time - time_remaining)/60000); //dividido en milliseconds
+
+            return res.status(200).send({ success: true, data: { }, message: 'Esta lectura generó una alerta, pero aún no es tiempo de enviarla.' + ' Quedan: '+ min_remaining + ' min para enviar la alerta.'});
+        }
+    }
+
+    res.status(201).send({ success: true, data: { _id: readingSaved._id }, message: 'Lectura y Alerta agregada con éxito al sistema.' });;
+
+    //se genera la alerta
+    createAlert( readingSaved, sensorFound );
+
+    return;
 }
 
 /**
@@ -60,7 +84,11 @@ export const sensorReadings: RequestHandler = async (req, res) => {
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
 
     //se obtienen las lecturas asociadas al sensor
-    const sensorReadings = await Reading.find({ id_sensor: id_sensor }).sort({ createdAt: 1 });
+    const sensorReadings = await Reading.find({ id_sensor: id_sensor }).sort({ createdAt: -1 }).limit(100);
+
+    //Se invierte el arreglo para enviarlo desde la lectura mas antigua a la mas nueva
+    sensorReadings.reverse();
+
 
     const sensorReadingsFiltered = sensorReadings.map( reading => { return {
         _id: reading._id,

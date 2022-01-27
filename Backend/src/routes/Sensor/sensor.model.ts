@@ -27,6 +27,14 @@ const sensorSchema = new Schema({
         type: Boolean,
         default: false
     },
+    alert_time: {
+        type: Number,
+        default: 60000 * 30 //30min
+    },
+    last_alert: {
+        type: Date,
+        default: null
+    },
     id_station: {
         required: true,
         type: Schema.Types.ObjectId,
