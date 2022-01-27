@@ -331,4 +331,3 @@ export const updateAlertTime: RequestHandler = async (req, res) => {
     
     return res.status(200).send( { success: true, data:{}, message: 'Alert_time actualizado de manera correcta.'});
 }
-
