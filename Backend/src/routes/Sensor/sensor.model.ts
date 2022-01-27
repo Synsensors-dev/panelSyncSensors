@@ -28,8 +28,8 @@ const sensorSchema = new Schema({
         default: false
     },
     alert_time: {
-        type: Date,
-        default: new Date().setMinutes(30)
+        type: Number,
+        default: 60000 * 30 //30min
     },
     last_alert: {
         type: Date,

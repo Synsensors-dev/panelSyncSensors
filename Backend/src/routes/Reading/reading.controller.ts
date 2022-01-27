@@ -34,28 +34,33 @@ export const createReading: RequestHandler = async (req, res) => {
         id_company: sensorFound.id_company
     };
 
-    //se almacena la lectura en el sistema
     const readingSaved = new Reading(newReading);
-    await readingSaved.save();
-
-    res.status(201).send({ success: true, data: { _id: readingSaved._id }, message: 'Lectura agregada con éxito al sistema.' });
 
     //se verifica que la lectura no sea una alerta
     if ( value >= sensorFound.min_config && value <= sensorFound.max_config ){
-        return;
+
+        await readingSaved.save();
+        return res.status(201).send({ success: true, data: { _id: readingSaved._id }, message: 'Lectura agregada con éxito al sistema.' });
     }
 
-    //se verifica que no se haya enviado una alerta anteriormente dentro del alert_time configurado por el usuario
     const date = new Date();
-    const time_remaining = date.getMinutes() - sensorFound.last_alert.getMinutes();
 
-    if ( time_remaining <= sensorFound.time_alert.getMinutes() ){
+    //se verifica que se haya enviado una alerta anteriormente
+    if ( sensorFound.last_alert ){
+        const time_remaining = date.getTime() - sensorFound.last_alert.getTime();
 
-        console.log("Quedan: "+ time_remaining + "hasta la próxima alerta." );
-        return;
+        if ( time_remaining <= sensorFound.alert_time ){
+            const min_remaining = ((sensorFound.alert_time - time_remaining)/60000);
+
+            return res.status(200).send({ success: true, data: { }, message: 'Esta lectura generó una alerta, pero aún no es tiempo de enviarla.' + '\n Quedan:'+ min_remaining + ' para enviar la alerta.'});
+        }
     }
+
+    res.status(201).send({ success: true, data: { _id: readingSaved._id }, message: 'Lectura y Alerta agregada con éxito al sistema.' });;
+
     //se genera la alerta
     createAlert( readingSaved, sensorFound );
+
     return;
 }
 
