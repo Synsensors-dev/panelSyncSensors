@@ -24,4 +24,7 @@ router.put('/sensor/config/:id', sensorCtrl.updateMinAndMax);
 //Obtener estaciones asociadas a una compañia (vistaPanel)
 router.post('/panel/stations', sensorCtrl.readPanelStations);
 
+//Modificar el tiempo de alerta (para los correos)
+router.put('/sensor/alert_time/:id', sensorCtrl.updateAlertTime);
+
 export default router;

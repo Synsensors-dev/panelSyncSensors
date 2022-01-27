@@ -220,7 +220,7 @@ export const updateMinAndMax: RequestHandler = async (req, res) => {
     if ( !Types.ObjectId.isValid( _idSensor ) )
         return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
 
-        const sensorFound = await Sensor.findById( _idSensor );
+    const sensorFound = await Sensor.findById( _idSensor );
 
     //se valida la existencia del sensor en el sistema
     if ( !sensorFound )
@@ -300,3 +300,35 @@ export const readPanelStations: RequestHandler = async (req, res) => {
     }
     return res.status(200).send( { success: true, data: stationsFiltered, message: 'Estaciones encontradas con exito.'});
 }
+
+/**
+ * Función encargada de actualizar el tiempo en el que son enviadas las alertas a las compañias
+ * @route Put '/sensor/alert_time/:id'
+ * @param req Request de la petición, se espera que tenga el id del sensor
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" del alert_time si todo sale bien.
+ */
+export const updateAlertTime: RequestHandler = async (req, res) => {
+    const _idSensor = req.params.id;
+    const alert_time = req.body.alert_time; //minutos
+
+    //se valida el _id ingresado del sensor
+    if ( !Types.ObjectId.isValid( _idSensor ))
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const sensorFound = await Sensor.findById( _idSensor );
+
+    //se valida la existencia del sensor en el sistema
+    if ( !sensorFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
+
+    //se valida que alert_time contenga un valor
+    if ( !alert_time )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: no se ingresó valor para alert_time.' });
+
+    const alert_time_miliseconds = alert_time *60000 //convertimos en milliseconds
+    //se actualiza el alert_time desde la BD
+    await Sensor.findByIdAndUpdate( _idSensor, {"alert_time": alert_time_miliseconds} );
+    
+    return res.status(200).send( { success: true, data:{}, message: 'Alert_time actualizado de manera correcta.'});
+}
+
