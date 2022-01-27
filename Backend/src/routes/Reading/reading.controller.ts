@@ -49,8 +49,9 @@ export const createReading: RequestHandler = async (req, res) => {
     if ( sensorFound.last_alert ){
         const time_remaining = date.getTime() - sensorFound.last_alert.getTime();
 
-        if ( time_remaining <= sensorFound.alert_time ){
-            const min_remaining = ((sensorFound.alert_time - time_remaining)/60000); //dividido en milliseconds
+        if ( time_remaining <= (sensorFound.alert_time * 60000) ){
+
+            const min_remaining = ((sensorFound.alert_time - (time_remaining/60000))); //convertido en minutos
 
             return res.status(200).send({ success: true, data: { }, message: 'Esta lectura generó una alerta, pero aún no es tiempo de enviarla.' + ' Quedan: '+ min_remaining + ' min para enviar la alerta.'});
         }

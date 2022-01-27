@@ -324,10 +324,9 @@ export const updateAlertTime: RequestHandler = async (req, res) => {
     //se valida que alert_time contenga un valor
     if ( !alert_time )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: no se ingresó valor para alert_time.' });
-
-    const alert_time_miliseconds = alert_time *60000 //convertimos en milliseconds
+  
     //se actualiza el alert_time desde la BD
-    await Sensor.findByIdAndUpdate( _idSensor, {"alert_time": alert_time_miliseconds} );
+    await Sensor.findByIdAndUpdate( _idSensor, { "alert_time": alert_time });
     
     return res.status(200).send( { success: true, data:{}, message: 'Alert_time actualizado de manera correcta.'});
 }
