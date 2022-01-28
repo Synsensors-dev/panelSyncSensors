@@ -1,3 +1,4 @@
+import { RequestHandler } from "express";
 import Alert from './alert.model';
 import Company from '../Company/company.model';
 import Station from '../Station/station.model';
@@ -35,4 +36,12 @@ export async function createAlert( reading:any, sensor:any ){
 
     //se envía el correo con la alerta a la compañia
     sendEmailAlert(companyFound, stationFound, sensor, alertSaved);
+}
+
+
+export const recentAlerts: RequestHandler = async (req, res) => {
+
+}
+export const quantityAlerts: RequestHandler = async (req, res) => {
+
 }

@@ -356,5 +356,5 @@ export const sensorsON: RequestHandler = async (req, res) => {
     return res.status(200).send({ success: true, data:{
         quantitySensors: quantitySensorsCompany,
         quantitySensorsON: quantitySensorsCompanyON
-    }, message: 'Cantidad de sensores encontrados con exito'});
+    }, message: 'Cantidad de sensores encontrados con éxito'});
 }
