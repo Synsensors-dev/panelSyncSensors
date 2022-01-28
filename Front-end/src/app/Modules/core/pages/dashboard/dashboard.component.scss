@@ -1,0 +1,55 @@
+@import '../../../../../scss/colorPalette.scss';
+.row{
+    margin-block: 40px;
+    justify-content: center;
+}
+.box{
+    background: $light-gray;
+    border: 2px solid $green;
+    box-sizing: border-box;
+    border-radius: 30px;
+    margin: auto;
+}
+.data-box{
+    width: fit-content;
+    height: fit-content;
+    min-width: 300px;
+    min-height: 200px;
+
+}
+.data-box-content{
+    text-align: center;
+    font-size: 70px;
+}
+.stations-map-box , .alerts-box{
+    min-height: 300px;
+
+}
+.data-box-title{
+    text-align: center;
+    margin-block: 10px;
+    font-weight: bold;
+    font-size: 15px;
+}
+.plot-box{
+    width: 90%;
+    min-height: 400px;
+}
+.table-box{
+    width: 90%;
+    min-height: fit-content;
+
+}
+.green{
+    color:$green;
+}
+.yellow{
+    color:$dark-yellow;
+}
+.red{
+    color:$red;
+}
+.data-box-footer{
+    text-align: center;
+    font-size: 20px;
+}
