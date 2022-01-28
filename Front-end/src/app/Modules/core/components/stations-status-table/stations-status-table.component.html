@@ -1,0 +1,25 @@
+<div class="card-container">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Bordered Table
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th *ngFor="let head of typesOfSensors">{{head}}</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of stations; let i=index;">
+                    <td>{{item.name}}</td>
+                    <td>{{item.status}}</td>
+                    <td *ngFor="let value of stations[i].sensorStatus;let j = index;">{{value}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+</div>
