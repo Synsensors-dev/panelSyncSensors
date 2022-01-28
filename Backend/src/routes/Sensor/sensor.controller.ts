@@ -324,10 +324,37 @@ export const updateAlertTime: RequestHandler = async (req, res) => {
     //se valida que alert_time contenga un valor
     if ( !alert_time )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: no se ingresó valor para alert_time.' });
-
-    const alert_time_miliseconds = alert_time *60000 //convertimos en milliseconds
+  
     //se actualiza el alert_time desde la BD
-    await Sensor.findByIdAndUpdate( _idSensor, {"alert_time": alert_time_miliseconds} );
+    await Sensor.findByIdAndUpdate( _idSensor, { "alert_time": alert_time });
     
     return res.status(200).send( { success: true, data:{}, message: 'Alert_time actualizado de manera correcta.'});
+}
+
+/**
+ * Función encargada de obtener la cantidad total de sensores y los sensores activos de ese total
+ * @route Put '/panel/sensors/:id_company'
+ * @param req Request de la petición, se espera que tenga el id de la compañia
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" de los sensores de la compañia
+ */
+export const sensorsON: RequestHandler = async (req, res) => {
+    const id_company = req.params.id_company;
+
+    //se valida el _id ingresado del sensor
+    if ( !Types.ObjectId.isValid( id_company ))
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const companyFound = await Company.findById( id_company );
+
+    //Se valida la existencia de la compañia
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
+
+    const quantitySensorsCompany = await Sensor.find({ id_company }).count();
+    const quantitySensorsCompanyON = await Sensor.find({ "id_Company": id_company , "status": true }).count();
+    
+    return res.status(200).send({ success: true, data:{
+        quantitySensors: quantitySensorsCompany,
+        quantitySensorsON: quantitySensorsCompanyON
+    }, message: 'Cantidad de sensores encontrados con éxito'});
 }
