@@ -1,6 +1,29 @@
 @import '../../../../../scss/colorPalette.scss';
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+.hidden{
+    overflow:hidden;
+    border-radius: 30px;
+
+}
 .row{
-    margin-block: 40px;
+    margin-block: 20px;
     justify-content: center;
 }
 .box{
@@ -21,9 +44,13 @@
     text-align: center;
     font-size: 70px;
 }
-.stations-map-box , .alerts-box{
+.stations-map-box{
     min-height: 300px;
-
+}
+.alerts-box{
+    height: 300px;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 .data-box-title{
     text-align: center;
@@ -52,4 +79,19 @@
 .data-box-footer{
     text-align: center;
     font-size: 20px;
+}
+@media (max-width:600px){
+    .col{
+        margin-block: 10px;
+
+    }
+    .mapRow{
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        flex-wrap: wrap;
+       
+        
+    }
+
 }

@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div  class="container">
 
 
   <div class="row">
@@ -49,7 +49,7 @@
           {{activeSensors}}/{{totalSensors}}
 
         </div>
-        <div *ngIf="totalSensorsDanger!=true" class="data-box-footer">
+        <div *ngIf="activeSensorsDanger" class="data-box-footer">
           <i class="cil-warning red"></i>
         </div>
 
@@ -60,15 +60,17 @@
   </div>
 
 
-  <div class="row">
-    <div class="col-7">
+  <div class="row mapRow">
+    <div class="col mapCol">
       <div class="stations-map-box box">
         <app-stations-map></app-stations-map>
       </div> 
     </div>
-    <div class="col-3">
-      <div class="box alerts-box">
-        <app-last-alerts></app-last-alerts>
+    <div class="col alertCol">
+      <div class="hidden">
+        <div class="box alerts-box">
+          <app-last-alerts></app-last-alerts>
+        </div>
       </div>
     </div>
 
