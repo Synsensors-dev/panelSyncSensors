@@ -1,19 +1,60 @@
 import { INavData } from "@coreui/angular"
 
-export const TEMPERATURE={
-    name:'Sensores de temperatura',
-    url:'/stations/temperature',
+export const TEMPERATURE_AIR={
+    name:'Sensores de temperatura aire',
+    url:'/stations/temperatura-aire',
     icon:'fa fa-thermometer-half '
   }
-export const AIR={
-    name:'Sensores de calidad de aire',
-    url:'/calidadDeAire',
+
+export const TEMPERATURE_LIQUID={
+  name:'Sensores de temperatura agua',
+  url:'/stations/temperatura-agua',
+  icon:'fa fa-thermometer-half'
+}
+export const TDS={
+    name:'Sensores de TDS',
+    url:'/tds',
     icon:'fa fa-cloud'
   }
-export const HUMIDITY={
+export const HUMIDITY_AIR={
     name:'Sensores de Humedad',
-    url:'/humedad',
+    url:'/humedad-aire',
     icon:'fa fa-cloud'
+}
+export const PH={
+  name:'Sensores de PH',
+  url:'/ph',
+  icon:'fa fa-cloud'
+}
+export const CO2_GAS={
+  name:'Sensores de CO2 gaseoso',
+  url:'/co2-gas',
+  icon:'fa fa-cloud'
+}
+export const SOUND={
+  name:'Sensores de Sonido',
+  url:'/sonido',
+  icon:'fa fa-cloud'
+}
+export const DISSOLVED_OXYGEN={
+  name:'Sensores de Oxigeno disuelto',
+  url:'/oxigeno-disuelto',
+  icon:'fa fa-cloud'
+}
+export const TURBIDITY={
+  name:'Sensores de Turbiedad',
+  url:'/turbiedad',
+  icon:'fa fa-cloud'
+}
+export const CONDUCTIVITY={
+  name:'Sensores de Conductividad',
+  url:'/conductividad',
+  icon:'fa fa-cloud'
+}
+export const OPTICAL_DUST={
+  name:'Sensores de Polvo Optico',
+  url:'/polvo-optico',
+  icon:'fa fa-cloud'
 }
 export const waterStations:INavData={
   name:'Estaciones de agua',

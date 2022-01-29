@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TemperatureSensorViewComponent } from './temperature-sensor-view/temperature-sensor-view.component';
-import { TemperatureSensorsComponent } from './temperature-sensors.component';
+import { TemperatureSensorViewComponent } from './air-temperature-sensor-view/air-temperature-sensor-view.component';
+import { TemperatureSensorsComponent } from './air-temperature-sensors.component';
 
 const routes: Routes = [
   {path:'',
   data:
     {
-      title:'Temperatura'
+      title:'Temperatura Aire'
     },
     children:[
       {

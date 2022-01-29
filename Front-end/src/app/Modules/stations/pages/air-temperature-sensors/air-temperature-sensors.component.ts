@@ -8,9 +8,9 @@ import { StationsService } from '../../services/stations.service';
 
 
 @Component({
-  selector: 'app-temperature-sensors',
-  templateUrl: './temperature-sensors.component.html',
-  styleUrls: ['./temperature-sensors.component.scss']
+  selector: 'app-air-temperature-sensors',
+  templateUrl: './air-temperature-sensors.component.html',
+  styleUrls: ['./air-temperature-sensors.component.scss']
 })
 export class TemperatureSensorsComponent implements OnInit {
   stations:panelStation[]
