@@ -27,7 +27,12 @@ export class DefaultLayoutComponent implements  OnInit{
 
       this.navBarService.getSensorTypesOfCompany().subscribe((response:apiResponse)=>{
         console.log(response)
-        this.createRoutes(response);
+        if(this.navItems.length==1){
+          this.createRoutes(response);
+        }else{
+          this.flag=1
+        }
+         
       })
   }
 
