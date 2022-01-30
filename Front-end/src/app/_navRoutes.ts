@@ -12,9 +12,9 @@ export const TEMPERATURE_LIQUID={
   icon:'fa fa-thermometer-half'
 }
 export const TDS={
-    name:'Sensores de TDS',
+    name:'Sensores de Total de Solidos Disueltos',
     url:'/tds',
-    icon:'fa fa-cloud'
+    icon:'fa fa-cube'
   }
 export const HUMIDITY_AIR={
     name:'Sensores de Humedad',
@@ -34,7 +34,7 @@ export const CO2_GAS={
 export const SOUND={
   name:'Sensores de Sonido',
   url:'/sonido',
-  icon:'fa fa-cloud'
+  icon:'fa fa-volume-up'
 }
 export const DISSOLVED_OXYGEN={
   name:'Sensores de Oxigeno disuelto',
@@ -49,7 +49,7 @@ export const TURBIDITY={
 export const CONDUCTIVITY={
   name:'Sensores de Conductividad',
   url:'/conductividad',
-  icon:'fa fa-cloud'
+  icon:'fa fa-bolt'
 }
 export const OPTICAL_DUST={
   name:'Sensores de Polvo Optico',

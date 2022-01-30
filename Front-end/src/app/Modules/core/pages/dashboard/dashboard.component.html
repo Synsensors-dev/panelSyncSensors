@@ -16,6 +16,11 @@
             {{systemUptime}}%
         </div>
 
+        <div *ngIf="systemUptimeDanger" class="data-box-footer">
+          <i class="cil-warning red"></i>
+        </div>
+
+
       </div>
     </div>
     <div class="col">
@@ -31,6 +36,11 @@
         [class.red]="numberOfAlerts>=20">
           {{numberOfAlerts}}
         </div>
+
+        <div *ngIf="numberOfAlertsDanger" class="data-box-footer">
+          <i class="cil-warning red"></i>
+        </div>
+
 
       </div>
       

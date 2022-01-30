@@ -7,12 +7,18 @@ import { DashboardAlertsService } from '../../services/dashboard-alerts.service'
   styleUrls: ['dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+
   systemUptime:number=99.2;
+  systemUptimeDanger:boolean=false;
+
   numberOfAlerts:number;
+  numberOfAlertsDanger:boolean;
   numberOfAlertsPercentage:number;
+
   activeSensors:number;
   totalSensors:number;
   activeSensorsDanger:boolean;
+
   constructor(private dashboardAlertsService:DashboardAlertsService,private sensorsService:SensorsService){}
 
 
@@ -22,6 +28,11 @@ export class DashboardComponent implements OnInit {
       if(response.success){
         this.numberOfAlerts=response.data.quantity_alerts;
         this.numberOfAlertsPercentage=response.data.pertencage;
+        if(this.numberOfAlerts>10){
+          this.numberOfAlertsDanger=true;
+        }else{
+          this.numberOfAlertsDanger=false;
+        }
       }else{
         console.log(response.message);
       }
