@@ -7,7 +7,7 @@ import { DashboardAlertsService } from '../../services/dashboard-alerts.service'
   styleUrls: ['dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  systemUptime:number;
+  systemUptime:number=99.2;
   numberOfAlerts:number;
   numberOfAlertsPercentage:number;
   activeSensors:number;

@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class StationsMapComponent implements OnInit {
 
   constructor() { }
+  latitude:number=36.7275974;
+  longitude:number=-4.4208521;
 
   ngOnInit(): void {
   }
