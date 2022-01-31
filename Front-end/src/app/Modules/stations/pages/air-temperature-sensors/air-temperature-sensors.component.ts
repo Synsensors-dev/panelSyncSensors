@@ -16,7 +16,7 @@ export class TemperatureSensorsComponent implements OnInit {
   stations:panelStation[]
   constructor(private router:Router, private stationsService:StationsService, private auth:AuthService) { }
   ngOnInit(): void {
-    this.stationsService.getPanelStationsByType(this.auth.getUserCompanyId(),"TEMPERATURE").subscribe((response:apiResponse)=>{
+    this.stationsService.getPanelStationsByType(this.auth.getUserCompanyId(),"TEMPERATURE_AIR").subscribe((response:apiResponse)=>{
       if(response.success){
         console.log(response)
         this.stations=response.data

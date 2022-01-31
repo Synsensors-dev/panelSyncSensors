@@ -250,7 +250,7 @@ export const updateMinAndMax: RequestHandler = async (req, res) => {
 
 /**
  * Función encargada de filtrar las estaciones, sensores y lecturas asociadas a una compañia en particular. 
- * @route Get '/panel/stations'
+ * @route Post '/panel/stations'
  * @param req Request de la petición, se espera que tenga el id de la compañia y el tipo del sensor a buscar
  * @param res Response, retorna un object con succes: true, data: { }, message: "String" de las estaciones si todo sale bien.
  */
@@ -296,7 +296,10 @@ export const readPanelStations: RequestHandler = async (req, res) => {
             }
         }
         //se almacenan los ojetos en el arreglo
-        stationsFiltered.push(stationPanel);
+        if(stationPanel.sensor.last_reading){
+            stationsFiltered.push(stationPanel);
+        }
+        
     }
     return res.status(200).send( { success: true, data: stationsFiltered, message: 'Estaciones encontradas con exito.'});
 }

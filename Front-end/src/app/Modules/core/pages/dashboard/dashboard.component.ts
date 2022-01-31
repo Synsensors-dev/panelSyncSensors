@@ -12,6 +12,7 @@ export class DashboardComponent implements OnInit {
   systemUptimeDanger:boolean=false;
 
   numberOfAlerts:number;
+  dangerNumberOfAlerts:number=20;
   numberOfAlertsDanger:boolean;
   numberOfAlertsPercentage:number;
 
@@ -28,7 +29,7 @@ export class DashboardComponent implements OnInit {
       if(response.success){
         this.numberOfAlerts=response.data.quantity_alerts;
         this.numberOfAlertsPercentage=response.data.pertencage;
-        if(this.numberOfAlerts>10){
+        if(this.numberOfAlerts>this.dangerNumberOfAlerts){
           this.numberOfAlertsDanger=true;
         }else{
           this.numberOfAlertsDanger=false;
