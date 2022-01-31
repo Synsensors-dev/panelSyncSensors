@@ -12,7 +12,7 @@ const sensorSchema = new Schema({
         trim: true
     },
     frecuency: {
-        type: Number,
+        type: Number, //segundos
         default: null
     },
     min_config: {
@@ -33,6 +33,10 @@ const sensorSchema = new Schema({
     },
     last_alert: {
         type: Date,
+        default: null
+    },
+    token_reading: {
+        type: String,
         default: null
     },
     id_station: {

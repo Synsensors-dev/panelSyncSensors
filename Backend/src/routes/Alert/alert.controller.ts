@@ -5,6 +5,11 @@ import Station from '../Station/station.model';
 import Sensor from '../Sensor/sensor.model';
 import { sendEmailAlert } from '../../middlewares/sendEmail';
 import { Types } from "mongoose";
+import { signToken } from "src/middlewares/jwt";
+
+const ALPHA = 3; //Segundos
+const SECOND = 1000 // milisegundos
+const MINUTE = 60000 //milisegundos
 
 /**
  * Funcion que maneja la solicitud de crear una alerta
@@ -26,6 +31,12 @@ export async function createAlert( reading:any, sensor:any ){
     const alertSaved = new Alert(newAlert);
     await alertSaved.save();
     await reading.save();
+
+    //se genera un token con tiempo de expiración asociado a la frecuencia de lectura + ALPHA
+    const token = signToken( reading._id , ((sensor.frecuency * SECOND) + ALPHA * SECOND) ); 
+
+    //se almacena en el sensor el token
+    await Sensor.findByIdAndUpdate( sensor._id, { "token_reading": token });
 
     //se obtiene la compañia y la estación 
     const companyFound = await Company.findById( sensor.id_company );
