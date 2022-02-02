@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 import Reading from './reading.model'
 import Sensor from '../Sensor/sensor.model';
 import { createAlert } from '../Alert/alert.controller';
-import { signToken } from "src/middlewares/jwt";
+import { signToken } from "../../middlewares/jwt";
 
 const ALPHA = 3; //Segundos
 const SECOND = 1000 // milisegundos

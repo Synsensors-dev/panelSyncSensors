@@ -5,7 +5,7 @@ import Station from '../Station/station.model';
 import Sensor from '../Sensor/sensor.model';
 import { sendEmailAlert } from '../../middlewares/sendEmail';
 import { Types } from "mongoose";
-import { signToken } from "src/middlewares/jwt";
+import { signToken } from "../../middlewares/jwt";
 
 const ALPHA = 3; //Segundos
 const SECOND = 1000 // milisegundos
