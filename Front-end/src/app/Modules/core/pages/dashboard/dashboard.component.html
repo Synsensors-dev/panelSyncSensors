@@ -1,108 +1,127 @@
-<div  class="container">
+<div class="container-fluid">
 
 
-  <div class="row">
-    <div class="col">
-      <div class="data-box box">
 
-        <div class="data-box-title">
-          Uptime del Sistema
-        </div>
+  <!--Mapa-->
+  <div class="row rw1">
+    <div class="noPadding col-8">
 
-        <div class="data-box-content"
-        [class.green]="systemUptime>96"
-        [class.yellow]="systemUptime<=96 && systemUptime>90"
-        [class.red]="systemUptime<90">
-            {{systemUptime}}%
-        </div>
-
-        <div *ngIf="systemUptimeDanger" class="data-box-footer">
-          <i class="cil-warning red"></i>
-        </div>
-
-
+      <div class="sensor-plot-container box plot-box">
+        <app-sensor-dashboard-plot></app-sensor-dashboard-plot>
+  
       </div>
+  
     </div>
-    <div class="col">
-      <div class="data-box box">
+    <div class="noPadding col-4">
 
-        <div class="data-box-title">
-          Numero de Alertas en la ultima semana
-        </div>
-
-        <div class="data-box-content"
-        [class.green]="numberOfAlerts<=10"
-        [class.yellow]="numberOfAlerts>10 && numberOfAlerts<20"
-        [class.red]="numberOfAlerts>=20">
-          {{numberOfAlerts}}
-        </div>
-
-        <div *ngIf="numberOfAlertsDanger" class="data-box-footer">
-          <i class="cil-warning red"></i>
-        </div>
-
-
-      </div>
-      
-    </div>
-    <div class="col">
-      <div class="data-box box">
-
-        <div class="data-box-title">
-          Sensores Activos
-        </div>
-
-        <div class="data-box-content"
-        [class.green]="activeSensors==totalSensors"
-        [class.yellow]="activeSensors!=totalSensors && totalSensors*0.8 < activeSensors"
-        [class.red]="activeSensors< totalSensors*0.8">
-          {{activeSensors}}/{{totalSensors}}
-
-        </div>
-        <div *ngIf="activeSensorsDanger" class="data-box-footer">
-          <i class="cil-warning red"></i>
-        </div>
-
-      </div>
-      
-    </div>
-
-  </div>
-
-
-  <div class="row mapRow">
-    <div class="col mapCol">
       <div class="stations-map-box box">
         <app-stations-map></app-stations-map>
       </div> 
+      
     </div>
-    <div class="col alertCol">
+
+  </div>
+
+  <div class="row rw2">
+
+    <div class=" noPadding col-4">
       <div class="hidden">
-        <div class="box alerts-box">
+        <div class="box alert-box scrolleable-box">
           <app-last-alerts></app-last-alerts>
         </div>
+
       </div>
-    </div>
-
-  </div>
-
-
-  <div class="row">
-    <div class="sensor-plot-container box plot-box">
-      <app-sensor-dashboard-plot></app-sensor-dashboard-plot>
 
     </div>
 
+    <div class=" noPadding col">
+
+      <div class="system-info-row">
+        <div class="col">
+          
+          <div class="data-box box">
+    
+            <div class="data-box-title">
+              Uptime del Sistema
+            </div>
+    
+            <div class="data-box-content"
+            [class.green]="systemUptime>96"
+            [class.yellow]="systemUptime<=96 && systemUptime>90"
+            [class.red]="systemUptime<90">
+                {{systemUptime}}%
+            </div>
+    
+            <div *ngIf="systemUptimeDanger" class="data-box-footer">
+              <i class="cil-warning red"></i>
+            </div>
+    
+    
+          </div>
+        </div>
+        <div class="col">
+          <div class="data-box box">
+    
+            <div class="data-box-title">
+              Numero de Alertas en la ultima semana
+            </div>
+    
+            <div class="data-box-content"
+            [class.green]="numberOfAlerts<=10"
+            [class.yellow]="numberOfAlerts>10 && numberOfAlerts<20"
+            [class.red]="numberOfAlerts>=20">
+              {{numberOfAlerts}}
+            </div>
+    
+            <div *ngIf="numberOfAlertsDanger" class="data-box-footer">
+              <i class="cil-warning red"></i>
+            </div>
+    
+    
+          </div>
+          
+        </div>
+        <div class="col">
+          <div class="data-box box">
+    
+            <div class="data-box-title">
+              Sensores Activos
+            </div>
+    
+            <div class="data-box-content"
+            [class.green]="activeSensors==totalSensors"
+            [class.yellow]="activeSensors!=totalSensors && totalSensors*0.8 < activeSensors"
+            [class.red]="activeSensors< totalSensors*0.8">
+              {{activeSensors}}/{{totalSensors}}
+    
+            </div>
+            <div *ngIf="activeSensorsDanger" class="data-box-footer">
+              <i class="cil-warning red"></i>
+            </div>
+    
+          </div>
+          
+        </div>
+    
+      </div>
+
+
+    </div>
+
+
   </div>
 
-
+  <!--Tabla-->
   <div class="row">
-    <div class="stations-table-container box table-box">
+    <div class=" box scrolleable-box">
       <app-stations-status-table></app-stations-status-table>
-
     </div>
 
+
   </div>
+
+  <!--Cuadros-->
+  
 
 
 </div>

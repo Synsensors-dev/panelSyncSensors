@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { typeChart } from '../../../shared/interfaces/typeChart';
 
 @Component({
   selector: 'app-sensor-dashboard-plot',
@@ -7,53 +8,53 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SensorDashboardPlotComponent implements OnInit {
 
+
   constructor() { }
 
   ngOnInit(): void {
   }
-  public lineChart1Data: Array<any> = [
+  public lineChartData: Array<any> = [
     {
       data: [65, 59, 84, 84, 51, 55, 40],
       label: 'Series A',
-      options:{
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          }
-        }
-      }
+      fill:false,
     },
     {
       data: [65, 29, 58, 84, 51, 55, 12],
       label: 'Series B',
-      options:{
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
+      fill:false,
+    }
+  ];
+  public lineChartLabels: Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
+  public lineChartType="line"
+  public lineChartOptions={
+    responsive: true,
+    maintainAspectRatio:false,
+    transitions:{
+      show: {
+        animations: {
+          x: {
+            from: 0
+          },
+          y: {
+            from: 0
+          }
+        }
+      },
+      hide: {
+        animations: {
+          x: {
+            to: 0
+          },
+          y: {
+            to: 0
           }
         }
       }
     }
-  ];
-  public lineChart1Labels: Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
-  public lineChart1Type="line"
-
-
-  public xd:{
-    ultimos7meses:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
-    data:[
-      {
-        name:'estacion1',
-        data:[10,20,30,41,12,40,12]
-      },
-      {
-        name:'estacion2',
-        data:[10,21,30,21,12,40,12]
-      }
-    ]
   }
+
+
 
 }
 
