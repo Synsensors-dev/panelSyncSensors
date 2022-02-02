@@ -9,7 +9,6 @@ import { signToken } from "../../middlewares/jwt";
 
 const ALPHA = 3; //Segundos
 const SECOND = 1000 // milisegundos
-const MINUTE = 60000 //milisegundos
 
 /**
  * Funcion que maneja la solicitud de crear una alerta
@@ -35,8 +34,9 @@ export async function createAlert( reading:any, sensor:any ){
     //se genera un token con tiempo de expiración asociado a la frecuencia de lectura + ALPHA
     const token = signToken( reading._id , ((sensor.frecuency * SECOND) + ALPHA * SECOND) ); 
 
-    //se almacena en el sensor el token
+    //se almacena en el sensor el token y se actualiza el status
     await Sensor.findByIdAndUpdate( sensor._id, { "token_reading": token });
+    await Sensor.findByIdAndUpdate( sensor._id, { "status": true });
 
     //se obtiene la compañia y la estación 
     const companyFound = await Company.findById( sensor.id_company );
