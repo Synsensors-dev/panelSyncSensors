@@ -5,6 +5,9 @@ import Station from '../Station/station.model';
 import Company from '../Company/company.model';
 import Reading from '../Reading/reading.model';
 
+//tipos de sensores existentes
+const types =  ['TEMPERATURE_LIQUID','TDS','PH', 'CO2_GAS', 'TEMPERATURE_AIR','HUMIDITY_AIR', 'SOUND', 'DISSOLVED_OXYGEN ', 'TURBIDITY ','CONDUCTIVITY','OPTICAL_DUST'];
+
 /**
  * Función encargada de agregar un nueva sensor al sistema. 
  * @route Post '/sensor/'
@@ -170,38 +173,32 @@ export const typesOfSensors: RequestHandler = async (req, res) => {
     //se valida la existencia de la compañia en el sistema
     if ( !companyFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
-
-    //Se definen los tipos de sensores existentes y la estructura de retorno al front
-    const typesSensors = {
+    
+    const sensors:any = {
         quantity: 0,
-        types: [
-            { name: 'TEMPERATURE_LIQUID', exist: false },
-            { name: 'TDS', exist: false },
-            { name: 'PH', exist: false },
-            { name: 'CO2_GAS', exist: false },
-            { name: 'TEMPERATURE_AIR', exist: false },
-            { name: 'HUMIDITY_AIR', exist: false },
-            { name: 'SOUND', exist: false },
-            { name: 'DISSOLVED_OXYGEN ', exist: false },
-            { name: 'TURBIDITY ', exist: false },
-            { name: 'CONDUCTIVITY', exist: false },
-            { name: 'OPTICAL_DUST', exist: false },
-        ]
+        types: []
     }
 
     //Se itera en busca de los tipos de sensores almacenados en la BD
-    for ( let i = 0; i < typesSensors.types.length ; i++ ) {
-        const type = await Sensor.find({ id_company: _idCompany }).count({ type: typesSensors.types[i].name });
+    for ( let i = 0; i < types.length ; i++ ) {
+        const type = await Sensor.find({ id_company: _idCompany }).count({ type: types[i] });
 
+        //se filtran los tipos de sensores existentes
         if ( type > 0 ){
-            typesSensors.types[i].exist = true;
-            typesSensors.quantity++;
+            const object = {
+                name: types[i],
+                exist: true
+            }
+
+            //se inserta en el arreglo
+            sensors.types.push(object);
+            sensors.quantity++;
         }
     }
 
     return res.status(200).send( { 
         success: true, 
-        data:{ quantitySensors: typesSensors.quantity, typesSensors: typesSensors.types }, 
+        data:{ quantitySensors: sensors.quantity, typesSensors: sensors.types }, 
         message: 'Tipos de sensores encontrados.'
     });
 }
