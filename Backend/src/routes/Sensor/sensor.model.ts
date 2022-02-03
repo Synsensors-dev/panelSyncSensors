@@ -12,7 +12,7 @@ const sensorSchema = new Schema({
         trim: true
     },
     frecuency: {
-        type: Number, //segundos
+        type: Number, //minutos
         default: null
     },
     min_config: {
@@ -29,7 +29,7 @@ const sensorSchema = new Schema({
     },
     alert_time: {
         type: Number,
-        default: 30 //30min
+        default: 30 //30 minutos
     },
     last_alert: {
         type: Date,
