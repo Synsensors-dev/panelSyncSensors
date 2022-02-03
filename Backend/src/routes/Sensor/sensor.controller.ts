@@ -337,7 +337,7 @@ export const updateAlertTime: RequestHandler = async (req, res) => {
 export const sensorsON: RequestHandler = async (req, res) => {
     const id_company = req.params.id_company;
 
-    //se valida el _id ingresado del sensor
+    //se valida el _id ingresado de la compañia
     if ( !Types.ObjectId.isValid( id_company ))
         return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
 
@@ -354,4 +354,41 @@ export const sensorsON: RequestHandler = async (req, res) => {
         quantitySensors: quantitySensorsCompany,
         quantitySensorsON: quantitySensorsCompanyON
     }, message: 'Cantidad de sensores encontrados con éxito'});
+}
+
+export const sensorGraphic: RequestHandler = async (req, res) => {
+    const id_company = req.params.id_company;
+    const type_sensor = req.body;
+
+    //se valida el _id ingresado de la compañia
+    if ( !Types.ObjectId.isValid( id_company ))
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const companyFound = await Company.findById( id_company );
+
+    //Se valida la existencia de la compañia
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
+
+    const date = new Date();
+    const months = [];
+    
+    //almacenamos el ultimo mes actual
+    months[0] = new Date( date.getFullYear(), date.getMonth() );
+
+    //obtenemos los ultimos 6 meses
+    for (let i = 1; i < 7; i++ ) {
+
+        if (months[i-1].getMonth() == 0){
+            months[i] = new Date( months[i-1].getUTCFullYear() - 1, 11 );
+        } else {
+            months[i] = new Date( months[i-1].getFullYear(), months[i-1].getMonth() - 1);
+        }
+    }
+    
+    //invertimos el orden
+    months.reverse();
+
+    return res.status(200).send(months);
+
 }
