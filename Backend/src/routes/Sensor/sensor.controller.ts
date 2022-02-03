@@ -356,6 +356,13 @@ export const sensorsON: RequestHandler = async (req, res) => {
     }, message: 'Cantidad de sensores encontrados con éxito'});
 }
 
+/**
+ * Función encargada de obtener un objecto con las estaciones asociadas a una compañia y el promedio de las lecturas asociadas a
+ * cada estación en los ultimos 7 meses. Además de estar filtrado por el tipo de sensor.
+ * @route Post '/panel/graphic/:id_company'
+ * @param req Request de la petición, se espera que tenga el id de la compañia y el tipo de sensor
+ * @param res Response, retorna un object con succes: true, data: { Object }, message: "String" si todo sale bien.
+ */
 export const sensorGraphic: RequestHandler = async (req, res) => {
     const id_company = req.params.id_company;
     const type_sensor = req.body;
@@ -382,13 +389,20 @@ export const sensorGraphic: RequestHandler = async (req, res) => {
         if (months[i-1].getMonth() == 0){
             months[i] = new Date( months[i-1].getUTCFullYear() - 1, 11 );
         } else {
-            months[i] = new Date( months[i-1].getFullYear(), months[i-1].getMonth() - 1);
+            months[i] = new Date( months[i-1].getFullYear(), months[i-1].getMonth() - 1 );
         }
     }
     
     //invertimos el orden
     months.reverse();
 
-    return res.status(200).send(months);
 
+
+
+
+
+
+
+
+    return res.status(200).send(months);
 }
