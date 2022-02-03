@@ -37,7 +37,8 @@ const sensorSchema = new Schema({
     },
     token_reading: {
         type: String,
-        default: null
+        default: null,
+        trim: true
     },
     id_station: {
         required: true,

@@ -6,9 +6,8 @@ import Sensor from '../Sensor/sensor.model';
 import { sendEmailAlert } from '../../middlewares/sendEmail';
 import { Types } from "mongoose";
 import { signToken } from "../../middlewares/jwt";
+import config from '../../config/config'
 
-const ALPHA = 3; //Segundos
-const SECOND = 1000 // milisegundos
 
 /**
  * Funcion que maneja la solicitud de crear una alerta
@@ -31,12 +30,11 @@ export async function createAlert( reading:any, sensor:any ){
     await alertSaved.save();
     await reading.save();
 
-    //se genera un token con tiempo de expiración asociado a la frecuencia de lectura + ALPHA
-    const token = signToken( reading._id , ((sensor.frecuency * SECOND) + ALPHA * SECOND) ); 
+    //se genera un token con tiempo de expiración asociado aL tiempo de la alerta + ALPHA
+    const token = signToken( reading._id , (( sensor.alert_time * config.SECONDS_MINUTE) + config.ALPHA )); 
 
     //se almacena en el sensor el token y se actualiza el status
-    await Sensor.findByIdAndUpdate( sensor._id, { "token_reading": token });
-    await Sensor.findByIdAndUpdate( sensor._id, { "status": true });
+    await Sensor.findByIdAndUpdate( sensor._id, { "token_reading": token , "status": true });
 
     //se obtiene la compañia y la estación 
     const companyFound = await Company.findById( sensor.id_company );
@@ -70,7 +68,7 @@ export const recentAlerts: RequestHandler = async (req, res) => {
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
     
     //se obtienen las alertas asociadas a la compañia
-    const alerts = await Alert.find({ id_company }).sort( {createdAt: -1}).limit(20);
+    const alerts = await Alert.find({ id_company }).sort( {createdAt: -1}).limit(config.LIMIT_ALERTS);
     const alertsCompany = [];
 
     for (let i = 0; i < alerts.length ; i++){
