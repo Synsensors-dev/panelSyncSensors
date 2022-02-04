@@ -246,6 +246,62 @@ export const updateMinAndMax: RequestHandler = async (req, res) => {
 }
 
 /**
+ * Función encargada de filtrar las estaciones, sensores y lecturas asociadas a una compañia en particular. 
+ * @route Post '/panel/stations'
+ * @param req Request de la petición, se espera que tenga el id de la compañia y el tipo del sensor a buscar
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" de las estaciones si todo sale bien.
+ */
+export const readPanelStations: RequestHandler = async (req, res) => {
+    const { id_company , type } = req.body;
+
+    //se valida el _id ingresado de la compañia
+    if ( !Types.ObjectId.isValid( id_company ))
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const companyFound = await Company.findById( id_company );
+
+    //se valida la existencia de la compañia en el sistema
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia solicitada no existe en el sistema.' });
+
+    const sensors = await Sensor.find({ id_company: id_company, type: type });
+    const stationsFiltered = [];
+
+    //Se itera en la cantidad de sensores en función a los paramostros de busqueda
+    for (let i = 0; i < sensors.length; i++){
+        const station = await Station.findById( { _id: sensors[i].id_station } );
+        const reading = await Reading.findOne({ id_sensor: sensors[i]._id }).sort({ createdAt: -1 });
+
+        let value = null;
+
+        //se asigna el valor de la ultima lectura
+        if ( reading ){
+            value = reading.value;
+        }
+        
+        //se arama el objeto estación
+        const stationPanel = {
+            id_station: station._id,
+            name_station: station.name,
+            sensor: {
+                id_sensor: sensors[i]._id, 
+                min_config: sensors[i].min_config,
+                max_config: sensors[i].max_config,
+                type: sensors[i].type,
+                status: sensors[i].status,
+                last_reading: value
+            }
+        }
+        //se almacenan los ojetos en el arreglo
+        if(stationPanel.sensor.last_reading){
+            stationsFiltered.push(stationPanel);
+        }
+        
+    }
+    return res.status(200).send( { success: true, data: stationsFiltered, message: 'Estaciones encontradas con exito.'});
+}
+
+/**
  * Función encargada de actualizar el tiempo en el que son enviadas las alertas a las compañias
  * @route Put '/sensor/alert_time/:id'
  * @param req Request de la petición, se espera que tenga el id del sensor

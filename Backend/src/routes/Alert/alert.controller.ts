@@ -115,7 +115,7 @@ export const quantityAlerts: RequestHandler = async (req, res) => {
     //se calcula el porcentaje de cambio 
     const percentage = (quantityAlertCurrentWeek * 100) / quantityAlertLastWeek;
 
-    return res.status(200).send({ succes: true, data: { 
+    return res.status(200).send({ success: true, data: { 
         'quantity_alerts': quantityAlertCurrentWeek, 
         'percentage': percentage
      } , message: 'Cantidad de alertas encontradas con éxito.'});
