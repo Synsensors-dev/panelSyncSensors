@@ -2,6 +2,9 @@ import { RequestHandler } from "express";
 import { Types } from 'mongoose';
 import Station from './station.model';
 import Company from '../Company/company.model';
+import Reading from '../Reading/reading.model';
+import Sensor from '../Sensor/sensor.model';
+import config from '../../config/config'
 
 /**
  * Función encargada de agregar una nueva estación al sistema. 
@@ -164,4 +167,257 @@ export const deleteStation: RequestHandler = async (req, res) => {
     await Station.findByIdAndRemove( _idStation );
 
     return res.status(200).send( { success: true, data:{}, message: 'Estación eliminada de manera correcta.'});
+}
+
+/**
+ * Función encargada de filtrar las estaciones, sensores y lecturas asociadas a una compañia en particular. 
+ * @route Get '/panel/stations'
+ * @param req Request de la petición, se espera que tenga el id de la compañia y el tipo del sensor a buscar
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" de las estaciones si todo sale bien.
+ */
+ export const readPanelStations: RequestHandler = async (req, res) => {
+    const { id_company , type } = req.body;
+
+    //se valida el _id ingresado de la compañia
+    if ( !Types.ObjectId.isValid( id_company ))
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const companyFound = await Company.findById( id_company );
+
+    //se valida la existencia de la compañia en el sistema
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia solicitada no existe en el sistema.' });
+
+    const sensors = await Sensor.find({ id_company: id_company, type: type });
+    const stationsFiltered = [];
+
+    //Se itera en la cantidad de sensores en función a los paramostros de busqueda
+    for (let i = 0; i < sensors.length; i++){
+        const station = await Station.findById( { _id: sensors[i].id_station } );
+        const reading = await Reading.findOne({ id_sensor: sensors[i]._id }).sort({ createdAt: -1 });
+
+        let value = null;
+
+        //se asigna el valor de la ultima lectura
+        if ( reading ){
+            value = reading.value;
+        }
+        
+        //se arama el objeto estación
+        const stationPanel = {
+            id_station: station._id,
+            name_station: station.name,
+            sensor: {
+                id_sensor: sensors[i]._id, 
+                min_config: sensors[i].min_config,
+                max_config: sensors[i].max_config,
+                type: sensors[i].type,
+                status: sensors[i].status,
+                last_reading: value
+            }
+        }
+        //se almacenan los ojetos en el arreglo
+        stationsFiltered.push(stationPanel);
+    }
+    return res.status(200).send( { success: true, data: stationsFiltered, message: 'Estaciones encontradas con exito.'});
+}
+
+/**
+ * Función encargada de obtener un objecto con las estaciones asociadas a una compañia y el promedio de las lecturas asociadas a
+ * cada estación en los ultimos 7 meses. Además de estar filtrado por el tipo de sensor.
+ * @route Post '/panel/graphic/:id_company'
+ * @param req Request de la petición, se espera que tenga el id de la compañia y el tipo de sensor
+ * @param res Response, retorna un object con succes: true, data: { Object }, message: "String" si todo sale bien.
+ */
+ export const stationGraphic: RequestHandler = async (req, res) => {
+    const id_company = req.params.id_company;
+    const type_sensor = req.body.type_sensor;
+
+    //se valida el _id ingresado de la compañia
+    if ( !Types.ObjectId.isValid( id_company ))
+    return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const companyFound = await Company.findById( id_company );
+
+    //Se valida la existencia de la compañia
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
+        
+    const date = new Date();
+    const months: any = [];
+
+    //almacenamos el ultimo mes
+    months[0] = new Date( date.getFullYear(), date.getMonth() );
+
+    //obtenemos los ultimos 6 meses
+    for (let i = 1; i < 7; i++ ) {
+
+        if (months[i-1].getMonth() == 0){
+            months[i] = new Date( months[i-1].getUTCFullYear() - 1, 11 );
+        } else {
+            months[i] = new Date( months[i-1].getFullYear(), months[i-1].getMonth() - 1 );
+        }
+    }
+
+    //invertimos el orden
+    months.reverse();
+
+    //insertamos la fecha actual
+    months.push(date);
+
+    //Obtenemos las estaciones asociadas a la compañia
+    const stations_company = await Station.find({ "id_company": id_company });
+
+    let array_stations:any = [];
+
+    //iteramos en las estaciones obtenidas
+    for (let k=0; k < stations_company.length; k++) {
+        
+        let values:any = [];
+
+        //obtenemos las lecturas de los 7 meses asociados a esa estación y al tipo de sensor ingresado
+        for (let i = 0; i < months.length - 1; i++){
+            
+            //obtenemos las lecturas
+            let readings_month = await Reading.find({ "id_station": { "_id":stations_company[k]._id }, "type_sensor": type_sensor , "createdAt": {"$gte": months[i], "$lt": months[i+1] }});
+            
+            //verificamos la existencia de lecturas en el mes
+            if ( readings_month.length > 0 ){
+                let reading_prom = 0;
+
+                //sumamos los valores de las lecturas
+                for ( let j = 0; j < readings_month.length; j++ ){
+                    reading_prom += readings_month[j].value;
+                }
+                
+                //calculamos el promedio simple
+                reading_prom = reading_prom / readings_month.length;
+    
+                //guardamos el promedio
+                values.push(reading_prom);
+
+            } else {
+                values.push(0);
+            }
+        }
+
+        //creamos la estructura del objeto station
+        const station = {
+            name: stations_company[k].name,
+            value: values
+        }
+        
+        //lo almacenamos en el arreglo de objectos
+        array_stations.push(station);
+    };
+
+    const month_names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const month_reading_names = [];
+
+    //pasamos la fecha de formato Date a String para el retorno al front
+    for ( let i = 0; i < months.length - 1; i++ ){
+         month_reading_names[i] =  month_names[months[i].getMonth()];
+    }
+    
+    return res.status(200).send({ success: true, data:{"months": month_reading_names, "stations": array_stations}, message: "Estaciones y lecturas encontradas con éxito."});
+}
+
+/**
+ * Función encargada de obtener un objecto con las estaciones asociadas a una compañia y los tipos de sensores existentes dentro de ella.
+ * @route Post '/panel/stations/types/:id_company'
+ * @param req Request de la petición, se espera que tenga el id de la compañia.
+ * @param res Response, retorna un object con succes: true, data: { Object }, message: "String" si todo sale bien.
+ */
+export const stationSensorTypes: RequestHandler = async (req, res) => {
+    const id_company = req.params.id_company;
+
+    //se valida el _id ingresado de la compañia
+    if ( !Types.ObjectId.isValid( id_company ))
+    return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const companyFound = await Company.findById( id_company );
+
+    //Se valida la existencia de la compañia
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
+
+    const stations_company = await Station.find({ "id_company": id_company });
+    
+    const stations: any = [];
+
+    //se itera el arreglo de estaciones
+    for ( let i = 0; i < stations_company.length; i++ ){
+        let sensor_status: any = [];
+
+        //se itera en los tipos de sensores
+        for (let j = 0; j < config.TYPES.length; j++ ){
+
+            const quantity_sensor = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": config.TYPES[j] }).count();
+        
+            // No existe sensor del tipo buscado
+            if ( quantity_sensor == 0 ){
+                sensor_status.push('No tiene');
+
+            //El sensor está prendido o apagado
+            } else {    
+                const quantity_sensor_ON = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": config.TYPES[j], "status": true }).count();
+                const quantity_sensor_OFF = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": config.TYPES[j], "status": false }).count();
+                
+                //Comparación simple; deduciendo si hay mas sensores prendidos que apagados
+                if ( quantity_sensor_ON >= quantity_sensor_OFF ){
+                    sensor_status.push('Encendido');
+
+                } else {
+                    sensor_status.push('Apagado');
+                }
+            }
+        }
+
+        //se crean 2 contadores
+        let bueno = 0;
+        let malo = 0;
+
+        //se obtiene el estado de la estación segun los sensor_status
+        for (let k = 0; k < sensor_status.length; k++){
+
+            if (sensor_status[k] == 'Encendido'){
+                bueno++;
+            }
+            if (sensor_status[k] == 'Apagado'){
+                malo++;
+            }
+        }
+
+        let status;
+        
+        //se le da valor al status segun los contadores
+        if ( bueno > malo ){
+            status = 'Buena';
+        } else {
+            if ( bueno == 0 && malo == 0){
+                status = 'Desconectada';
+            } else{
+                if ( malo > bueno ){
+                    status = 'Mala';
+                } else {
+                    status = 'Media'
+                }
+            }
+        }
+
+        //se crea el objeto station
+        const station = {
+            name: stations_company[i].name,
+            status: status,
+            sensor_status: sensor_status
+        };
+
+        //guardamos la estación en el arreglo de estaciones
+        stations.push(station);
+    }
+
+    return res.status(200).send({ success: false, 
+        data:{"types_of_sensors": config.TYPES, "stations": stations}, 
+        message: 'Estaciones y tipos de sensores encontrados con éxito.' 
+    });
 }

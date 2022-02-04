@@ -18,6 +18,7 @@ export async function createAlert( reading:any, sensor:any ){
         value: reading.value,
         id_reading: reading._id,
         id_sensor: sensor._id,
+        type_sensor: sensor.type,
         id_station: sensor.id_station,
         id_company: sensor.id_company
     }

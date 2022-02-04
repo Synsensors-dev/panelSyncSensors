@@ -9,7 +9,11 @@ const readingSchema = new Schema({
         required: true,
         type: Schema.Types.ObjectId,
         ref: "Sensor"
-        },
+    },
+    type_sensor: {
+        type: String,
+        default: null
+    },
     id_station: {
         required: true,
         type: Schema.Types.ObjectId,

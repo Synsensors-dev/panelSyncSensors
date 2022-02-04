@@ -4,9 +4,9 @@ import Sensor from './sensor.model';
 import Station from '../Station/station.model';
 import Company from '../Company/company.model';
 import Reading from '../Reading/reading.model';
+import config from "../../config/config";
 
-//tipos de sensores existentes
-const types =  ['TEMPERATURE_LIQUID','TDS','PH', 'CO2_GAS', 'TEMPERATURE_AIR','HUMIDITY_AIR', 'SOUND', 'DISSOLVED_OXYGEN ', 'TURBIDITY ','CONDUCTIVITY','OPTICAL_DUST'];
+
 
 /**
  * Función encargada de agregar un nueva sensor al sistema. 
@@ -180,13 +180,13 @@ export const typesOfSensors: RequestHandler = async (req, res) => {
     }
 
     //Se itera en busca de los tipos de sensores almacenados en la BD
-    for ( let i = 0; i < types.length ; i++ ) {
-        const type = await Sensor.find({ id_company: _idCompany }).count({ type: types[i] });
+    for ( let i = 0; i < config.TYPES.length ; i++ ) {
+        const type = await Sensor.find({ id_company: _idCompany }).count({ type: config.TYPES[i] });
 
         //se filtran los tipos de sensores existentes
         if ( type > 0 ){
             const object = {
-                name: types[i],
+                name: config.TYPES[i],
                 exist: true
             }
 
@@ -340,7 +340,7 @@ export const updateAlertTime: RequestHandler = async (req, res) => {
 export const sensorsON: RequestHandler = async (req, res) => {
     const id_company = req.params.id_company;
 
-    //se valida el _id ingresado del sensor
+    //se valida el _id ingresado de la compañia
     if ( !Types.ObjectId.isValid( id_company ))
         return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
 
