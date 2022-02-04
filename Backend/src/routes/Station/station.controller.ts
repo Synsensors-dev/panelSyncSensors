@@ -356,7 +356,7 @@ export const stationSensorTypes: RequestHandler = async (req, res) => {
         
             // No existe sensor del tipo buscado
             if ( quantity_sensor == 0 ){
-                sensor_status.push(0);
+                sensor_status.push('No tiene');
 
             //El sensor está prendido o apagado
             } else {    
@@ -365,41 +365,42 @@ export const stationSensorTypes: RequestHandler = async (req, res) => {
                 
                 //Comparación simple; deduciendo si hay mas sensores prendidos que apagados
                 if ( quantity_sensor_ON >= quantity_sensor_OFF ){
-                    sensor_status.push(1);
+                    sensor_status.push('Encendido');
 
                 } else {
-                    sensor_status.push(2);
+                    sensor_status.push('Apagado');
                 }
             }
         }
 
         //se crean 2 contadores
-        let one = 0;
-        let two = 0;
+        let bueno = 0;
+        let malo = 0;
 
         //se obtiene el estado de la estación segun los sensor_status
         for (let k = 0; k < sensor_status.length; k++){
 
-            if (sensor_status[k] == 1){
-                one++;
+            if (sensor_status[k] == 'Encendido'){
+                bueno++;
             }
-            if (sensor_status[k] == 2){
-                two++;
+            if (sensor_status[k] == 'Apagado'){
+                malo++;
             }
         }
 
         let status;
+        
         //se le da valor al status segun los contadores
-        if ( one > two ){
-            status = 3;
+        if ( bueno > malo ){
+            status = 'Buena';
         } else {
-            if ( one == 0 && two == 0){
-                status = 0;
+            if ( bueno == 0 && malo == 0){
+                status = 'Desconectada';
             } else{
-                if ( two > one ){
-                    status = 1;
-                } else{
-                    status = 2
+                if ( malo > bueno ){
+                    status = 'Mala';
+                } else {
+                    status = 'Media'
                 }
             }
         }
