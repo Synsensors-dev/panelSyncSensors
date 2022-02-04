@@ -1,10 +1,31 @@
+@import '../../../../../scss/colorPalette.scss';
+.alerts-box{
+    height: 100%;
+}
 hr{
     width: 85%;
     border: 1px solid black;
-    height: fit-content;
 }
 .alerts-title p{
     text-align: center;
     margin-top: 10px;
     font-weight: bold;
+}
+.alerts-body{
+    text-align: center;
+    .row{
+        align-items: center;
+        padding-block: 5px;
+        border-radius: 15px;
+        background-color: white;
+        margin: 20px;
+        box-shadow: $boxshadow;
+    }
+
+}
+.cil-warning{
+    color: $red;
+    font-size: 20px;
+    position: relative;
+    left: 10px;
 }

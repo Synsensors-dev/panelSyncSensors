@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TemperatureSensorViewComponent } from './pages/temperature-sensors/temperature-sensor-view/temperature-sensor-view.component';
-import { TemperatureSensorsComponent } from './pages/temperature-sensors/temperature-sensors.component';
 
 const routes: Routes = [
   {
@@ -10,8 +8,8 @@ const routes: Routes = [
     data:{title:'Estaciones'},
     children:[
       {
-        path:'temperature',
-        loadChildren: () => import('./pages/temperature-sensors/temperature-sensors.module').then(m=>m.TemperatureSensorsModule)
+        path:'temperatura-aire',
+        loadChildren: () => import('./pages/air-temperature-sensors/air-temperature-sensors.module').then(m=>m.TemperatureSensorsModule)
       }
     ]
   }

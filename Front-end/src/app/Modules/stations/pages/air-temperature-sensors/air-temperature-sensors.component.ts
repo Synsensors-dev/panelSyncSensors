@@ -8,15 +8,15 @@ import { StationsService } from '../../services/stations.service';
 
 
 @Component({
-  selector: 'app-temperature-sensors',
-  templateUrl: './temperature-sensors.component.html',
-  styleUrls: ['./temperature-sensors.component.scss']
+  selector: 'app-air-temperature-sensors',
+  templateUrl: './air-temperature-sensors.component.html',
+  styleUrls: ['./air-temperature-sensors.component.scss']
 })
 export class TemperatureSensorsComponent implements OnInit {
   stations:panelStation[]
   constructor(private router:Router, private stationsService:StationsService, private auth:AuthService) { }
   ngOnInit(): void {
-    this.stationsService.getPanelStationsByType(this.auth.getUserCompanyId(),"TEMPERATURE").subscribe((response:apiResponse)=>{
+    this.stationsService.getPanelStationsByType(this.auth.getUserCompanyId(),"TEMPERATURE_AIR").subscribe((response:apiResponse)=>{
       if(response.success){
         console.log(response)
         this.stations=response.data
