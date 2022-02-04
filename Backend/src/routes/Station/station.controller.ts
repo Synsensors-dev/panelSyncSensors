@@ -4,6 +4,7 @@ import Station from './station.model';
 import Company from '../Company/company.model';
 import Reading from '../Reading/reading.model';
 import Sensor from '../Sensor/sensor.model';
+import config from '../../config/config'
 
 /**
  * Función encargada de agregar una nueva estación al sistema. 
@@ -328,6 +329,94 @@ export const deleteStation: RequestHandler = async (req, res) => {
  * @param res Response, retorna un object con succes: true, data: { Object }, message: "String" si todo sale bien.
  */
 export const stationSensorTypes: RequestHandler = async (req, res) => {
+    const id_company = req.params.id_company;
 
+    //se valida el _id ingresado de la compañia
+    if ( !Types.ObjectId.isValid( id_company ))
+    return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
 
+    const companyFound = await Company.findById( id_company );
+
+    //Se valida la existencia de la compañia
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
+
+    const stations_company = await Station.find({ "id_company": id_company });
+    
+    const stations: any = [];
+
+    //se itera el arreglo de estaciones
+    for ( let i = 0; i < stations_company.length; i++ ){
+        let sensor_status: any = [];
+
+        //se itera en los tipos de sensores
+        for (let j = 0; j < config.TYPES.length; j++ ){
+
+            const quantity_sensor = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": config.TYPES[j] }).count();
+        
+            // No existe sensor del tipo buscado
+            if ( quantity_sensor == 0 ){
+                sensor_status.push(0);
+
+            //El sensor está prendido o apagado
+            } else {    
+                const quantity_sensor_ON = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": config.TYPES[j], "status": true }).count();
+                const quantity_sensor_OFF = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": config.TYPES[j], "status": false }).count();
+                
+                //Comparación simple; deduciendo si hay mas sensores prendidos que apagados
+                if ( quantity_sensor_ON >= quantity_sensor_OFF ){
+                    sensor_status.push(1);
+
+                } else {
+                    sensor_status.push(2);
+                }
+            }
+        }
+
+        //se crean 2 contadores
+        let one = 0;
+        let two = 0;
+
+        //se obtiene el estado de la estación segun los sensor_status
+        for (let k = 0; k < sensor_status.length; k++){
+
+            if (sensor_status[k] == 1){
+                one++;
+            }
+            if (sensor_status[k] == 2){
+                two++;
+            }
+        }
+
+        let status;
+        //se le da valor al status segun los contadores
+        if ( one > two ){
+            status = 3;
+        } else {
+            if ( one == 0 && two == 0){
+                status = 0;
+            } else{
+                if ( two > one ){
+                    status = 1;
+                } else{
+                    status = 2
+                }
+            }
+        }
+
+        //se crea el objeto station
+        const station = {
+            name: stations_company[i].name,
+            status: status,
+            sensor_status: sensor_status
+        };
+
+        //guardamos la estación en el arreglo de estaciones
+        stations.push(station);
+    }
+
+    return res.status(200).send({ success: false, 
+        data:{"types_of_sensors": config.TYPES, "stations": stations}, 
+        message: 'Estaciones y tipos de sensores encontrados con éxito.' 
+    });
 }
