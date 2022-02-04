@@ -3,11 +3,11 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Estado de estaciones
         </div>
-        <div class="card-body table-responsive">
+        <div class="card-body table-responsive table-bordered">
           <table class="table">
             <thead>
               <tr>
-                <th>Nombre</th>
+                <th>Nombre Estacion</th>
                 <th>Estado</th>
                 <th *ngFor="let head of typesOfSensors">{{head}}</th>
               </tr>
@@ -15,8 +15,12 @@
             <tbody>
                 <tr *ngFor="let item of stations; let i=index;">
                     <td>{{item.name}}</td>
-                    <td>{{item.status}}</td>
-                    <td *ngFor="let value of stations[i].sensorStatus;let j = index;">{{value}}</td>
+                    <td [ngClass]="{'gray': item.status=='Desconectada', 'red':item.status=='Mala' , 'green':item.status=='Buena'}">{{item.status}}</td>
+                    <td *ngFor="let value of stations[i].sensor_status;let j = index;"
+                    [ngClass]="{
+                      'gray': value=='No tiene',
+                      'red': value=='Apagado',
+                      'green':value=='Encendido'}">{{value}}</td>
                 </tr>
             </tbody>
           </table>

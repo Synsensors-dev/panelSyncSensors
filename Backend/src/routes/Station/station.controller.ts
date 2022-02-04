@@ -303,8 +303,8 @@ export const deleteStation: RequestHandler = async (req, res) => {
 
         //creamos la estructura del objeto station
         const station = {
-            name: stations_company[k].name,
-            value: values
+            label: stations_company[k].name,
+            data: values
         }
         
         //lo almacenamos en el arreglo de objectos
@@ -416,7 +416,7 @@ export const stationSensorTypes: RequestHandler = async (req, res) => {
         stations.push(station);
     }
 
-    return res.status(200).send({ success: false, 
+    return res.status(200).send({ success: true, 
         data:{"types_of_sensors": config.TYPES, "stations": stations}, 
         message: 'Estaciones y tipos de sensores encontrados con éxito.' 
     });

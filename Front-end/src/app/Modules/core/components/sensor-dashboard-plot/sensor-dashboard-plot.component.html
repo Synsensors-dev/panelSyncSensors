@@ -1,3 +1,14 @@
+<div class="chartHeader">
+    <div class="selectButton">
+        <div class="selectTitle">
+            Tipo de Sensor:
+        </div>
+        <select [(ngModel)]="selectedOption" (change)="capture()">
+            <option *ngFor="let item of selectSensorTypes">{{item.name}}</option>
+        </select>
+    </div>
+</div>
+
 <div class="chart-wrapper">
     <canvas baseChart class="chart"
             [datasets]="lineChartData"
