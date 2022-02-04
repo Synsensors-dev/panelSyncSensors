@@ -365,22 +365,22 @@ export const sensorsON: RequestHandler = async (req, res) => {
  */
 export const sensorGraphic: RequestHandler = async (req, res) => {
     const id_company = req.params.id_company;
-    const type_sensor = req.body;
+    const type_sensor = req.body.type_sensor;
 
     //se valida el _id ingresado de la compañia
     if ( !Types.ObjectId.isValid( id_company ))
-        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+    return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
 
     const companyFound = await Company.findById( id_company );
 
     //Se valida la existencia de la compañia
     if ( !companyFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
-
+        
     const date = new Date();
-    const months = [];
-    
-    //almacenamos el ultimo mes actual
+    const months: any = [];
+
+    //almacenamos el ultimo mes
     months[0] = new Date( date.getFullYear(), date.getMonth() );
 
     //obtenemos los ultimos 6 meses
@@ -392,17 +392,66 @@ export const sensorGraphic: RequestHandler = async (req, res) => {
             months[i] = new Date( months[i-1].getFullYear(), months[i-1].getMonth() - 1 );
         }
     }
-    
+
     //invertimos el orden
     months.reverse();
 
+    //insertamos la fecha actual
+    months.push(date);
 
+    //Obtenemos las estaciones asociadas a la compañia
+    const stations_company = await Station.find({ "id_company": id_company });
 
+    let array_stations:any = [];
 
+    //iteramos en las estaciones obtenidas
+    for (let k=0; k < stations_company.length; k++) {
+        
+        let values:any = [];
 
+        //obtenemos las lecturas de los 7 meses asociados a esa estación y al tipo de sensor ingresado
+        for (let i = 0; i < months.length - 1; i++){
+            
+            //obtenemos las lecturas
+            let readings_month = await Reading.find({ "id_station": { "_id":stations_company[k]._id }, "type_sensor": type_sensor , "createdAt": {"$gte": months[i], "$lt": months[i+1] }});
+            
+            //verificamos la existencia de lecturas en el mes
+            if ( readings_month.length > 0 ){
+                let reading_prom = 0;
 
+                //sumamos los valores de las lecturas
+                for ( let j = 0; j < readings_month.length; j++ ){
+                    reading_prom += readings_month[j].value;
+                }
+                
+                //calculamos el promedio simple
+                reading_prom = reading_prom / readings_month.length;
+    
+                //guardamos el promedio
+                values.push(reading_prom);
 
+            } else {
+                values.push(0);
+            }
+        }
 
+        //creamos la estructura del objeto station
+        const station = {
+            name: stations_company[k].name,
+            value: values
+        }
+        
+        //lo almacenamos en el arreglo de objectos
+        array_stations.push(station);
+    };
 
-    return res.status(200).send(months);
+    const month_names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const month_reading_names = [];
+
+    //pasamos la fecha de formato Date a String para el retorno al front
+    for ( let i = 0; i < months.length - 1; i++ ){
+         month_reading_names[i] =  month_names[months[i].getMonth()];
+    }
+    
+    return res.status(200).send({ success: true, data:{"months": month_reading_names, "stations": array_stations}, message: "Estaciones y lecturas encontradas con éxito."});
 }
