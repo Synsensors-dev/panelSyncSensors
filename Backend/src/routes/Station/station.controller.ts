@@ -320,3 +320,14 @@ export const deleteStation: RequestHandler = async (req, res) => {
     
     return res.status(200).send({ success: true, data:{"months": month_reading_names, "stations": array_stations}, message: "Estaciones y lecturas encontradas con éxito."});
 }
+
+/**
+ * Función encargada de obtener un objecto con las estaciones asociadas a una compañia y los tipos de sensores existentes dentro de ella.
+ * @route Post '/panel/stations/types/:id_company'
+ * @param req Request de la petición, se espera que tenga el id de la compañia.
+ * @param res Response, retorna un object con succes: true, data: { Object }, message: "String" si todo sale bien.
+ */
+export const stationSensorTypes: RequestHandler = async (req, res) => {
+
+
+}
