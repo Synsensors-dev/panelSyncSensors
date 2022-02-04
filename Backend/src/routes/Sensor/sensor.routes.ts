@@ -30,7 +30,4 @@ router.put('/sensor/alert_time/:id', sensorCtrl.updateAlertTime);
 // Obtener sensores activos 
 router.get('/panel/sensors/:id_company', sensorCtrl.sensorsON);
 
-// Obtener un objeto con las estaciones y promedio de las lecturas de los ultimos 7 meses
-router.post('/panel/graphic/:id_company', sensorCtrl.sensorGraphic);
-
 export default router;
