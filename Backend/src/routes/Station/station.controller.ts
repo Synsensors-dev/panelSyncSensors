@@ -266,7 +266,7 @@ export const deleteStation: RequestHandler = async (req, res) => {
     months.push(date);
 
     //Obtenemos las estaciones asociadas a la compañia
-    const stations_company = await Station.find({ "id_company": id_company });
+    const stations_company = await Station.find({ "id_company": id_company , "readings_station": true });
 
     let array_stations:any = [];
 
@@ -299,17 +299,15 @@ export const deleteStation: RequestHandler = async (req, res) => {
             } 
         }
 
-        if (values.length > 0) {
-
-            //creamos la estructura del objeto station
-            const station = {
-                label: stations_company[k].name,
-                data: values
-            }
-            
-            //lo almacenamos en el arreglo de objectos
-            array_stations.push(station);
+        //creamos la estructura del objeto station
+        const station = {
+            label: stations_company[k].name,
+            data: values
         }
+        
+        //lo almacenamos en el arreglo de objectos
+        array_stations.push(station);
+        
     };
 
     const month_names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
