@@ -36,10 +36,17 @@ export class TemperatureSensorViewComponent implements OnInit {
 
     this.sensorForm=this.fb.group({
       min_config:[],
-      max_config:[]
+      max_config:[],
+      alert_days:[],
+      alert_hours:[],
+      alert_minutes:[]
     })
     this.sensorForm.get('min_config').setValue(this.min_config)
     this.sensorForm.get('max_config').setValue(this.max_config)
+  }
+  saveChanges(){
+    this.updateMaxMin();
+    this.updateAlertOcurrency();
   }
 
   updateMaxMin(){
@@ -55,13 +62,23 @@ export class TemperatureSensorViewComponent implements OnInit {
         }else{
           console.log(response.message);
         }
+    })   
+  }
+  updateAlertOcurrency(){
+    let totalMinutes:number = this.sensorForm.get('alert_days').value*1440 + this.sensorForm.get('alert_hours').value*60 + this.sensorForm.get('alert_minutes').value
+    console.log(totalMinutes)
+    this.sensorsService.updateAlertOcurrency(this.sensorId,totalMinutes).subscribe((response)=>{
+      if(response.success){
+        console.log(response)
+      }else{
+        console.log(response.message);
+      }
     })
-  
-      
   }
   successModalClose(){
     this.successModal.hide()
   }
+
 
 
 

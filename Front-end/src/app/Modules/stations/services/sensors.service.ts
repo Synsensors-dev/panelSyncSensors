@@ -46,4 +46,8 @@ export class SensorsService {
       return this.http.get<apiResponse>(this.apiURL+ `sensor/types/${this.auth.getUserCompanyId()}`)
     }
   
+  updateAlertOcurrency(sensorId:any,minutes:number){
+    return this.http.put<apiResponse>(this.apiURL+ `sensor/alert_time/${sensorId}`,{alert_time:minutes})
+  }
+  
 }
