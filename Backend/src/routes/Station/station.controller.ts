@@ -296,19 +296,20 @@ export const deleteStation: RequestHandler = async (req, res) => {
                 //guardamos el promedio
                 values.push(reading_prom);
 
-            } else {
-                values.push(0);
-            }
+            } 
         }
 
-        //creamos la estructura del objeto station
-        const station = {
-            label: stations_company[k].name,
-            data: values
+        if (values.length > 0) {
+
+            //creamos la estructura del objeto station
+            const station = {
+                label: stations_company[k].name,
+                data: values
+            }
+            
+            //lo almacenamos en el arreglo de objectos
+            array_stations.push(station);
         }
-        
-        //lo almacenamos en el arreglo de objectos
-        array_stations.push(station);
     };
 
     const month_names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
