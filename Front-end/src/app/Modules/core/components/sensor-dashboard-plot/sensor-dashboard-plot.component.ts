@@ -10,8 +10,9 @@ import { SensorsService } from '../../../stations/services/sensors.service';
 export class SensorDashboardPlotComponent implements OnInit {
 
   selectSensorTypes=[];
-  selectedOption:string;
-  currentOption:string;
+  selectedOption;
+  currentOption;
+  isLoading=true;
 
 
   constructor(private sensorService:SensorsService) { }
@@ -20,9 +21,11 @@ export class SensorDashboardPlotComponent implements OnInit {
     this.sensorService.getSensorTypesOfCompany().subscribe((response)=>{
       if(response.success){
         this.selectSensorTypes=response.data.typesSensors;
-        
         this.sensorService.getSensorReadingsByType(this.selectSensorTypes[0].name).subscribe((response)=>{
           if(response.success){
+            this.selectedOption=this.selectSensorTypes[0].name;
+            this.isLoading=false;
+            console.log(response)
             this.lineChartLabels=response.data.months;
             this.lineChartData=response.data.stations;
           }else{
@@ -67,9 +70,12 @@ export class SensorDashboardPlotComponent implements OnInit {
     }
   }
   capture(){
+    this.isLoading=true;
     this.currentOption=this.selectedOption;
+    console.log(this.currentOption)
     this.sensorService.getSensorReadingsByType(this.currentOption).subscribe((response)=>{
       if(response.success){
+        this.isLoading=false;
         console.log(response)
         this.lineChartData=response.data.stations;
       }else{

@@ -12,12 +12,14 @@ export class StationsStatusTableComponent implements OnInit {
   typesOfSensors=[]
   //objeto con el contenido de la tabla
   stations=[]
+  isLoading=true;
 
   constructor(private stationsService:StationsService) { }
 
   ngOnInit(): void {
     this.stationsService.getStationsStatus().subscribe((response)=>{
       if(response.success){
+        this.isLoading=false;
         this.typesOfSensors=response.data.types_of_sensors;
         this.stations=response.data.stations;
       }else{
