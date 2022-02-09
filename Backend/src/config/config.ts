@@ -3,7 +3,7 @@ export default {
     jwtSecret: process.env.JWT_SECRET || 'somesecrettoken',
     
     //time
-    ALPHA : 3,                              //variable utilizada para agregar un margen de ingreso a las lecturas 
+    ALPHA : 600,                            //variable utilizada para agregar un margen de ingreso a las lecturas 
     SECONDS_MINUTE : 60,                    //variable utilizada para convertir ciertos parametros numericos 
     MILISECONDS_MINUTE : 60000,             //variable utilizada para convertir ciertos parametros numericos 
     SECONDS_DAY: 86400,                     //variable utilizada para generar token en el endpoint signUp
