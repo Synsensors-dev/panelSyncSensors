@@ -38,7 +38,7 @@ dotenv.config();
     });
 
     //creación de token
-    const token = signToken( newUser._id , 86400*3); //10min
+    const token = signToken( newUser._id , config.SECONDS_DAY * 3); // 3 days
     newUser.resetToken = token;
 
     //se almacena en la BD el usuario nuevo
@@ -75,7 +75,7 @@ dotenv.config();
     if ( !isMatch )
         return res.status(400).send({ success: false, data:{}, message: 'Error: La contraseña es incorrecta.' });
 
-    const token = signToken( userFound._id , 86400); //24hours
+    const token = signToken( userFound._id , config.SECONDS_DAY); //24hours
 
     return res.status(200).send({ success: true, data:{ token, 'user': userFound }, message: 'Inicio de sesión exitoso.' });
 }
@@ -98,7 +98,7 @@ export const forgotPassword: RequestHandler = async (req, res) => {
     if ( !userFound )
         return res.status(404).send({ success: false, data:{}, message: 'Error: el usuario ingresado no existe en el sistema.' });
 
-    const token = signToken( userFound._id, 600) //10 min
+    const token = signToken( userFound._id, config.SECONDS_MINUTE * 10) //10 min
 
     await User.findByIdAndUpdate(userFound._id, {resetToken: token});
 

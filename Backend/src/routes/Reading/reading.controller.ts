@@ -3,6 +3,10 @@ import { Types } from 'mongoose';
 import Reading from './reading.model'
 import Sensor from '../Sensor/sensor.model';
 import { createAlert } from '../Alert/alert.controller';
+import { signToken } from "../../middlewares/jwt";
+import config from '../../config/config'
+
+
 /**
  * Función encargada de agregar una nueva lectura al sistema
  * @route Post '/reading'
@@ -37,10 +41,17 @@ export const createReading: RequestHandler = async (req, res) => {
 
     const readingSaved = new Reading(newReading);
 
-    //se verifica que la lectura no sea una alerta
+    //se verifica que sea una lectura
     if ( value >= sensorFound.min_config && value <= sensorFound.max_config ){
 
         await readingSaved.save();
+
+        //se genera un token con tiempo de expiración asociado a la frecuencia de lectura + ALPHA
+        const token = signToken( readingSaved._id , (sensorFound.frecuency * config.SECONDS_MINUTE  + config.ALPHA )); 
+
+        //se almacena en el sensor el token y se actualiza el status
+        await Sensor.findByIdAndUpdate( sensorFound._id, { "token_reading": token , "status": true});
+
         return res.status(201).send({ success: true, data: { _id: readingSaved._id }, message: 'Lectura agregada con éxito al sistema.' });
     }
 
@@ -50,9 +61,9 @@ export const createReading: RequestHandler = async (req, res) => {
     if ( sensorFound.last_alert ){
         const time_remaining = date.getTime() - sensorFound.last_alert.getTime();
 
-        if ( time_remaining <= (sensorFound.alert_time * 60000) ){
+        if ( time_remaining <= (sensorFound.alert_time * config.MILISECONDS_MINUTE) ){
 
-            const min_remaining = ((sensorFound.alert_time - (time_remaining/60000))); //convertido en minutos
+            const min_remaining = ((sensorFound.alert_time - (time_remaining/config.MILISECONDS_MINUTE))); //convertido en minutos
 
             return res.status(200).send({ success: true, data: { }, message: 'Esta lectura generó una alerta, pero aún no es tiempo de enviarla.' + ' Quedan: '+ min_remaining + ' min para enviar la alerta.'});
         }
@@ -86,7 +97,7 @@ export const sensorReadings: RequestHandler = async (req, res) => {
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
 
     //se obtienen las lecturas asociadas al sensor
-    const sensorReadings = await Reading.find({ id_sensor: id_sensor }).sort({ createdAt: -1 }).limit(100);
+    const sensorReadings = await Reading.find({ id_sensor: id_sensor }).sort({ createdAt: -1 }).limit(config.LIMIT_READINGS);
 
     //Se invierte el arreglo para enviarlo desde la lectura mas antigua a la mas nueva
     sensorReadings.reverse();
