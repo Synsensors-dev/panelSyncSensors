@@ -7,9 +7,9 @@ import { apiResponse } from '../../../../shared/interfaces/apiResponse';
 
 
 @Component({
-  selector: 'app-temperature-sensor-view',
-  templateUrl: './temperature-sensor-view.component.html',
-  styleUrls: ['./temperature-sensor-view.component.scss']
+  selector: 'app-air-temperature-sensor-view',
+  templateUrl: './air-temperature-sensor-view.component.html',
+  styleUrls: ['./air-temperature-sensor-view.component.scss']
 })
 export class TemperatureSensorViewComponent implements OnInit {
 

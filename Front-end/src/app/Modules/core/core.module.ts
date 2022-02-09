@@ -8,6 +8,7 @@ import { LastAlertsComponent } from './components/last-alerts/last-alerts.compon
 import { AgmCoreModule } from '@agm/core';
 import { StationsStatusTableComponent } from './components/stations-status-table/stations-status-table.component';
 import { SensorDashboardPlotComponent } from './components/sensor-dashboard-plot/sensor-dashboard-plot.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { SensorDashboardPlotComponent } from './components/sensor-dashboard-plot
     CoreRoutingModule,
     AgmCoreModule.forRoot({
       apiKey:'AIzaSyDGNfFQ1rTIjzBtSAc5uQM28ywb5aZ8E8E'
-    })
+    }),
+    ChartsModule
   ],
   exports:[
     StationsMapComponent,

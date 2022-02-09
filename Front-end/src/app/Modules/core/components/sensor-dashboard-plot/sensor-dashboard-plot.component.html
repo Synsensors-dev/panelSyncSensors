@@ -1,1 +1,7 @@
-<p>sensor-dashboard-plot works!</p>
+<div class="chart-wrapper">
+    <canvas baseChart class="chart"
+            [datasets]="lineChartData"
+            [labels]="lineChartLabels"
+            [options]="lineChartOptions"
+            [chartType]="lineChartType"></canvas>
+</div>

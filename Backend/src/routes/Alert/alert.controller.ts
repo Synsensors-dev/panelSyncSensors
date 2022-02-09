@@ -21,6 +21,7 @@ export async function createAlert( reading:any, sensor:any ){
         value: reading.value,
         id_reading: reading._id,
         id_sensor: sensor._id,
+        type_sensor: sensor.type,
         id_station: sensor.id_station,
         id_company: sensor.id_company
     }
@@ -123,7 +124,7 @@ export const quantityAlerts: RequestHandler = async (req, res) => {
     //se calcula el porcentaje de cambio 
     const percentage = (quantityAlertCurrentWeek * 100) / quantityAlertLastWeek;
 
-    return res.status(200).send({ succes: true, data: { 
+    return res.status(200).send({ success: true, data: { 
         'quantity_alerts': quantityAlertCurrentWeek, 
         'percentage': percentage
      } , message: 'Cantidad de alertas encontradas con éxito.'});

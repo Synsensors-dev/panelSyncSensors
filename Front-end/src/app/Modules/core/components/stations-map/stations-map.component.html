@@ -1,4 +1,15 @@
 <div class="map-container">
     <agm-map
-    ></agm-map>
+    [latitude]="latitude+0.001"
+    [longitude]="longitude"
+    [zoom]="17">
+        <agm-marker
+        [latitude]="latitude+0.001"
+        [longitude]="longitude">
+        </agm-marker>
+        <agm-marker
+        [latitude]="latitude+0.001"
+        [longitude]="longitude+0.001">
+        </agm-marker>
+    </agm-map>
 </div>

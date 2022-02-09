@@ -34,6 +34,7 @@ export const createReading: RequestHandler = async (req, res) => {
     const newReading = {
         value: value,
         id_sensor: id_sensor,
+        type_sensor: sensorFound.type,
         id_station: sensorFound.id_station,
         id_company: sensorFound.id_company
     };
