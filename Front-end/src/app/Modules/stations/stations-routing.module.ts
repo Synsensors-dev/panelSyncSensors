@@ -10,6 +10,10 @@ const routes: Routes = [
       {
         path:'temperatura-aire',
         loadChildren: () => import('./pages/air-temperature-sensors/air-temperature-sensors.module').then(m=>m.TemperatureSensorsModule)
+      },
+      {
+        path:':sensorParameter',
+        loadChildren:()=> import('./pages/parameter-sensors-view/parameter-sensors-view.module').then(m=>m.ParameterSensorsViewModule)
       }
     ]
   }
@@ -19,4 +23,4 @@ const routes: Routes = [
   imports: [CommonModule,RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class StationsRoutingModule { }
+export class StationsRoutingModule {}
