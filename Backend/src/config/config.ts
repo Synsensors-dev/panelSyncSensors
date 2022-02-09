@@ -7,7 +7,7 @@ export default {
     SECONDS_MINUTE : 60,                    //variable utilizada para convertir ciertos parametros numericos 
     MILISECONDS_MINUTE : 60000,             //variable utilizada para convertir ciertos parametros numericos 
     SECONDS_DAY: 86400,                     //variable utilizada para generar token en el endpoint signUp
-    TIME_STATUS_VALIDATOR: "* * * * *",     //variable que indica el margen de tiempo en que se inicia el statusValidator (1 minuto)
+    TIME_STATUS_VALIDATOR: "* * * 12 *",     //variable que indica el margen de tiempo en que se inicia el statusValidator (1 minuto)
 
     //quantity
     LIMIT_READINGS : 100,                   //limite de lecturas a retornar al front en el endpoint sensorReadings
