@@ -1,5 +1,6 @@
+
 import { Component, OnInit } from '@angular/core';
-import { typeChart } from '../../../shared/interfaces/typeChart';
+import { SensorsService } from '../../../stations/services/sensors.service';
 
 @Component({
   selector: 'app-sensor-dashboard-plot',
@@ -8,22 +9,37 @@ import { typeChart } from '../../../shared/interfaces/typeChart';
 })
 export class SensorDashboardPlotComponent implements OnInit {
 
+  selectSensorTypes=[];
+  selectedOption;
+  currentOption;
+  isLoading=true;
 
-  constructor() { }
+
+  constructor(private sensorService:SensorsService) { }
 
   ngOnInit(): void {
+    this.sensorService.getSensorTypesOfCompany().subscribe((response)=>{
+      if(response.success){
+        this.selectSensorTypes=response.data.typesSensors;
+        this.sensorService.getSensorReadingsByType(this.selectSensorTypes[0].name).subscribe((response)=>{
+          if(response.success){
+            this.selectedOption=this.selectSensorTypes[0].name;
+            this.isLoading=false;
+            console.log(response)
+            this.lineChartLabels=response.data.months;
+            this.lineChartData=response.data.stations;
+          }else{
+            console.log(response.message)
+          }
+        })
+
+      }else{
+        console.log(response.message)
+      }
+    })
+
   }
   public lineChartData: Array<any> = [
-    {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Series A',
-      fill:false,
-    },
-    {
-      data: [65, 29, 58, 84, 51, 55, 12],
-      label: 'Series B',
-      fill:false,
-    }
   ];
   public lineChartLabels: Array<any> = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
   public lineChartType="line"
@@ -52,6 +68,21 @@ export class SensorDashboardPlotComponent implements OnInit {
         }
       }
     }
+  }
+  capture(){
+    this.isLoading=true;
+    this.currentOption=this.selectedOption;
+    console.log(this.currentOption)
+    this.sensorService.getSensorReadingsByType(this.currentOption).subscribe((response)=>{
+      if(response.success){
+        this.isLoading=false;
+        console.log(response)
+        this.lineChartData=response.data.stations;
+      }else{
+        console.log(response.message)
+      }
+    })
+
   }
 
 

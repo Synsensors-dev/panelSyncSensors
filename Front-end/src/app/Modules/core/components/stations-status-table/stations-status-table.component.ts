@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { apiResponse } from '../../../shared/interfaces/apiResponse';
+import { StationsService } from '../../../stations/services/stations.service';
 
 @Component({
   selector: 'app-stations-status-table',
@@ -7,24 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StationsStatusTableComponent implements OnInit {
   //Objeto con los header de la tabla
-  typesOfSensors=['Temperatura','Co2','Humedad','Calidad De Aire']
+  typesOfSensors=[]
   //objeto con el contenido de la tabla
-  stations=[
-    {
-      name:'estacionPrueba1',
-      status:1,
-      sensorStatus:[1,2,1,1]
-    },
-    {
-      name:'estacionPrueba2',
-      status:2,
-      sensorStatus:[2,2,1,1]
-    }
-  ]
+  stations=[]
+  isLoading=true;
 
-  constructor() { }
+  constructor(private stationsService:StationsService) { }
 
   ngOnInit(): void {
+    this.stationsService.getStationsStatus().subscribe((response)=>{
+      if(response.success){
+        this.isLoading=false;
+        this.typesOfSensors=response.data.types_of_sensors;
+        this.stations=response.data.stations;
+      }else{
+        console.log(response.message);
+      }
+    })
   }
   toArray(obj: object) {
     return Object.keys(obj).map(key => obj[key])

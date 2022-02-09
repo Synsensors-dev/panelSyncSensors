@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import { Types } from 'mongoose';
 import Reading from './reading.model'
 import Sensor from '../Sensor/sensor.model';
+import Station from '../Station/station.model';
 import { createAlert } from '../Alert/alert.controller';
 import { signToken } from "../../middlewares/jwt";
 import config from '../../config/config'
@@ -30,6 +31,9 @@ export const createReading: RequestHandler = async (req, res) => {
     if ( !sensorFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
  
+    //se actualiza la variable readings_station de la estación, la cual ayuda a un filtrado de datos
+    await Station.findByIdAndUpdate(sensorFound.id_station, { "readings_station": true });
+
     //se crea la lectura
     const newReading = {
         value: value,

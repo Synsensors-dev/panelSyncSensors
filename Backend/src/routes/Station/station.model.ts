@@ -21,6 +21,10 @@ const stationSchema = new Schema({
         type: String,
         trim: true
     },
+    readings_station: {
+        type: Boolean,
+        default: false
+    },
     location_notes: {
         required: true,
         type: String,

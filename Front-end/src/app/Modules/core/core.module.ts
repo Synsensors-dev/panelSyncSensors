@@ -9,6 +9,7 @@ import { AgmCoreModule } from '@agm/core';
 import { StationsStatusTableComponent } from './components/stations-status-table/stations-status-table.component';
 import { SensorDashboardPlotComponent } from './components/sensor-dashboard-plot/sensor-dashboard-plot.component';
 import { ChartsModule } from 'ng2-charts';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ChartsModule } from 'ng2-charts';
     AgmCoreModule.forRoot({
       apiKey:'AIzaSyDGNfFQ1rTIjzBtSAc5uQM28ywb5aZ8E8E'
     }),
-    ChartsModule
+    ChartsModule,
+    FormsModule
   ],
   exports:[
     StationsMapComponent,

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { NavBarService } from '../../Modules/core/services/nav-bar.service';
 import { AuthService } from '../../Modules/login/services/auth.service';
 import { apiResponse } from '../../Modules/shared/interfaces/apiResponse';
+import { SensorsService } from '../../Modules/stations/services/sensors.service';
 import * as navRoutes from '../../_navRoutes';
 
 @Component({
@@ -19,13 +20,13 @@ export class DefaultLayoutComponent implements  OnInit{
   waterStations=navRoutes.waterStations;
   airStations=navRoutes.airStations;
 
-  constructor(private authService:AuthService, private navBarService:NavBarService){
+  constructor(private authService:AuthService, private sensorService:SensorsService){
   }
   
 
   ngOnInit(): void {
 
-      this.navBarService.getSensorTypesOfCompany().subscribe((response:apiResponse)=>{
+      this.sensorService.getSensorTypesOfCompany().subscribe((response:apiResponse)=>{
         console.log(response)
         if(this.navItems.length==1){
           this.createRoutes(response);
