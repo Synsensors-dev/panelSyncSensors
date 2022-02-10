@@ -77,7 +77,15 @@ dotenv.config();
 
     const token = signToken( userFound._id , config.SECONDS_DAY); //24hours
 
-    return res.status(200).send({ success: true, data:{ token, 'user': userFound }, message: 'Inicio de sesión exitoso.' });
+    const userFiltered = {
+        _id: userFound._id, 
+        name: userFound.name,
+        email: userFound.email,
+        id_company: userFound.id_company,
+        roles: userFound.roles
+    }
+
+    return res.status(200).send({ success: true, data:{ token, 'user': userFiltered }, message: 'Inicio de sesión exitoso.' });
 }
 
 /**
