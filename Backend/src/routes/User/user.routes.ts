@@ -8,25 +8,42 @@ const router = Router();
  * @swagger
  * components:
  *  schemas:
- *      User:
+ *      UserAdd:
  *          type: object
  *          properties:
- *              user:
- *                  type: object
- *                  description: usuario registrado en el sistema
- *              token:
+ *              name: 
  *                  type: string
- *                  description: token generado a partir del id del usuario
+ *                  description: Nombre del usuario 
+ *              email: 
+ *                  type: string
+ *                  description: Email del usuario 
+ *              id_company: 
+ *                  type: string
+ *                  description: Id de la compañia asociada al usuario
+ *              roles: 
+ *                  type: Array
+ *                  decription: Roles asignados al usuario dentro del sistema
+ *          required:
+ *              - name
+ *              - email
+ *              - id_company
+ *              - roles
  *          example:
- *              user: { 
- *                      _id: 61f0eace3e60ea8911111729 , 
- *                      name: Pedro Fabián León Tigre, 
- *                      email: pedrito123@gmail.com, 
- *                      id_company: 61f0eace3e60ea8911111729,
- *                      roles: [Administrador, Moderador, Usuario] 
- *                     }
- *              token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCY8.eyJfaWQiOiI2MWUwY2NhYjhlNzVmZDczOGMwMTlhZjgiLCJpYXQiOjE2NDIxOTA5MjQsImV4cCI6MTY0MjE5MTUyNH0.JQoqK8mZXSLY7XrcSP08lc7xx4pFNTxaaVLLyMDe2zc
- */
+ *              {
+ *                  name: Pedro Fabián León Tigre, 
+ *                  email: pedrito123@gmail.com, 
+ *                  id_company: 61f0eace3e60ea8911111729,
+ *                  roles: [user, admin] 
+ *              }
+ *                    
+ *      Token: 
+ *          type: string
+ *          description: token generado a partir del id del usuario
+ *          example:
+ *              token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCY8.eyJfaWQiOiI2MWUwY2NhYjhlNzVmZDczOGMwMTlhZjgiLCJpYXQiOjE2NDIxOTA5MjQsImV4cCI6MTY0MjE5MTUyNH0.JQoqK8mZXSLY7XrcSP08lc7xx4pFNTxaaVLLyMDe2zc
+ *                   
+ * 
+ * */
 
 
 
@@ -35,6 +52,13 @@ const router = Router();
  * /user/signup:
  *  post:
  *      summary: Agrega un usuario al sistema
+ *      tags: [User]
+ *      requestBody:
+ *          requiered: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/UserAdd'
  *      responses:
  *          201:
  *              description: Success
@@ -42,6 +66,8 @@ const router = Router();
  *              description: Error de datos inválidos
  *          301: 
  *              description: Error de usuario ya existente
+ *          404:
+ *              description: Error de inexistencia de la compañia ingresada
  */
 router.post( '/user/signup', userCtrl.signUp );
 

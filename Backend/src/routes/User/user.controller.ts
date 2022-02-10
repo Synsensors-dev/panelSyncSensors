@@ -1,11 +1,13 @@
 import { RequestHandler } from "express";
 import User, { IUser } from './user.model';
+import Company from '../Company/company.model';
 import { signToken } from "../../middlewares/jwt";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import config from '../../config/config';
 import Role from "../../models/role.model";
 import { sendEmailForgotPassword, sendFirstRegistrationEmail, sendEmailNewPassword } from "../../middlewares/sendEmail";
+import { Types } from "mongoose";
 
 dotenv.config();
 
@@ -21,6 +23,16 @@ dotenv.config();
     //se validan los atributos
     if ( !name || !email || !id_company ) 
         return res.status(400).send({ success: false, data:{}, message: 'Error: datos inválidos'+ req.body });
+    
+    //se valida el id_company
+    if ( !Types.ObjectId.isValid( id_company) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id_company ingresado no es válido.' });
+
+    const companyFound = await Company.findById( id_company );
+
+    //se válida la existencia de la compañía en el sistema
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
 
     const userFound = await User.findOne({ email });
 

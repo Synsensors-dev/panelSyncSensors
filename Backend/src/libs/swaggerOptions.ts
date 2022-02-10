@@ -15,7 +15,7 @@ export const options = {
 
     },
     apis: [
-        "./src/routes/User/user.controller.ts",
+        "./src/routes/User/user.routes.ts",
     ]
 
 }
