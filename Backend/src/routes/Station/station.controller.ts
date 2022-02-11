@@ -203,11 +203,13 @@ export const deleteStation: RequestHandler = async (req, res) => {
             value = reading.value;
         }
         
-        const unit = config.TYPES.forEach(type => {
-            if ( type.name == sensors[i].type){
-                return sensors[i].letter;
+        //se obtiene la unidad de medida del tipo de sensor
+        let unit;
+        for (let j = 0; j < config.TYPES.length; j++) {
+            if (sensors[i].type == config.TYPES[j].name){
+                unit = config.TYPES[j].letter;
             }
-        });
+        }
 
         //se arma el objeto estación
         const stationPanel = {
@@ -350,7 +352,7 @@ export const stationSensorTypes: RequestHandler = async (req, res) => {
 
     const types = [];
 
-    //Se itera en busca de los tipos de sensores almacenados en la BD
+    //Se itera en busca de los tipos de sensores almacenados en la BD asociados a la compañia ingresada
     for ( let i = 0; i < config.TYPES.length ; i++ ) {
         const type = await Sensor.find({ id_company: id_company }).count({ type: config.TYPES[i].name });
 
@@ -371,16 +373,16 @@ export const stationSensorTypes: RequestHandler = async (req, res) => {
         //se itera en los tipos de sensores
         for (let j = 0; j < types.length; j++ ){
 
-            const quantity_sensor = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": config.TYPES[j].name }).count();
-        
+            const quantity_sensor = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": types[j] }).count();
+            
             // No existe sensor del tipo buscado
             if ( quantity_sensor == 0 ){
                 sensor_status.push('No tiene');
 
             //El sensor está prendido o apagado
             } else {    
-                const quantity_sensor_ON = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": config.TYPES[j].name, "status": true }).count();
-                const quantity_sensor_OFF = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": config.TYPES[j].name, "status": false }).count();
+                const quantity_sensor_ON = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": types[j], "status": true }).count();
+                const quantity_sensor_OFF = await Sensor.find({ "id_station": { "_id":stations_company[i]._id }, "type": types[j], "status": false }).count();
                 
                 //Comparación simple; deduciendo si hay mas sensores prendidos que apagados
                 if ( quantity_sensor_ON >= quantity_sensor_OFF ){
