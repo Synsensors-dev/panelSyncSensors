@@ -42,12 +42,25 @@ export class SensorsService {
    * endpoint que trae los tipos de sensores de una compañia
    * @returns 
    */
-     getSensorTypesOfCompany(){
-      return this.http.get<apiResponse>(this.apiURL+ `sensor/types/${this.auth.getUserCompanyId()}`)
-    }
-  
+  getSensorTypesOfCompany(){
+    return this.http.get<apiResponse>(this.apiURL+ `sensor/types/${this.auth.getUserCompanyId()}`)
+  }
+  /**
+   * 
+   * @param sensorId id sensor
+   * @param minutes Tiempo de ocurrencia de alertas en minutos
+   * @returns Mensaje de exito
+   */
   updateAlertOcurrency(sensorId:any,minutes:number){
     return this.http.put<apiResponse>(this.apiURL+ `sensor/alert_time/${sensorId}`,{alert_time:minutes})
+  }
+  /**
+   * 
+   * @param sensorId id sensor
+   * @returns Alertas asociadas a un sensor
+   */
+  getSensorAlerts(sensorId:any){
+    return this.http.get<apiResponse>(this.apiURL+ `alert/${sensorId}`)
   }
   
 }

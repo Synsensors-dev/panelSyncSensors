@@ -1,9 +1,33 @@
+@import '../../../../../scss/colorPalette.scss';
 .alertsBg{
     width: 60vw;
     height: 300px;
     background-color: whitesmoke;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
+}
+.alerts-body{
+    text-align: center;
+    background-color: whitesmoke;
+    padding-bottom: 10px;
+    .row{
+        align-items: center;
+        padding-block: 5px;
+        border-radius: 15px;
+        background-color: white;
+        margin: 20px;
+        box-shadow: $boxshadow;
+    }
+
+}
+.cil-warning{
+    color: $red;
+    font-size: 20px;
+    position: relative;
+    left: 10px;
+}
+h6{
+    padding: 10px;
 }
 @media (max-width:600px){
     .alertsBg{
