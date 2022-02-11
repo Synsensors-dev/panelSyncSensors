@@ -420,3 +420,33 @@ export const stationSensorTypes: RequestHandler = async (req, res) => {
         message: 'Estaciones y tipos de sensores encontrados con éxito.' 
     });
 }
+
+
+/**
+ * Función encargada de obtener un arreglo con el nombre de las estaciones, latitudes y longitudes
+ * @route Get 'station/coordinates/:id_company'
+ * @param req Request de la petición, se espera que tenga el id de la compañia.
+ * @param res Response, retorna un object con succes: true, data: { Array }, message: "String" si todo sale bien.
+ */
+export const stationCoordinates: RequestHandler = async (req, res) => {
+    const id_company = req.params.id_company;
+
+    //se valida el _id ingresado de la compañia
+    if ( !Types.ObjectId.isValid( id_company ))
+    return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const companyFound = await Company.findById( id_company );
+
+    //Se valida la existencia de la compañia
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
+
+    //se obtienen las estaciones asociadas a la compañia
+    const stations = await Station.find({ "id_company": id_company });
+
+    const stationsFiltered = stations.map( station => {
+        return {'name': station.name, 'latitude': station.latitude, 'longitude': station.longitude };
+    });
+
+    return res.status(200).send({ success: true, data: stationsFiltered, message: "Coordenadas encontradas con éxito."});
+}
