@@ -90,7 +90,7 @@
     
             <div class="data-box-content"
             [class.green]="activeSensors==totalSensors"
-            [class.yellow]="activeSensors!=totalSensors && totalSensors*0.8 < activeSensors"
+            [class.yellow]="activeSensors!=totalSensors"
             [class.red]="activeSensors< totalSensors*0.8">
               {{activeSensors}}/{{totalSensors}}
     
