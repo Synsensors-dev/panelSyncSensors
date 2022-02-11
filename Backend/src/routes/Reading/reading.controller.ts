@@ -83,7 +83,7 @@ export const createReading: RequestHandler = async (req, res) => {
 
 /**
  * Función encargada de obtener las lecturas asociadas a un sensor, ordenadas desde la mas antigua a la más reciente
- * @route Post '/readings/:id_sensor'
+ * @route Get '/readings/:id_sensor'
  * @param req Request de la petición, se espera que tenga el id del sensor
  * @param res Response, retorna un object con succes: true, data: {readings:{}}, message: "String" de las lecturas asociadas al sensor.
  */
@@ -115,3 +115,25 @@ export const sensorReadings: RequestHandler = async (req, res) => {
     
     return res.status(200).send({ success: true, data: sensorReadingsFiltered , message: 'Lecturas asociadas al sensor encontradas con exito.' });
 }
+
+/**
+ * Función encargada de obtener las lecturas asociadas a un sensor, filtradas por 30 días, 3 meses y 6 meses
+ * @route Get '/readings/graphic/:id_sensor'
+ * @param req Request de la petición, se espera que tenga el id del sensor
+ * @param res Response, retorna un object con succes: true, data: {readings:{}}, message: "String" de las lecturas asociadas al sensor.
+ */
+ export const readingSensorGraphic: RequestHandler = async (req, res) => {
+    const id_sensor = req.params.id_sensor;
+
+    //se valida el id_sensor
+    if ( !Types.ObjectId.isValid( id_sensor) )
+    return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id_sensor ingresado no es válido.' });
+
+    const sensorFound = await Sensor.findById( id_sensor );
+
+    //Se valida la existencia del sensor ingresado
+    if ( !sensorFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
+
+    
+ }
