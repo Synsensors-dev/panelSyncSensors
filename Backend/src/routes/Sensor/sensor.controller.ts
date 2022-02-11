@@ -181,12 +181,12 @@ export const typesOfSensors: RequestHandler = async (req, res) => {
 
     //Se itera en busca de los tipos de sensores almacenados en la BD
     for ( let i = 0; i < config.TYPES.length ; i++ ) {
-        const type = await Sensor.find({ id_company: _idCompany }).count({ type: config.TYPES[i] });
+        const type = await Sensor.find({ id_company: _idCompany }).count({ type: config.TYPES[i].name });
 
         //se filtran los tipos de sensores existentes
         if ( type > 0 ){
             const object = {
-                name: config.TYPES[i],
+                name: config.TYPES[i].name,
                 exist: true
             }
 
