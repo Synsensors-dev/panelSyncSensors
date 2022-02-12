@@ -36,10 +36,13 @@
     </div>
 
     <!-- Historial de alertas -->
-    <div class="row">
-
-        <app-sensor-alerts-history></app-sensor-alerts-history>
-
+    <div class="row rw2">
+      <div class="hidden">
+        <div class="scrolleable-box">
+          <app-sensor-alerts-history [sensorId]="sensorId"></app-sensor-alerts-history>
+  
+        </div>
+      </div>
     </div>
 </div>
 
