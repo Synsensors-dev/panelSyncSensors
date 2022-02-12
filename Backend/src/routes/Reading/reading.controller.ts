@@ -136,123 +136,96 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
     if ( !sensorFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
 
-    const date = new Date();
+    const current_date = new Date();
+    const date:any = [];
 
     //si son solicitadas las lecturas de los ultimos 30 días
     if ( time == 30 ){
         const dayInMilliseconds = 1000*60*60*24;
 
         //seteamos la hora a las 0:00:00:00
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
+        current_date.setHours(0);
+        current_date.setMinutes(0);
+        current_date.setSeconds(0);
+        current_date.setMilliseconds(0);
 
-        const days:any = [];
 
         //almacenamos el día actual
-        days[0] = date;
+        date[0] = current_date;
 
         //Bucleamos obteniendo los otros 29 días anteriores
         for ( let i = 1; i < 30 ; i++){
-            days[i] = new Date( days[i-1] - dayInMilliseconds );
+            date[i] = new Date( date[i-1] - dayInMilliseconds );
         }
 
         //invertimos el orden
-        days.reverse();
+        date.reverse();
 
-        let values:any = [];
-
-        for ( let i = 0; i < days.length - 1; i++ ){
-            
-            //Obtenemos las lecturas de cada día
-            let readings_days = await Reading.find({ "id_sensor": id_sensor, "createdAt": {"$gte": days[i], "$lt": days[i+1] }});
-        
-            //verificamos la existencia de lecturas en el mes
-            if ( readings_days.length > 0 ){
-                let reading_prom = 0;
-
-                //sumamos los valores de las lecturas
-                for ( let j = 0; j < readings_days.length; j++ ){
-                    reading_prom += readings_days[j].value;
-                }
-                
-                //calculamos el promedio simple
-                reading_prom = reading_prom / readings_days.length;
-
-                //guardamos el promedio
-                values.push(reading_prom);
-            } else {
-                values.push(null);
-            }
-        }
-
-        //cambiamos el formato de las fechas a aaaa/mm/dd
-        for ( let i = 0; i < days.length; i++ ){
-            days[i] = days[i].toISOString().substring(0,10);
-        }
-
-        return res.status(200).send({ success: true, data:{'time': days, 'readings': values}, message: "Lecturas encontradas con éxito."});
-
-    //si son solicitadas las lecturas  de 3 o 6 meses
     } else {
 
-        const months: any = [];
-
         //almacenamos el ultimo mes
-        months[0] = new Date( date.getFullYear(), date.getMonth() );
+        date[0] = new Date( current_date.getFullYear(), current_date.getMonth() );
 
         //obtenemos los ultimos N° meses
         for (let i = 1; i < time; i++ ) {
 
-            if ( months[i-1].getMonth() == 0 ){
-                months[i] = new Date( months[i-1].getUTCFullYear() - 1, 11 );
+            if ( date[i-1].getMonth() == 0 ){
+                date[i] = new Date( date[i-1].getUTCFullYear() - 1, 11 );
             } else {
-                months[i] = new Date( months[i-1].getFullYear(), months[i-1].getMonth() - 1 );
+                date[i] = new Date( date[i-1].getFullYear(), date[i-1].getMonth() - 1 );
             }
         }
 
         //invertimos el orden
-        months.reverse();
+        date.reverse();
         //insertamos la fecha actual
-        months.push(date);
-
-        let values:any = [];
-
-        //recorremos los meses
-        for ( let i = 0; i < months.length - 1; i++ ){
-            
-            //obtenemos las lecturas de cada mes
-            let readings_month = await Reading.find({ "id_sensor": id_sensor, "createdAt": {"$gte": months[i], "$lt": months[i+1] }});
-
-            //verificamos la existencia de lecturas en el mes
-            if ( readings_month.length > 0 ){
-                let reading_prom = 0;
-
-                //sumamos los valores de las lecturas
-                for ( let j = 0; j < readings_month.length; j++ ){
-                    reading_prom += readings_month[j].value;
-                }
-                
-                //calculamos el promedio simple
-                reading_prom = reading_prom / readings_month.length;
-    
-                //guardamos el promedio
-                values.push(reading_prom);
-            } else {
-                values.push(null);
-            }
-        }
-
-        // Obtenemos un arreglo con los meses
-        const month_names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-        const time_reading_names = [];
-    
-        //pasamos la fecha de formato Date a String para el retorno al front
-        for ( let i = 0; i < months.length - 1; i++ ){
-             time_reading_names[i] =  month_names[months[i].getMonth()];
-        }
-
-        return res.status(200).send({ success: true, data:{'time': time_reading_names, 'readings': values}, message: "Lecturas encontradas con éxito."});
+        date.push(current_date);
     }
+
+    let values:any = [];
+
+    for ( let i = 0; i < date.length - 1; i++ ){
+            
+        //Obtenemos las lecturas de cada día
+        let readings_days = await Reading.find({ "id_sensor": id_sensor, "createdAt": {"$gte": date[i], "$lt": date[i+1] }});
+    
+        //verificamos la existencia de lecturas en el mes
+        if ( readings_days.length > 0 ){
+            let reading_prom = 0;
+
+            //sumamos los valores de las lecturas
+            for ( let j = 0; j < readings_days.length; j++ ){
+                reading_prom += readings_days[j].value;
+            }
+            
+            //calculamos el promedio simple
+            reading_prom = reading_prom / readings_days.length;
+
+            //guardamos el promedio
+            values.push(reading_prom);
+        } else {
+            values.push(null);
+        }
+    }
+
+
+    if ( time == 30 ){
+
+        //cambiamos el formato de las fechas a aaaa/mm/dd
+        for ( let i = 0; i < date.length; i++ ){
+            date[i] = date[i].toISOString().substring(0,10);
+        }
+
+    } else {
+        const month_names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        
+        //pasamos la fecha de formato Date a String para el retorno al front
+        for ( let i = 0; i < date.length - 1; i++ ){
+            date[i] =  month_names[date[i].getMonth()];
+        }
+        //borramos el curret_date
+        date.pop();
+    }
+
+    return res.status(200).send({ success: true, data:{'name_sensor': sensorFound.name, 'time': date, 'readings': values}, message: "Lecturas encontradas con éxito."});
 }
