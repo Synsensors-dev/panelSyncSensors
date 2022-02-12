@@ -11,6 +11,6 @@ router.post('/reading', readingCtrl.createReading);
 router.get('/readings/:id_sensor', readingCtrl.sensorReadings);
 
 // Obtener lista de lecturas asociadas a un sensor, filtradas por 30 días, 3 meses y 6 meses
-router.get('/readings/graphic/:id_sensor', readingCtrl.readingSensorGraphic);
+router.post('/readings/graphic/:id_sensor', readingCtrl.readingSensorGraphic);
 
 export default router;

@@ -118,12 +118,13 @@ export const sensorReadings: RequestHandler = async (req, res) => {
 
 /**
  * Función encargada de obtener las lecturas asociadas a un sensor, filtradas por 30 días, 3 meses y 6 meses
- * @route Get '/readings/graphic/:id_sensor'
+ * @route Post '/readings/graphic/:id_sensor'
  * @param req Request de la petición, se espera que tenga el id del sensor
  * @param res Response, retorna un object con succes: true, data: {readings:{}}, message: "String" de las lecturas asociadas al sensor.
  */
- export const readingSensorGraphic: RequestHandler = async (req, res) => {
+export const readingSensorGraphic: RequestHandler = async (req, res) => {
     const id_sensor = req.params.id_sensor;
+    const time = req.body.time;
 
     //se valida el id_sensor
     if ( !Types.ObjectId.isValid( id_sensor) )
@@ -135,5 +136,123 @@ export const sensorReadings: RequestHandler = async (req, res) => {
     if ( !sensorFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
 
+    const date = new Date();
+
+    //si son solicitadas las lecturas de los ultimos 30 días
+    if ( time == 30 ){
+        const dayInMilliseconds = 1000*60*60*24;
+
+        //seteamos la hora a las 0:00:00:00
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+
+        const days:any = [];
+
+        //almacenamos el día actual
+        days[0] = date;
+
+        //Bucleamos obteniendo los otros 29 días anteriores
+        for ( let i = 1; i < 30 ; i++){
+            days[i] = new Date( days[i-1] - dayInMilliseconds );
+        }
+
+        //invertimos el orden
+        days.reverse();
+
+        let values:any = [];
+
+        for ( let i = 0; i < days.length - 1; i++ ){
+            
+            //Obtenemos las lecturas de cada día
+            let readings_days = await Reading.find({ "id_sensor": id_sensor, "createdAt": {"$gte": days[i], "$lt": days[i+1] }});
+        
+            //verificamos la existencia de lecturas en el mes
+            if ( readings_days.length > 0 ){
+                let reading_prom = 0;
+
+                //sumamos los valores de las lecturas
+                for ( let j = 0; j < readings_days.length; j++ ){
+                    reading_prom += readings_days[j].value;
+                }
+                
+                //calculamos el promedio simple
+                reading_prom = reading_prom / readings_days.length;
+
+                //guardamos el promedio
+                values.push(reading_prom);
+            } else {
+                values.push(null);
+            }
+        }
+
+        //cambiamos el formato de las fechas a aaaa/mm/dd
+        for ( let i = 0; i < days.length; i++ ){
+            days[i] = days[i].toISOString().substring(0,10);
+        }
+
+        return res.status(200).send({ success: true, data:{'time': days, 'readings': values}, message: "Lecturas encontradas con éxito."});
+
+    //si son solicitadas las lecturas  de 3 o 6 meses
+    } else {
+
+        const months: any = [];
+
+        //almacenamos el ultimo mes
+        months[0] = new Date( date.getFullYear(), date.getMonth() );
+
+        //obtenemos los ultimos N° meses
+        for (let i = 1; i < time; i++ ) {
+
+            if ( months[i-1].getMonth() == 0 ){
+                months[i] = new Date( months[i-1].getUTCFullYear() - 1, 11 );
+            } else {
+                months[i] = new Date( months[i-1].getFullYear(), months[i-1].getMonth() - 1 );
+            }
+        }
+
+        //invertimos el orden
+        months.reverse();
+        //insertamos la fecha actual
+        months.push(date);
+
+        let values:any = [];
+
+        //recorremos los meses
+        for ( let i = 0; i < months.length - 1; i++ ){
+            
+            //obtenemos las lecturas de cada mes
+            let readings_month = await Reading.find({ "id_sensor": id_sensor, "createdAt": {"$gte": months[i], "$lt": months[i+1] }});
+
+            //verificamos la existencia de lecturas en el mes
+            if ( readings_month.length > 0 ){
+                let reading_prom = 0;
+
+                //sumamos los valores de las lecturas
+                for ( let j = 0; j < readings_month.length; j++ ){
+                    reading_prom += readings_month[j].value;
+                }
+                
+                //calculamos el promedio simple
+                reading_prom = reading_prom / readings_month.length;
     
- }
+                //guardamos el promedio
+                values.push(reading_prom);
+            } else {
+                values.push(null);
+            }
+        }
+
+        // Obtenemos un arreglo con los meses
+        const month_names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        const time_reading_names = [];
+    
+        //pasamos la fecha de formato Date a String para el retorno al front
+        for ( let i = 0; i < months.length - 1; i++ ){
+             time_reading_names[i] =  month_names[months[i].getMonth()];
+        }
+
+        return res.status(200).send({ success: true, data:{'time': time_reading_names, 'readings': values}, message: "Lecturas encontradas con éxito."});
+    }
+}
