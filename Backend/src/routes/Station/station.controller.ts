@@ -240,8 +240,8 @@ export const deleteStation: RequestHandler = async (req, res) => {
  */
  export const stationGraphic: RequestHandler = async (req, res) => {
     const id_company = req.params.id_company;
-    const type_sensor = req.body.type_sensor;
-
+    const { type_sensor, time }  = req.body;
+  
     //se valida el _id ingresado de la compañia
     if ( !Types.ObjectId.isValid( id_company ))
     return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
@@ -252,27 +252,51 @@ export const deleteStation: RequestHandler = async (req, res) => {
     if ( !companyFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
         
-    const date = new Date();
-    const months: any = [];
+    const current_date = new Date();
+    const date:any = [];
 
-    //almacenamos el ultimo mes
-    months[0] = new Date( date.getFullYear(), date.getMonth() );
+    //si son solicitadas las lecturas de los ultimos 30 días
+    if ( time == 30 ){
+        const dayInMilliseconds = 1000*60*60*24;
 
-    //obtenemos los ultimos 6 meses
-    for (let i = 1; i < 7; i++ ) {
+        //seteamos la hora a las 0:00:00:00
+        current_date.setHours(0);
+        current_date.setMinutes(0);
+        current_date.setSeconds(0);
+        current_date.setMilliseconds(0);
 
-        if (months[i-1].getMonth() == 0){
-            months[i] = new Date( months[i-1].getUTCFullYear() - 1, 11 );
-        } else {
-            months[i] = new Date( months[i-1].getFullYear(), months[i-1].getMonth() - 1 );
+
+        //almacenamos el día actual
+        date[0] = current_date;
+
+        //Bucleamos obteniendo los otros 29 días anteriores
+        for ( let i = 1; i < 30 ; i++){
+            date[i] = new Date( date[i-1] - dayInMilliseconds );
         }
+
+        //invertimos el orden
+        date.reverse();
+
+    } else {
+
+        //almacenamos el ultimo mes
+        date[0] = new Date( current_date.getFullYear(), current_date.getMonth() );
+
+        //obtenemos los ultimos N° meses
+        for (let i = 1; i < time; i++ ) {
+
+            if ( date[i-1].getMonth() == 0 ){
+                date[i] = new Date( date[i-1].getUTCFullYear() - 1, 11 );
+            } else {
+                date[i] = new Date( date[i-1].getFullYear(), date[i-1].getMonth() - 1 );
+            }
+        }
+
+        //invertimos el orden
+        date.reverse();
+        //insertamos la fecha actual
+        date.push(current_date);
     }
-
-    //invertimos el orden
-    months.reverse();
-
-    //insertamos la fecha actual
-    months.push(date);
 
     //Obtenemos las estaciones asociadas a la compañia
     const stations_company = await Station.find({ "id_company": id_company , "readings_station": true });
@@ -284,28 +308,30 @@ export const deleteStation: RequestHandler = async (req, res) => {
         
         let values:any = [];
 
-        //obtenemos las lecturas de los 7 meses asociados a esa estación y al tipo de sensor ingresado
-        for (let i = 0; i < months.length - 1; i++){
+        //obtenemos las lecturas asociadas a esa estación y al tipo de sensor ingresado
+        for (let i = 0; i < date.length - 1; i++){
             
             //obtenemos las lecturas
-            let readings_month = await Reading.find({ "id_station": { "_id":stations_company[k]._id }, "type_sensor": type_sensor , "createdAt": {"$gte": months[i], "$lt": months[i+1] }});
+            let readings_date = await Reading.find({ "id_station": { "_id":stations_company[k]._id }, "type_sensor": type_sensor , "createdAt": {"$gte": date[i], "$lt": date[i+1] }});
             
             //verificamos la existencia de lecturas en el mes
-            if ( readings_month.length > 0 ){
+            if ( readings_date.length > 0 ){
                 let reading_prom = 0;
 
                 //sumamos los valores de las lecturas
-                for ( let j = 0; j < readings_month.length; j++ ){
-                    reading_prom += readings_month[j].value;
+                for ( let j = 0; j < readings_date.length; j++ ){
+                    reading_prom += readings_date[j].value;
                 }
                 
                 //calculamos el promedio simple
-                reading_prom = reading_prom / readings_month.length;
+                reading_prom = reading_prom / readings_date.length;
     
                 //guardamos el promedio
                 values.push(reading_prom);
 
-            } 
+            } else {
+                values.push(null);
+            }
         }
 
         //creamos la estructura del objeto station
@@ -319,15 +345,25 @@ export const deleteStation: RequestHandler = async (req, res) => {
         
     };
 
-    const month_names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    const month_reading_names = [];
+    if ( time == 30 ){
 
-    //pasamos la fecha de formato Date a String para el retorno al front
-    for ( let i = 0; i < months.length - 1; i++ ){
-         month_reading_names[i] =  month_names[months[i].getMonth()];
+        //cambiamos el formato de las fechas a aaaa/mm/dd
+        for ( let i = 0; i < date.length; i++ ){
+            date[i] = date[i].toISOString().substring(0,10);
+        }
+
+    } else {
+        const month_names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        
+        //pasamos la fecha de formato Date a String para el retorno al front
+        for ( let i = 0; i < date.length - 1; i++ ){
+            date[i] =  month_names[date[i].getMonth()];
+        }
+        //borramos el curret_date
+        date.pop();
     }
-    
-    return res.status(200).send({ success: true, data:{"months": month_reading_names, "stations": array_stations}, message: "Estaciones y lecturas encontradas con éxito."});
+
+    return res.status(200).send({ success: true, data:{"time": date, "stations": array_stations}, message: "Estaciones y lecturas encontradas con éxito."});
 }
 
 /**
