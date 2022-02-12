@@ -3,9 +3,9 @@
 </div>
 
 <ng-container>
-    <div class="chartHeader">
+    <div class="chartHeader" [ngClass]="{'hidden': isLoading}">
 
-        <div class="selectButton">
+        <div class="selectButton" >
             <div class="selectTitle">
                 Rango de tiempo:
             </div>

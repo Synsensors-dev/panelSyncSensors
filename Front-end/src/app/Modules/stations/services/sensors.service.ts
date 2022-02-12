@@ -70,7 +70,7 @@ export class SensorsService {
    * @returns readings del sensor en el periodo de tiempo solicitado
    */
   getSensorGraphicReadings(sensorId:any,timeRange:any){
-    return this.http.post<apiResponse>(this.apiURL+ `readings/graphic/${sensorId}`,timeRange)
+    return this.http.post<apiResponse>(this.apiURL+ `readings/graphic/${sensorId}`,{time:timeRange})
 
   }
   
