@@ -30,10 +30,8 @@
                         Ordenar Por
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-                        <a class="dropdown-item">Action</a>
-                        <a class="dropdown-item">Another action</a>
-                        <a class="dropdown-item">Something else here</a>
-                        <a class="dropdown-item">Something else here</a>
+                        <a (click)="sortMaxToMin()"class="dropdown-item">Mayor a menor</a>
+                        <a (click)="sortMinToMax()"class="dropdown-item">Menor a mayor</a>
                     </div>
                 </div>
         </div>
@@ -44,7 +42,7 @@
     
     <div class="row">
 
-        <div (click)="goToSensor(item.sensor.id_sensor,item.name_station,item.sensor.min_config,item.sensor.max_config)" *ngFor="let item of stations" class="card"
+        <div (click)="goToSensor(item.sensor.id_sensor,item.name_station,item.sensor.min_config,item.sensor.max_config)" *ngFor="let item of sortedArray" class="card"
         [ngClass]="{
             'red': item.sensor.last_reading > item.sensor.max_config ||  item.sensor.min_config > item.sensor.last_reading ,
             'green': item.sensor.last_reading > item.sensor.min_config &&  item.sensor.max_config > item.sensor.last_reading,
