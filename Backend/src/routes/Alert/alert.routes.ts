@@ -10,4 +10,7 @@ router.get('/alert/recent/:id_company', alertCtrl.recentAlerts);
 // Obtener la cantidad de alertas de esta semana y un porcentaje asociado a la semana anterior
 router.get('/alert/quantity/:id_company', alertCtrl.quantityAlerts);
 
+//Obtener las alertas asociadas a un sensor
+router.get('/alert/:id_sensor', alertCtrl.sensorAlerts);
+
 export default router;
