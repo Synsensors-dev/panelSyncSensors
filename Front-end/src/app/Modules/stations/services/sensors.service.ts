@@ -32,11 +32,12 @@ export class SensorsService {
   }
   /**
    * Endpoint encargado de traer los reading de los ultimos 7 meses de todas las estaciones para un tipo de sensor.
-   * @param type 
-   * @returns 
+   * @param type tipo de sensores que se solicitan
+   * @param timeRange rango de tiempo de los datos solicitados
+   * @returns readings de todas las estaciones separadas, de un tipo de sensor especifico
    */
-  getSensorReadingsByType(type:string){
-    return this.http.post<apiResponse>(this.apiURL + `panel/graphic/${this.auth.getUserCompanyId()}`,{type_sensor:type})
+  getSensorReadingsByType(type:string,timeRange:any){
+    return this.http.post<apiResponse>(this.apiURL + `panel/graphic/${this.auth.getUserCompanyId()}`,{type_sensor:type,time:timeRange})
   }
     /**
    * endpoint que trae los tipos de sensores de una compañia
@@ -61,6 +62,16 @@ export class SensorsService {
    */
   getSensorAlerts(sensorId:any){
     return this.http.get<apiResponse>(this.apiURL+ `alert/${sensorId}`)
+  }
+  /**
+   * 
+   * @param sensorId Id del sensor
+   * @param timeRange Rango de tiempo (ultimos x dias) en el que se solicitan los datos "30" dias, "3" meses o "6" meses
+   * @returns readings del sensor en el periodo de tiempo solicitado
+   */
+  getSensorGraphicReadings(sensorId:any,timeRange:any){
+    return this.http.post<apiResponse>(this.apiURL+ `readings/graphic/${sensorId}`,timeRange)
+
   }
   
 }
