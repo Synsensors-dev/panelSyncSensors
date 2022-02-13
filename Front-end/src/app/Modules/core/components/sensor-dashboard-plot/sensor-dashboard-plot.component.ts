@@ -14,7 +14,7 @@ export class SensorDashboardPlotComponent implements OnInit {
   selectedOption;
   currentOption; 
   isLoading=true; //Variable que determina si el componente esta cargando o no
-  timeRange:number; //Variable que captura el rango de tiempo en el que se obtendran los datos 30 dias, 3 meses o 6 meses
+  timeRange:number=30; //Variable que captura el rango de tiempo en el que se obtendran los datos 30 dias, 3 meses o 6 meses
 
 
   constructor(private sensorService:SensorsService) { }
