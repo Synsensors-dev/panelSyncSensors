@@ -363,10 +363,11 @@ export const sensorsON: RequestHandler = async (req, res) => {
 }
 
 /**
- * Función encargada de obtener la cantidad total de sensores y los sensores activos de ese total
- * @route Put '/panel/sensors/:id_company'
- * @param req Request de la petición, se espera que tenga el id de la compañia
- * @param res Response, retorna un object con succes: true, data: { }, message: "String" de los sensores de la compañia
+ * Función encargada modificar el valor de custom_alert reiniciandolo al tiempo de alertas por default (30min) y 
+ * apagando (cambiando a false) la variable custom_alert del sensor
+ * @route Put '/sensor/custom_alert/:id'
+ * @param req Request de la petición, se espera que tenga el id del sensor
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" del custom_alert si todo sale bien
  */
 export const customAlertTime: RequestHandler = async (req, res) => {
     const _idSensor = req.params.id;
