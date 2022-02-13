@@ -327,7 +327,10 @@ export const updateAlertTime: RequestHandler = async (req, res) => {
   
     //se actualiza el alert_time desde la BD
     await Sensor.findByIdAndUpdate( _idSensor, { "alert_time": alert_time });
-    
+
+    //se actualiza la variable alerta personalizada en el sensor
+    await Sensor.findByIdAndUpdate( _idSensor, { "custom_alert": true });
+
     return res.status(200).send( { success: true, data:{}, message: 'Alert_time actualizado de manera correcta.'});
 }
 
@@ -357,4 +360,32 @@ export const sensorsON: RequestHandler = async (req, res) => {
         quantitySensors: quantitySensorsCompany,
         quantitySensorsON: quantitySensorsCompanyON
     }, message: 'Cantidad de sensores encontrados con éxito'});
+}
+
+/**
+ * Función encargada de obtener la cantidad total de sensores y los sensores activos de ese total
+ * @route Put '/panel/sensors/:id_company'
+ * @param req Request de la petición, se espera que tenga el id de la compañia
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" de los sensores de la compañia
+ */
+export const customAlertTime: RequestHandler = async (req, res) => {
+    const _idSensor = req.params.id;
+
+    //se valida el _id ingresado del sensor
+    if ( !Types.ObjectId.isValid( _idSensor ) )
+    return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const sensorFound = await Sensor.findById( _idSensor );
+
+    //se valida la existencia del sensor en el sistema
+    if ( !sensorFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
+
+    //se actualiza el valor de custom_alert desde la BD
+    await Sensor.findByIdAndUpdate(_idSensor, {"custom_alert": false});
+
+    //se actualiza el alert_time al valor por default (30min)
+    await Sensor.findByIdAndUpdate(_idSensor, {"alert_time": 30});
+
+    return res.status(200).send( { success: true, data:{}, message: 'Custom_alert actualizada de manera correcta.'});
 }

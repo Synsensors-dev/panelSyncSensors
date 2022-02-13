@@ -27,4 +27,7 @@ router.put('/sensor/alert_time/:id', sensorCtrl.updateAlertTime);
 // Obtener sensores activos 
 router.get('/panel/sensors/:id_company', sensorCtrl.sensorsON);
 
+// Modificar el valor de custom_alert (apagándolo)
+router.put('/sensor/custom_alert/:id', sensorCtrl.customAlertTime);
+
 export default router;
