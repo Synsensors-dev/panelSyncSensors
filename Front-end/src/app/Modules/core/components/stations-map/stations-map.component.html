@@ -4,6 +4,7 @@
         <agm-marker
         *ngFor="let item of stationsCoordinates"
         [latitude]="item.latitude"
+        [label]="{text:item.name,color:'black'}"
         [longitude]="item.longitude"
         [agmFitBounds]="true">
         </agm-marker>
