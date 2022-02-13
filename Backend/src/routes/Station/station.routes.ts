@@ -24,4 +24,7 @@ router.post('/panel/graphic/:id_company', stationCtrl.stationGraphic);
 // Obtener un objeto con las estaciones y los tipos de sensores asociados a ella
 router.get('/panel/stations/types/:id_company', stationCtrl.stationSensorTypes);
 
+// Obtener un arreglo con los nombres de las estaciones, latitudes y longitudes
+router.get('/station/coordinates/:id_company', stationCtrl.stationCoordinates);
+
 export default router;

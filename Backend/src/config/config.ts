@@ -13,8 +13,52 @@ export default {
     LIMIT_READINGS : 100,                   //limite de lecturas a retornar al front en el endpoint sensorReadings
     LIMIT_ALERTS: 20,                       //limite de lecturas a retornar al front en el endpoint recentAlerts
   
-    TYPES : ['TEMPERATURE_LIQUID','TDS','PH',     //tipos de sensores existentes
-    'CO2_GAS', 'TEMPERATURE_AIR','HUMIDITY_AIR', 
-    'SOUND', 'DISSOLVED_OXYGEN ', 'TURBIDITY ',
-    'CONDUCTIVITY','OPTICAL_DUST']
+
+
+    //types of sensors
+    TYPES : [ {
+        name: 'TEMPERATURE_LIQUID',
+        unit: 'Celsius',
+        letter: 'C°'
+    }, {
+        name: 'TDS',
+        unit: 'Miligramos/Litro',
+        letter: 'mg/L'
+    }, {
+        name: 'PH',
+        unit: '',
+        letter: ''
+    }, {
+        name: 'CO2_GAS',
+        unit: 'Partes por millón',
+        letter: 'ppm'
+    }, {
+        name: 'TEMPERATURE_AIR',
+        unit: 'Celsius',
+        letter: 'C°'
+   }, {
+        name: 'HUMIDITY_AIR',
+        unit: 'gramos/metro cubico',
+        letter: 'g/m3'
+    }, {
+        name: 'SOUND',
+        unit: 'decibelio',
+        letter: 'dB'
+    }, {
+        name: 'DISSOLVED_OXYGEN',
+        unit: '',
+        letter: ''
+    }, {
+        name: 'TURBIDITY',
+        unit: '',
+        letter: ''
+    }, {
+        name: 'CONDUCTIVITY',
+        unit: '',
+        letter: ''
+   }, {
+        name: 'OPTICAL_DUST',
+        unit: '',
+        letter: ''
+    }]
 }

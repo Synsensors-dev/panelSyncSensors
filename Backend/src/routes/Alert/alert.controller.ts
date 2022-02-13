@@ -129,3 +129,39 @@ export const quantityAlerts: RequestHandler = async (req, res) => {
         'percentage': percentage
      } , message: 'Cantidad de alertas encontradas con éxito.'});
 }
+
+/**
+* Función encargada de obtener las alertas asociadas a 1 sensor.
+ * @route Get '/alert/:id_sensor'
+ * @param req Request de la petición, se espera que tenga el id del sensor
+ * @param res Response, retorna un object con succes: true, data: { alerts }, message: "String" de las alertas si todo sale bien.
+ */
+export const sensorAlerts: RequestHandler = async (req, res) => {
+    const id_sensor = req.params.id_sensor;
+
+    //se valida el _id ingresado 
+    if ( !Types.ObjectId.isValid( id_sensor ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const sensorFound = await Sensor.findById(id_sensor);
+
+    //Se valida el sensor
+    if (!sensorFound)
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
+
+    //se obtienen las alertas asociadas al sensor
+    const alerts = await Alert.find({ id_sensor }).sort({ createdAt: -1 }).limit( config.LIMIT_ALERTS );
+
+    //se filtran los datos a utilizar desde el arreglo de alertas
+    const alertsFiltered = alerts.map( alert => {
+        return { value: alert.value, date_alert: alert.createdAt.toISOString().substring(0,10), 'hour_alert': alert.createdAt.toISOString().substring(11,19) }
+    });
+
+    //se crea el objeto a retornar
+    const alertSensor = {
+        name_sensor: sensorFound.name,
+        alerts : alertsFiltered
+    }
+
+    return  res.status(200).send({success: true, data: alertSensor , message: 'Alertas del sensor encontradas con éxito.'});
+}

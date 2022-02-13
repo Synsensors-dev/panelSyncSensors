@@ -3,7 +3,7 @@
     <div class="row">
 
         <div class="col stationName green">
-            <p>{{stationName}} - Temperatura</p>
+            <p>{{stationName}} - nombreSensor</p>
         </div>
 
         <div class="col urIcons">
@@ -36,10 +36,13 @@
     </div>
 
     <!-- Historial de alertas -->
-    <div class="row">
-
-        <app-sensor-alerts-history></app-sensor-alerts-history>
-
+    <div class="row rw2">
+      <div class="hidden">
+        <div class="scrolleable-box">
+          <app-sensor-alerts-history [sensorId]="sensorId"></app-sensor-alerts-history>
+  
+        </div>
+      </div>
     </div>
 </div>
 
@@ -49,7 +52,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Sensor Temperatura - {{stationName}}</h4>
+          <h4 class="modal-title">Sensor nombreSensor - {{stationName}}</h4>
           <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

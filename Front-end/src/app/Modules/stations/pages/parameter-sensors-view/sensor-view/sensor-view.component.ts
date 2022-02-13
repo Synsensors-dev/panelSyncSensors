@@ -5,13 +5,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SensorsService } from '../../../services/sensors.service';
 import { apiResponse } from '../../../../shared/interfaces/apiResponse';
 
-
 @Component({
-  selector: 'app-air-temperature-sensor-view',
-  templateUrl: './air-temperature-sensor-view.component.html',
-  styleUrls: ['./air-temperature-sensor-view.component.scss']
+  selector: 'app-sensor-view',
+  templateUrl: './sensor-view.component.html',
+  styleUrls: ['./sensor-view.component.scss']
 })
-export class TemperatureSensorViewComponent implements OnInit {
+export class SensorViewComponent implements OnInit {
 
   @ViewChild('myModal') public myModal: ModalDirective;
   @ViewChild('successModal') public successModal: ModalDirective;
@@ -78,9 +77,6 @@ export class TemperatureSensorViewComponent implements OnInit {
   successModalClose(){
     this.successModal.hide()
   }
-
-
-
 
 
 }

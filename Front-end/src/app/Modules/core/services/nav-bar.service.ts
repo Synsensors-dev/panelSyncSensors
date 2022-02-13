@@ -13,9 +13,4 @@ export class NavBarService {
 
   constructor(private http:HttpClient, private auth:AuthService) { }
 
-  getSensorTypesOfCompany(){
-    return this.http.get<apiResponse>(this.apiURL+ `sensor/types/${this.auth.getUserCompanyId()}`)
-  }
-
-
 }
