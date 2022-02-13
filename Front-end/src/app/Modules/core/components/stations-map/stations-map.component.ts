@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { apiResponse } from '../../../shared/interfaces/apiResponse';
+import { StationsService } from '../../../stations/services/stations.service';
 
 @Component({
   selector: 'app-stations-map',
@@ -7,11 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StationsMapComponent implements OnInit {
 
-  constructor() { }
-  latitude:number=36.7275974;
-  longitude:number=-4.4208521;
+  constructor(private stationsService:StationsService) { }
+  stationsCoordinates=[];
 
   ngOnInit(): void {
+    this.stationsService.getStationCoordinates().subscribe((response:apiResponse)=>{
+      if(response.success){
+        console.log(response)
+        this.stationsCoordinates=response.data;
+
+      }else{
+        console.log(response.message)
+      }
+    })
   }
 
 }

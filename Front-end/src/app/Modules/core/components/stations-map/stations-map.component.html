@@ -1,15 +1,11 @@
 <div class="map-container">
     <agm-map
-    [latitude]="latitude+0.001"
-    [longitude]="longitude"
-    [zoom]="17">
+    [fitBounds]="true">
         <agm-marker
-        [latitude]="latitude+0.001"
-        [longitude]="longitude">
-        </agm-marker>
-        <agm-marker
-        [latitude]="latitude+0.001"
-        [longitude]="longitude+0.001">
+        *ngFor="let item of stationsCoordinates"
+        [latitude]="item.latitude"
+        [longitude]="item.longitude"
+        [agmFitBounds]="true">
         </agm-marker>
     </agm-map>
 </div>
