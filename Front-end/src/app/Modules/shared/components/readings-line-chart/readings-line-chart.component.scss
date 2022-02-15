@@ -1,5 +1,28 @@
 .chart-wrapper{
-    width: 57vw;
+    width: 800px;
+}
+.hidden{
+    display:none;
+}
+.selectButton{
+    position: relative;
+    height: fit-content;
+    float: right;
+    margin: 10px;
+    right: 30px;
+    display: flex;
+    border-radius: 30px;
+    overflow: hidden;
+    align-items: baseline;
+    select{
+        border-radius: 30px;
+        padding-inline: 5px;
+        margin-left: 10px;
+    }
+    .selectTitle{
+        font-weight: bold;
+
+    }
 }
 @media (max-width:600px) {
     .chart-wrapper{

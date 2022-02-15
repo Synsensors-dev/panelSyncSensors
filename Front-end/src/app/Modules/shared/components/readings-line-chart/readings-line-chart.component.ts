@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { customTooltips } from '@coreui/chartjs';
+import { SensorsService } from '../../../stations/services/sensors.service';
 
 @Component({
   selector: 'app-readings-line-chart',
@@ -7,67 +8,75 @@ import { customTooltips } from '@coreui/chartjs';
   styleUrls: ['./readings-line-chart.component.scss']
 })
 export class ReadingsLineChartComponent implements OnInit {
-
-  constructor() { }
+  @Input() sensorId:string;
+  timeRange:number=30;
+  isLoading=true; //Variable que determina si el componente esta cargando o no
+  constructor(private sensorService:SensorsService) { }
 
   ngOnInit(): void {
+    this.sensorService.getSensorGraphicReadings(this.sensorId,this.timeRange).subscribe((response)=>{
+      if(response.success){
+        console.log(response)
+        this.lineChartLabels=response.data.time;
+        this.lineChartData[0].data=response.data.readings;
+        this.lineChartData[0].label=response.data.name_sensor;
+        this.isLoading=false;
+      }else{
+        console.log(response.message)
+      }
+    })
+
+
+  }
+  captureTimeRange(capturedTimeRange){
+    this.isLoading=true;
+    this.timeRange=capturedTimeRange
+    this.sensorService.getSensorGraphicReadings(this.sensorId,this.timeRange).subscribe((response)=>{
+      if(response.success){
+        console.log(response)
+        this.lineChartLabels=response.data.time;
+        this.lineChartData[0].data=response.data.readings;
+        this.lineChartData[0].label=response.data.name_sensor;
+        this.isLoading=false;
+      }else{
+        console.log(response.message)
+      }
+    })
+
   }
 
-  public lineChart1Data: Array<any> = [
+  public lineChartData=[
     {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Series A'
-    }
-  ];
-  public lineChart1Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  /*public lineChart1Options: any = {
-    tooltips: {
-      enabled: false,
-      custom: customTooltips
-    },
-    responsive:false,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          //color: 'transparent',
-          //zeroLineColor: 'transparent'
-        },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
+      label:"",
+      data:[]
+    }]
+  ;
+  public lineChartLabels: Array<any>;
+  public lineChartType="line"
+  public lineChartOptions={
+    responsive: true,
+    transitions:{
+      show: {
+        animations: {
+          x: {
+            from: 0
+          },
+          y: {
+            from: 0
+          }
         }
-
-      }],
-      yAxes: [{
-        display: false,
-        ticks: {
-          display: false,
-          min: 40 - 5,
-          max: 84 + 5,
+      },
+      hide: {
+        animations: {
+          x: {
+            to: 0
+          },
+          y: {
+            to: 0
+          }
         }
-      }],
-    },
-    elements: {
-      line: {
-        borderWidth: 1
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    },
-    legend: {
-      display: false
+      }
     }
-  };
-  public lineChart1Colours: Array<any> = [
-    {
-      borderColor: 'rgba(255,255,255,.55)'
-    }
-  ];
-  public lineChart1Legend = false;*/
-  public lineChart1Type = 'line';
+  }
 
 }

@@ -2,8 +2,20 @@
     <app-loading-spinner></app-loading-spinner>
 </div>
 
-<ng-container *ngIf="!isLoading">
-    <div class="chartHeader">
+<ng-container>
+    <div class="chartHeader" [ngClass]="{'hidden': isLoading}">
+
+        <div class="selectButton" >
+            <div class="selectTitle">
+                Rango de tiempo:
+            </div>
+            <select (change)="captureTimeRange($event.target.value)">
+                <option value="30">Ultimos 30 Días</option>
+                <option value="3">Ultimos 3 Meses</option>
+                <option value="6">Ultimos 6 meses</option>
+            </select>
+        </div>
+
         <div class="selectButton">
             <div class="selectTitle">
                 Tipo de Sensor:
@@ -14,7 +26,7 @@
         </div>
     </div>
     
-    <div class="chart-wrapper">
+    <div class="chart-wrapper" [ngClass]="{'hidden': isLoading}">
         <canvas baseChart class="chart"
                 [datasets]="lineChartData"
                 [labels]="lineChartLabels"

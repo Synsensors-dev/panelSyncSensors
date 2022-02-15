@@ -27,4 +27,8 @@ export class StationsService {
       return this.http.get<apiResponse>(this.apiURL + `panel/stations/types/${this.auth.getUserCompanyId()}`)
     }
 
+    getStationCoordinates(){
+      return this.http.get<apiResponse>(this.apiURL + `station/coordinates/${this.auth.getUserCompanyId()}`)
+    }
+
 }
