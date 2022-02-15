@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --build",
     "clean": "tsc --build --clean",
-    "start": "node index",
+    "start": "node index.js",
     "serve": "npm run build && node dist/index.js",
     "dev:serve": "nodemon --watch './**/*.ts' --exec \"ts-node\" src/index.ts"
   },

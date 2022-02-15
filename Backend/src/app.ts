@@ -7,6 +7,8 @@ import passportMiddleware from './middlewares/passport'
 import { createRoles } from "./libs/initialSetup";
 import { statusValidator } from "./libs/statusValidator";
 
+let path=require('path');
+
 // Load enviroments variables
 dotenv.config();
 
@@ -27,12 +29,16 @@ const corsConfig: CorsOptions = {
 app.set('port', process.env.PORT || 4000);
 
 // Middlewares
+app.use('/',express.static('client',{redirect:false})) //para produccion
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors(corsConfig));
 app.use(passport.initialize());
 passport.use(passportMiddleware);
+app.get('*',function(req,res,next){
+    return res.sendFile(path.resolve('client/index.html')); //para produccion
+});
 
 // Routes
 app.use(indexRoutes);
