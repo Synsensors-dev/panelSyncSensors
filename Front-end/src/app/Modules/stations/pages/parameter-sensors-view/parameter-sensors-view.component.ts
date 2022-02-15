@@ -14,6 +14,7 @@ import { StationsService } from '../../services/stations.service';
 export class ParameterSensorsViewComponent implements OnInit {
 
   stations:panelStation[]
+  sortedArray=[];
   sensorParameterName:string;
   param;
   constructor(
@@ -32,6 +33,7 @@ export class ParameterSensorsViewComponent implements OnInit {
         if(response.success){
           console.log(response)
           this.stations=response.data
+          this.sortedArray=this.stations;
           console.log(this.stations)
         }else{
           console.log(response.message);
@@ -43,6 +45,32 @@ export class ParameterSensorsViewComponent implements OnInit {
 
   goToSensor(id:any,name:any,minConfig:any,maxConfig:any){
     this.router.navigate([`stations/${this.sensorParameterName}/sensor`],{state:{sensorId:id,stationName:name,min_config:minConfig,max_config:maxConfig}});
+  }
+  sortMinToMax(){
+    this.sortedArray=this.stations.sort((n1,n2)=>{
+      if(n1.sensor.last_reading>n2.sensor.last_reading){
+        return 1;
+
+      }
+      if(n1.sensor.last_reading<n2.sensor.last_reading){
+        return -1;
+      }
+      return 0;
+    })
+  }
+  sortMaxToMin(){
+
+    this.sortedArray=this.stations.sort((n1,n2)=>{
+      if(n1.sensor.last_reading<n2.sensor.last_reading){
+        return 1;
+
+      }
+      if(n1.sensor.last_reading>n2.sensor.last_reading){
+        return -1;
+      }
+      return 0;
+    })
+
   }
 
 }
