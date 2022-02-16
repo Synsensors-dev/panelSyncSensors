@@ -7,6 +7,7 @@ import { createRoles } from "./libs/initialSetup";
 import { statusValidator } from "./libs/statusValidator";
 
 let path=require('path');
+let cors=require('cors')
 
 // Load enviroments variables
 dotenv.config();
@@ -23,6 +24,9 @@ statusValidator();
 app.set('port', process.env.PORT || 4000);
 
 // Middlewares
+app.use(cors({
+    origin: '*'
+  }));
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
