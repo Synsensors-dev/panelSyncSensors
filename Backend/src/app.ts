@@ -34,7 +34,6 @@ app.use(passport.initialize());
 passport.use(passportMiddleware);
 
 app.use(function (req, res, next) {
-
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -42,7 +41,7 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
 
     res.setHeader('Allow','GET, POST, OPTIONS, PUT, PATCH, DELETE')
     // Pass to next layer of middleware
@@ -50,10 +49,11 @@ app.use(function (req, res, next) {
 });
 
 
-app.use('/',express.static('client',{redirect:false})) //para produccion
 
 // Routes
 app.use(indexRoutes);
+
+app.use('/',express.static('client',{redirect:false})) //para produccion
 
 app.get('*',function(req,res,next){
     return res.sendFile(path.resolve('client/index.html')); //para produccion
