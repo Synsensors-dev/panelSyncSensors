@@ -1,0 +1,27 @@
+<div class="alertsBg">
+    <div class="container">
+        <h6>Historial de alertas: Sensor {{sensorName}}</h6>
+    </div>
+    <hr>
+
+    <div class="alerts-body">
+
+        <div *ngFor="let item of sensorAlerts" class="row">
+                <i class="cil-warning red"></i>
+
+            <div class="col">
+                Valor:&nbsp;{{item.value}}
+                
+            </div>
+            <div class="col">
+                Fecha:&nbsp;{{item.date_alert}}
+                
+            </div>
+            <div class="col">
+                Hora:&nbsp;{{item.hour_alert}}
+            </div>
+        </div>
+
+    </div>
+
+</div>
