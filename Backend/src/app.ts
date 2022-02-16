@@ -29,8 +29,8 @@ const corsConfig: CorsOptions = {
 app.set('port', process.env.PORT || 4000);
 
 // Middlewares
-app.options('*', cors())
-app.use(cors())
+app.use(cors());
+app.options('*', cors());
 app.use('/',express.static('client',{redirect:false})) //para produccion
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
