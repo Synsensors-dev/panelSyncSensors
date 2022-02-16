@@ -23,13 +23,13 @@ const corsConfig: CorsOptions = {
     origin: '*',
     credentials: true
 };
-app.options('*', cors(corsConfig));
 
 // Settings
 app.set('port', process.env.PORT || 4000);
 
 // Middlewares
 app.use(cors(corsConfig));
+app.options('*', cors(corsConfig));
 app.use('/',express.static('client',{redirect:false})) //para produccion
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
