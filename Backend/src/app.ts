@@ -1,6 +1,5 @@
 import express from 'express';
 import morgan from 'morgan';
-import cors, { CorsOptions } from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
 import passportMiddleware from './middlewares/passport'
@@ -24,7 +23,6 @@ statusValidator();
 app.set('port', process.env.PORT || 4000);
 
 // Middlewares
-app.use(cors());
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
