@@ -8,7 +8,6 @@ import { createRoles } from "./libs/initialSetup";
 import { statusValidator } from "./libs/statusValidator";
 
 let path=require('path');
-let cors=require('cors')
 
 // Load enviroments variables
 dotenv.config();
