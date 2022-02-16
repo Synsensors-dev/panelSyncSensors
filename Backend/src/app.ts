@@ -29,7 +29,6 @@ app.set('port', process.env.PORT || 4000);
 
 // Middlewares
 app.use(cors(corsConfig));
-app.options('*', cors(corsConfig));
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
