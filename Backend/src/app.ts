@@ -1,5 +1,4 @@
 import express from 'express';
-import cors, { CorsOptions } from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import passport from 'passport';
@@ -17,21 +16,9 @@ import indexRoutes from './routes/index.routes';
 
 // Config variables
 const app = express();
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With,Content-Type,Accept'
-    );
-    next();
-  });
 createRoles();
 statusValidator();
 
-const corsConfig: CorsOptions = {
-    origin: '*',
-    credentials: true
-};
 
 
 
@@ -43,14 +30,31 @@ app.set('port', process.env.PORT || 4000);
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors(corsConfig));
 app.use(passport.initialize());
 passport.use(passportMiddleware);
 
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
+
+    res.setHeader('Allow','GET, POST, OPTIONS, PUT, PATCH, DELETE')
+    // Pass to next layer of middleware
+    next();
+});
+
+
+app.use('/',express.static('client',{redirect:false})) //para produccion
 
 // Routes
 app.use(indexRoutes);
-app.use('/',express.static('client',{redirect:false})) //para produccion
+
 app.get('*',function(req,res,next){
     return res.sendFile(path.resolve('client/index.html')); //para produccion
 });
