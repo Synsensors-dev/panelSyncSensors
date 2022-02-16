@@ -29,13 +29,12 @@ app.set('port', process.env.PORT || 4000);
 
 // Middlewares
 app.use(cors(corsConfig));
-app.options('*', cors(corsConfig));
-app.use('/',express.static('client',{redirect:false})) //para produccion
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(passport.initialize());
 passport.use(passportMiddleware);
+app.use('/',express.static('client',{redirect:false})) //para produccion
 app.get('*',function(req,res,next){
     return res.sendFile(path.resolve('client/index.html')); //para produccion
 });
