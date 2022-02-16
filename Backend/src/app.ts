@@ -21,7 +21,7 @@ createRoles();
 statusValidator();
 
 const corsConfig: CorsOptions = {
-    origin: process.env.ORIGIN_FRONT_IP,
+    origin: '*',
     credentials: true
 };
 
@@ -30,10 +30,6 @@ const corsConfig: CorsOptions = {
 // Settings
 app.set('port', process.env.PORT || 4000);
 
-app.use('/',express.static('client',{redirect:false})) //para produccion
-app.get('*',function(req,res,next){
-    return res.sendFile(path.resolve('client/index.html')); //para produccion
-});
 
 // Middlewares
 app.use(morgan('dev'));
@@ -46,5 +42,9 @@ passport.use(passportMiddleware);
 
 // Routes
 app.use(indexRoutes);
+app.use('/',express.static('client',{redirect:false})) //para produccion
+app.get('*',function(req,res,next){
+    return res.sendFile(path.resolve('client/index.html')); //para produccion
+});
 
 export default app;
