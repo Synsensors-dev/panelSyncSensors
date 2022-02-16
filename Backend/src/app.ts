@@ -19,13 +19,17 @@ import indexRoutes from './routes/index.routes';
 const app = express();
 createRoles();
 statusValidator();
+let corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200 
+ }
 
 // Settings
 app.set('port', process.env.PORT || 4000);
 
 // Middlewares
-app.use(cors())
-app.options('*', cors())
+app.use(cors(corsOptions))
+app.options('*', cors(corsOptions))
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
