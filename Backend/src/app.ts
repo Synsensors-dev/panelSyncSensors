@@ -53,10 +53,10 @@ app.use(function (req, res, next) {
 // Routes
 app.use(indexRoutes);
 
-app.use('/',express.static('client',{redirect:false})) //para produccion
+/*app.use('/',express.static('client',{redirect:false})) //para produccion
 
 app.get('*',function(req,res,next){
     return res.sendFile(path.resolve('client/index.html')); //para produccion
-});
+});*/
 
 export default app;
