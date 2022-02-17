@@ -35,7 +35,7 @@ passport.use(passportMiddleware);
 
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://190.215.196.186:4000');
+    res.setHeader('Access-Control-Allow-Origin', 'http://190.215.196.186:4000 ,http://localhost:*/, http://localhost:4000/, localhost:4000 , 190.215.196.186:4000 , *');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
