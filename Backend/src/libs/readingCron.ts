@@ -43,14 +43,12 @@ export const createReadingsCron =  () => {
 
             //se almacena en el sensor el token y se actualiza el status
             await Sensor.findByIdAndUpdate( sensor._id, { "token_reading": token , "status": true});
-
-            console.log ("se agregó lectura en el sensor: "+ sensor._id);
         });
     });
 }
 
 /**
- * Función encargada de ingresar lecturas al sistema de manera automática con la finalidad de probar
+ * Función encargada de ingresar lecturas y alertas al sistema de manera automática con la finalidad de probar
  * y/o testear el hostig vps
  * */
  export const createAlertCron =  () => {
@@ -102,8 +100,6 @@ export const createReadingsCron =  () => {
             //se almacena la fecha y hora de la alerta en el sensor
             const last_alert = new Date();
             await Sensor.findByIdAndUpdate( sensor._id ,{ "last_alert": last_alert });
-
-            console.log ("se agregó lectura y alerta en el sensor: "+ sensor._id);
         });
     });
 }
