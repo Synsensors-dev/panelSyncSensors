@@ -49,11 +49,11 @@ app.use(function (req, res, next) {
 });
 
 
+app.use('/',express.static('client',{redirect:false})) //para produccion
 
 // Routes
 app.use(indexRoutes);
 
-app.use('/',express.static('client',{redirect:false})) //para produccion
 
 
 app.get('*',function(req,res,next){
