@@ -5,6 +5,7 @@ import passport from 'passport';
 import passportMiddleware from './middlewares/passport'
 import { createRoles } from "./libs/initialSetup";
 import { statusValidator } from "./libs/statusValidator";
+import { createReadingsCron } from "./libs/readingCron";
 
 let path=require('path');
 
@@ -18,7 +19,7 @@ import indexRoutes from './routes/index.routes';
 const app = express();
 createRoles();
 statusValidator();
-
+createReadingsCron();
 
 
 

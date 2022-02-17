@@ -7,12 +7,14 @@ export default {
     SECONDS_MINUTE : 60,                    //variable utilizada para convertir ciertos parametros numericos 
     MILISECONDS_MINUTE : 60000,             //variable utilizada para convertir ciertos parametros numericos 
     SECONDS_DAY: 86400,                     //variable utilizada para generar token en el endpoint signUp
-    TIME_STATUS_VALIDATOR: "* * * 12 *",     //variable que indica el margen de tiempo en que se inicia el statusValidator (1 minuto)
-
+    TIME_STATUS_VALIDATOR: "* * * 12 *",    //variable que indica el margen de tiempo en que se inicia el statusValidator (1 minuto)
+    TIME_READING_CRON: "* * * * 12",         //variable que indica el tiempo de cración de lecturas por parte del cron
+    TIME_ALERT_CRON: "30 * * * 12",          //variable que indica el tiempo de cración de alertas por parte del cron
     //quantity
     LIMIT_READINGS : 100,                   //limite de lecturas a retornar al front en el endpoint sensorReadings
     LIMIT_ALERTS: 20,                       //limite de lecturas a retornar al front en el endpoint recentAlerts
-  
+    
+    ID_COMPANY_TESTER: "620dd2bf208318e3b53fbf4e",           //id de la compañia creada para testear
 
 
     //types of sensors
