@@ -2,6 +2,7 @@ import cron from 'node-cron';
 import config from '../config/config';
 import Sensor from '../routes/Sensor/sensor.model';
 import Reading from '../routes/Reading/reading.model';
+import { signToken } from "../middlewares/jwt";
 
 /**
  * Función encargada de ingresar lecturas al sistema de manera automática con la finalidad de probar
@@ -37,6 +38,12 @@ export const createReadingsCron =  () => {
             //se ingresa a la BD
             const readingSaved = new Reading(newReading);
             await readingSaved.save();
+
+            //se genera el token de lectura
+            const token = signToken( readingSaved._id , (sensor.frecuency * config.SECONDS_MINUTE  + config.ALPHA )); 
+
+            //se almacena en el sensor el token y se actualiza el status
+            await Sensor.findByIdAndUpdate( sensor._id, { "token_reading": token , "status": true});
 
             console.log ("se agregó lectura en el sensor: "+ sensor._id);
         });
