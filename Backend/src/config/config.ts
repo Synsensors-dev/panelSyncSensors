@@ -9,7 +9,8 @@ export default {
     SECONDS_DAY: 86400,                     //variable utilizada para generar token en el endpoint signUp
     TIME_STATUS_VALIDATOR: "* * * 12 *",    //variable que indica el margen de tiempo en que se inicia el statusValidator (1 minuto)
     TIME_READING_CRON: "* * * * *",         //variable que indica el tiempo de cración de lecturas por parte del cron
-    TIME_ALERT_CRON: "30 * * * 12",          //variable que indica el tiempo de cración de alertas por parte del cron
+    TIME_ALERT_CRON: "30 * * * *",          //variable que indica el tiempo de cración de alertas por parte del cron
+    
     //quantity
     LIMIT_READINGS : 100,                   //limite de lecturas a retornar al front en el endpoint sensorReadings
     LIMIT_ALERTS: 20,                       //limite de lecturas a retornar al front en el endpoint recentAlerts
