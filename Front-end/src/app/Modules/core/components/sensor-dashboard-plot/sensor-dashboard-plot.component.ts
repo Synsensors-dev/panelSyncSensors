@@ -1,5 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '../../../shared/services/translate.service';
 import { SensorsService } from '../../../stations/services/sensors.service';
 
 @Component({
@@ -12,12 +13,13 @@ export class SensorDashboardPlotComponent implements OnInit {
   selectSensorTypes=[]; //para guardar tipos de sensor
   //variables del select para capturar selección
   selectedOption;
-  currentOption; 
+  currentOption;
+  spanishSensorsTypes;
   isLoading=true; //Variable que determina si el componente esta cargando o no
   timeRange:number=30; //Variable que captura el rango de tiempo en el que se obtendran los datos 30 dias, 3 meses o 6 meses
 
 
-  constructor(private sensorService:SensorsService) { }
+  constructor(private sensorService:SensorsService,private translate:TranslateService) { }
 
   ngOnInit(): void {
     this.sensorService.getSensorTypesOfCompany().subscribe((response)=>{
@@ -86,9 +88,14 @@ export class SensorDashboardPlotComponent implements OnInit {
     })
 
   }
+  toSpanish(item){
+    return this.translate.itemToSpanish(item)
+  }
   captureTimeRange(timeCaptured){
     this.isLoading=true;
     this.timeRange=timeCaptured;
+    this.currentOption=this.selectedOption;
+    console.log(this.currentOption)
     this.sensorService.getSensorReadingsByType(this.currentOption,this.timeRange).subscribe((response)=>{
       if(response.success){
         this.isLoading=false;
