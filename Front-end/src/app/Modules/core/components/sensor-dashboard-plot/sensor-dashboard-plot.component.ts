@@ -95,7 +95,6 @@ export class SensorDashboardPlotComponent implements OnInit {
     this.isLoading=true;
     this.timeRange=timeCaptured;
     this.currentOption=this.selectedOption;
-    console.log(this.currentOption)
     this.sensorService.getSensorReadingsByType(this.currentOption,this.timeRange).subscribe((response)=>{
       if(response.success){
         this.isLoading=false;
