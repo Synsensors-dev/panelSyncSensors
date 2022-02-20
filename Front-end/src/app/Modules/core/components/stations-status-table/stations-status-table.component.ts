@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { apiResponse } from '../../../shared/interfaces/apiResponse';
+import { TranslateService } from '../../../shared/services/translate.service';
 import { StationsService } from '../../../stations/services/stations.service';
 
 @Component({
@@ -14,13 +15,14 @@ export class StationsStatusTableComponent implements OnInit {
   stations=[]
   isLoading=true;
 
-  constructor(private stationsService:StationsService) { }
+  constructor(private stationsService:StationsService, private translate:TranslateService) { }
 
   ngOnInit(): void {
     this.stationsService.getStationsStatus().subscribe((response)=>{
       if(response.success){
         this.isLoading=false;
         this.typesOfSensors=response.data.types_of_sensors;
+        this.translate.arrayToSpanish(this.typesOfSensors)
         this.stations=response.data.stations;
       }else{
         console.log(response.message);

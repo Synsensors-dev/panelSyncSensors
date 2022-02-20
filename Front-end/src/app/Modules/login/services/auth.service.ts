@@ -3,13 +3,14 @@ import {HttpClient} from '@angular/common/http'
 import { apiResponse } from '../../shared/interfaces/apiResponse';
 import { loginReq, typeUser } from '../interfaces/user';
 import { Router } from '@angular/router';
+import { bckEndapiURL } from '../../../bckEndRoute';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiURL= 'http://localhost:4000/'
+  private apiURL= bckEndapiURL
   private user_company_id:string;
 
   constructor(private http:HttpClient, private router:Router) { }
