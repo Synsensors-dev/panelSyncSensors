@@ -4,6 +4,8 @@ import {ModalDirective } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SensorsService } from '../../../services/sensors.service';
 import { apiResponse } from '../../../../shared/interfaces/apiResponse';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-sensor-view',
@@ -78,5 +80,34 @@ export class SensorViewComponent implements OnInit {
     this.successModal.hide()
   }
 
+  makePDF(){
+    var element = document.getElementById("pdfContent");
+    /*html2canvas(element).then((canvas)=>{
+      var imgData=canvas.toDataURL('image/png')
+      var doc = new jsPDF()
+      var imgHeight= canvas.height*208/canvas.width;
+      doc.addImage(imgData,0,0,208,imgHeight);
+      doc.save("sensor.pdf")
+    })*/
 
+
+    html2canvas((element),{
+        onclone: function (clonedDoc) {
+            clonedDoc.getElementById('upperBar').style.display = 'none';
+            clonedDoc.getElementById('scBox').style.height='100%';
+            clonedDoc.getElementById('scBox').style.overflowY='none';
+            clonedDoc.getElementById('hidden').style.height='100%';
+            clonedDoc.getElementById('rw2').style.height='100%';
+            var hg=clonedDoc.getElementById('rw2').clientHeight;
+            var newHg=clonedDoc.getElementById('pdfContent').clientHeight+hg;
+            clonedDoc.getElementById('pdfContent').style.height=`${newHg}px` 
+        }
+    }).then((canvas)=>{
+      var imgData=canvas.toDataURL('image/png')
+      var doc = new jsPDF()
+      var imgHeight= canvas.height*208/canvas.width;
+      doc.addImage(imgData,0,0,208,imgHeight);
+      doc.save("sensor.pdf")
+    })
+    }
 }

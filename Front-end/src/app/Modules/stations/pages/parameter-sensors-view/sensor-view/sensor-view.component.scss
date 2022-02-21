@@ -45,10 +45,11 @@ input{
     justify-content: right;
 }
 .scrolleable-box{
+    height: 300px;
     overflow-y:auto;
 }
 .hidden{
-    overflow:hidden;
     border-radius: 30px;
-    box-shadow: $boxshadow;
+    border: solid 1px lightgray;
+    overflow: hidden;
 }
