@@ -12,9 +12,11 @@ import { apiResponse } from '../../../../shared/interfaces/apiResponse';
 })
 export class SensorViewComponent implements OnInit {
 
-  @ViewChild('myModal') public myModal: ModalDirective;
+  @ViewChild('sensorConfigModal') public sensorConfigModal: ModalDirective;
+  @ViewChild('sensorDataModal') public sensorDataModal: ModalDirective;
   @ViewChild('successModal') public successModal: ModalDirective;
-  public sensorForm:FormGroup;
+  public sensorConfigForm:FormGroup;
+  public sensorDataForm:FormGroup;
 
 
   constructor(private location:Location , private fb:FormBuilder , private sensorsService:SensorsService) { }
@@ -33,30 +35,39 @@ export class SensorViewComponent implements OnInit {
     this.min_config=this.retainer.min_config
     this.max_config=this.retainer.max_config
 
-    this.sensorForm=this.fb.group({
+    this.sensorConfigForm=this.fb.group({
       min_config:[],
       max_config:[],
       alert_days:[],
       alert_hours:[],
       alert_minutes:[]
     })
-    this.sensorForm.get('min_config').setValue(this.min_config)
-    this.sensorForm.get('max_config').setValue(this.max_config)
+    this.sensorDataForm=this.fb.group({
+      sensorName:['',Validators.required],
+      stationName:['',Validators.required],
+    })
+    this.sensorConfigForm.get('min_config').setValue(this.min_config)
+    this.sensorConfigForm.get('max_config').setValue(this.max_config)
   }
-  saveChanges(){
+  uploadConfigChanges(){
     this.updateMaxMin();
     this.updateAlertOcurrency();
+  }
+  uploadDataChanges(){
+    console.log(this.sensorDataForm.get('sensorName').value)
+    console.log(this.sensorDataForm.get('stationName').value)
+
   }
 
   updateMaxMin(){
 
     this.sensorsService.updateSensorMinMax(
       this.sensorId,
-      this.sensorForm.get('min_config').value,
-      this.sensorForm.get('max_config').value).
+      this.sensorConfigForm.get('min_config').value,
+      this.sensorConfigForm.get('max_config').value).
       subscribe((response:apiResponse)=>{
         if(response.success){
-          this.myModal.hide()
+          this.sensorConfigModal.hide()
           this.successModal.show()
         }else{
           console.log(response.message);
@@ -64,7 +75,7 @@ export class SensorViewComponent implements OnInit {
     })   
   }
   updateAlertOcurrency(){
-    let totalMinutes:number = this.sensorForm.get('alert_days').value*1440 + this.sensorForm.get('alert_hours').value*60 + this.sensorForm.get('alert_minutes').value
+    let totalMinutes:number = this.sensorConfigForm.get('alert_days').value*1440 + this.sensorConfigForm.get('alert_hours').value*60 + this.sensorConfigForm.get('alert_minutes').value
     console.log(totalMinutes)
     this.sensorsService.updateAlertOcurrency(this.sensorId,totalMinutes).subscribe((response)=>{
       if(response.success){

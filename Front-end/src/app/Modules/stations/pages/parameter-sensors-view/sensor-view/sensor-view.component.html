@@ -13,11 +13,12 @@
                   <i class="green icon-settings"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-                  <p class="dropdown-item" data-toggle="modal" (click)="myModal.show()">Editar Sensor</p>
+                  <p class="dropdown-item" data-toggle="modal" (click)="sensorConfigModal.show()">Editar Configuración del Sensor</p>
+                  <p class="dropdown-item" data-toggle="modal" (click)="sensorDataModal.show()">Editar Datos del Sensor</p>
                 </div>
             </div>
 
-            <div class="btn-group float-right" dropdown>
+            <div *ngIf="0" class="btn-group float-right" dropdown>
                 <button type="button" class="btn btn-transparent" disabled="true">
                     <i class="cil-wifi-signal-4 green"></i>
                 </button>
@@ -46,20 +47,20 @@
     </div>
 </div>
 
-<!-- Modal para editar sensor -->
+<!-- Modal para editar configuracion del sensor -->
  
-<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div bsModal #sensorConfigModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Sensor nombreSensor - {{stationName}}</h4>
-          <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+          <button type="button" class="close" (click)="sensorConfigModal.hide()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
 
-          <form [formGroup]="sensorForm">
+          <form [formGroup]="sensorConfigForm">
             <div class="section-title">
               <h4>Limites de medida</h4>
               <p>Límites superiores e inferiores del sensor, en caso de que se detecte una lectura fuera del límite establecido se emitirá una alerta</p>
@@ -156,8 +157,8 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="myModal.hide()">Cerrar</button>
-          <button type="button" class="btn btn-primary" (click)="saveChanges()">Guardar Cambios</button>
+          <button type="button" class="btn btn-secondary" (click)="sensorConfigModal.hide()">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="uploadConfigChanges()">Guardar Cambios</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -178,6 +179,71 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="successModalClose()">Cerrar</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <!--Modal para editar nombre sensor y estación-->
+  <div bsModal #sensorDataModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Sensor nombreSensor - {{stationName}}</h4>
+          <button type="button" class="close" (click)="sensorDataModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form [formGroup]="sensorDataForm">
+            <div class="section-title">
+              <h4>Nombre del Sensor</h4>
+            </div>
+
+              
+
+            <div class="row">
+
+                      <p class="label">Límite inferior de medida</p>
+                      <div class="input-group mgtop">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-arrow-down"></i></span>
+                          </div>
+                          <input
+                          type="text"
+                          id="sensorName"
+                          formControlName="sensorName"
+                          >
+                      </div>
+
+         
+            </div>
+            <hr>
+            <div class="section-title">
+              <h4>Nombre de la estación</h4>
+            </div>
+
+            <div class="row">
+                <p class="label">Días</p>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-clock"></i></span>
+                    </div>
+                    <input
+                    id="stationName"
+                    type="text"
+                    formControlName="stationName"
+                    >
+                </div>
+            </div>
+
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="sensorDataModal.hide()">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="uploadDataChanges()">Guardar Cambios</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
