@@ -53,3 +53,11 @@ input{
     border: solid 1px lightgray;
     overflow: hidden;
 }
+.reportTitles{
+    display:none;
+    h3,h5{
+        width: fit-content;
+        text-align: center;
+        margin: auto;
+    }
+}

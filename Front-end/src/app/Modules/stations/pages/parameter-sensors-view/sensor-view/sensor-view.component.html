@@ -1,20 +1,26 @@
 <div class="container" id="pdfContent">
     <!-- Barra superior -->
-    <div class="row" id="upperBar">
+    <div class="row">
 
         <div class="col stationName green">
             <p>{{stationName}} - nombreSensor</p>
         </div>
+        <div class="col">
+          <div class="reportTitles" id="show">
+            <h3>Reporte</h3>
+            <h5>Generado: {{actualDay}} </h5>
+          </div>
+        </div>
 
         <div class="col urIcons">
-
+          <div class="icons" id="upperBar">
             <div class="btn-group float-right" dropdown>
-                <button type="button" class="btn btn-transparent" dropdownToggle>
-                  <i class="green icon-settings"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-                  <p class="dropdown-item" data-toggle="modal" (click)="myModal.show()">Editar Sensor</p>
-                </div>
+              <button type="button" class="btn btn-transparent" dropdownToggle>
+                <i class="green icon-settings"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                <p class="dropdown-item" data-toggle="modal" (click)="myModal.show()">Editar Sensor</p>
+              </div>
             </div>
 
             <div (click)="makePDF()" class="btn-group float-right" dropdown>
@@ -22,6 +28,9 @@
                     <i class="cil-wifi-signal-4 green"></i>
                 </button>
             </div>
+          </div>
+
+
 
         </div>
         

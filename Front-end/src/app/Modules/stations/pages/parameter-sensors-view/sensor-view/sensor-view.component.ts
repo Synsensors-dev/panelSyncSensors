@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { Component, OnInit ,ViewChild} from '@angular/core';
 import {ModalDirective } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -19,15 +19,19 @@ export class SensorViewComponent implements OnInit {
   public sensorForm:FormGroup;
 
 
-  constructor(private location:Location , private fb:FormBuilder , private sensorsService:SensorsService) { }
+  constructor(private location:Location , private fb:FormBuilder , private sensorsService:SensorsService , private datePipe:DatePipe) { }
   sensorId:any
   retainer:any //Recibe el objeto con la informacion que viene en la ruta
   stationName:any 
   max_config:any
   min_config:any
+  aux:any
+  actualDay:any
 
   ngOnInit(): void {
     //getState() retorna el state enviado a esta ruta, es decir un objeto con el id de la estacion
+    this.aux=new Date();
+    this.actualDay=this.datePipe.transform(this.aux,"yyyy-MM-dd");
     this.retainer=this.location.getState()
     console.log(this.retainer)
     this.sensorId=this.retainer.sensorId
@@ -94,6 +98,7 @@ export class SensorViewComponent implements OnInit {
     html2canvas((element),{
         onclone: function (clonedDoc) {
             clonedDoc.getElementById('upperBar').style.display = 'none';
+            clonedDoc.getElementById('show').style.display = 'block';
             clonedDoc.getElementById('scBox').style.height='100%';
             clonedDoc.getElementById('scBox').style.overflowY='none';
             clonedDoc.getElementById('hidden').style.height='100%';
