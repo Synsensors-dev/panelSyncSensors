@@ -115,7 +115,7 @@ export const quantityAlerts: RequestHandler = async (req, res) => {
     
     const date = new Date(); //fecha actual
 
-    //se definen los tiempos de inicio de la semana actual y la anterior + las 3 hrs de la zona horaria
+    //se definen los tiempos de inicio de la semana actual y la anterior
     const current_week = new Date( date.getTime() - config.WEEK_IN_MILISECONDS );
     const last_week = new Date (date.getTime() - (config.WEEK_IN_MILISECONDS * 2) ) ;
 

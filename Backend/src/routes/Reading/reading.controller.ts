@@ -256,7 +256,7 @@ export const companyReadings: RequestHandler = async (req, res) => {
     if ( !companyFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
 
-    //se captura la fecha actual compensando la zona horaria
+    //se captura la fecha actual 
     const current_week = new Date();
 
     //se calcula la semana anterior en función de la fecha actual
