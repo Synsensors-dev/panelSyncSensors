@@ -237,6 +237,12 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
     return res.status(200).send({ success: true, data:{'name_sensor': sensorFound.name, 'time': date, 'readings': values}, message: "Lecturas encontradas con éxito."});
 }
 
+/**
+ * Función encargada de obtener la cantidad de lecturas asociadas a una compañia
+ * @route Get '/readings/week/:id_company'
+ * @param req Request de la petición, se espera que tenga el id de la Compañia
+ * @param res Response, retorna un object con succes: true, data: {}, message: "String" de las lecturas asociadas a la compañia.
+ */
 export const companyReadings: RequestHandler = async (req, res) => {
     const id_company = req.params.id_company;
 
@@ -250,7 +256,14 @@ export const companyReadings: RequestHandler = async (req, res) => {
     if ( !companyFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
 
-    const date = new Date( new Date() + );
+    //se captura la fecha actual compensando la zona horaria
+    const current_week = new Date();
 
+    //se calcula la semana anterior en función de la fecha actual
+    const last_week = new Date( current_week.getTime() - config.WEEK_IN_MILISECONDS);
 
+    //se obtienen las lecturas de la ultima semana
+    const quantity_readings = await Reading.find({ "id_company": id_company, "createdAt": {"$gte": last_week} }).count(); 
+
+    return res.status(200).send({ success: true, data:{ "quantity": quantity_readings }, message: "Lecturas encontradas con éxito."});
 }
