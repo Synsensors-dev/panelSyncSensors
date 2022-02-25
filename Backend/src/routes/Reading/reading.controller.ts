@@ -105,12 +105,17 @@ export const sensorReadings: RequestHandler = async (req, res) => {
 
     //Se invierte el arreglo para enviarlo desde la lectura mas antigua a la mas nueva
     sensorReadings.reverse();
-
-
-    const sensorReadingsFiltered = sensorReadings.map( reading => { return {
+   
+    const sensorReadingsFiltered = sensorReadings.map( reading => { 
+       
+        //se compensa la zona horaria a la local con respecto a la almacenada en la bd
+        const date = new Date(reading.createdAt.getTime() - config.TIME_ZONE);
+        
+        return {
         _id: reading._id,
         value: reading.value,
-        timestamp: reading.createdAt
+        timestamp: date.toISOString().substring(0,19)  
+
     }});
     
     return res.status(200).send({ success: true, data: sensorReadingsFiltered , message: 'Lecturas asociadas al sensor encontradas con exito.' });
@@ -136,7 +141,8 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
     if ( !sensorFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
 
-    const current_date = new Date();
+    //Se compensa la zona horaria
+    const current_date = new Date(new Date().getTime() + config.TIME_ZONE);
     const date:any = [];
 
     //si son solicitadas las lecturas de los ultimos 30 días
