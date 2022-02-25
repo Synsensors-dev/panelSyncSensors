@@ -279,7 +279,7 @@ export const readPanelStations: RequestHandler = async (req, res) => {
             value = reading.value;
         }
         
-        //se arama el objeto estación
+        //se arma el objeto estación
         const stationPanel = {
             id_station: station._id,
             name_station: station.name,

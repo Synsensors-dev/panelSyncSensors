@@ -143,7 +143,7 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
 
     //Se compensa la zona horaria
-    const current_date = new Date(new Date().getTime() + config.TIME_ZONE);
+    const current_date = new Date();
     const date:any = [];
 
     //si son solicitadas las lecturas de los ultimos 30 días
