@@ -77,11 +77,14 @@ export const recentAlerts: RequestHandler = async (req, res) => {
         //se obtiene la estación asociada a la alerta
         const station = await Station.findById(  alerts[i].id_station );
 
+        //se compensa la zona horaria
+        const date_alert = new Date (alerts[i].createdAt.getTime() - config.TIME_ZONE);
+
         //Se estructura el objecto a retornar dentro del arreglo
         const object = {
             'name_station': station.name,
-            'date_alert': alerts[i].createdAt.toISOString().substring(0,10),
-            'hour_alert': alerts[i].createdAt.toISOString().substring(11,19)
+            'date_alert': date_alert.toISOString().substring(0,10),
+            'hour_alert': date_alert.toISOString().substring(11,19) 
         };
 
         //se almacenan los datos en el arreglo
@@ -111,11 +114,10 @@ export const quantityAlerts: RequestHandler = async (req, res) => {
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
     
     const date = new Date(); //fecha actual
-    const week = 7*24*60*60*1000 // 1 semana en milisegundos
 
-    //se definen los tiempos de inicio de la semana actual y la anterior
-    const current_week = new Date( date.getTime() - week );
-    const last_week = new Date (date.getTime() - (week * 2)) ;
+    //se definen los tiempos de inicio de la semana actual y la anterior + las 3 hrs de la zona horaria
+    const current_week = new Date( date.getTime() - config.WEEK_IN_MILISECONDS + config.TIME_ZONE);
+    const last_week = new Date (date.getTime() - (config.WEEK_IN_MILISECONDS * 2) + config.TIME_ZONE) ;
 
     //se obtiene la cantidad de alertas de la semana actual y la semana anterior
     const quantityAlertCurrentWeek = await Alert.find({ "id_company": id_company , "createdAt": {"$gte": current_week}} ).count();
@@ -152,9 +154,14 @@ export const sensorAlerts: RequestHandler = async (req, res) => {
     //se obtienen las alertas asociadas al sensor
     const alerts = await Alert.find({ id_sensor }).sort({ createdAt: -1 }).limit( config.LIMIT_ALERTS );
 
+
     //se filtran los datos a utilizar desde el arreglo de alertas
     const alertsFiltered = alerts.map( alert => {
-        return { value: alert.value, date_alert: alert.createdAt.toISOString().substring(0,10), 'hour_alert': alert.createdAt.toISOString().substring(11,19) }
+
+        //se compensa la zona horaria a la local con respecto a la almacenada en la bd
+        const date = new Date(alert.createdAt.getTime() - config.TIME_ZONE);
+        
+        return { value: alert.value, date_alert: date.toISOString().substring(0,10), 'hour_alert': alert.createdAt.toISOString().substring(11,19) }
     });
 
     //se crea el objeto a retornar

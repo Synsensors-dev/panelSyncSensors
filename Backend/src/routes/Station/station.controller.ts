@@ -252,8 +252,9 @@ export const deleteStation: RequestHandler = async (req, res) => {
     //Se valida la existencia de la compañia
     if ( !companyFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
-        
-    const current_date = new Date();
+    
+    //se compenza la zona horaria
+    const current_date = new Date( new Date().getTime() + config.TIME_ZONE);
     const date:any = [];
 
     //si son solicitadas las lecturas de los ultimos 30 días
