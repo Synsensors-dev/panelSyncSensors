@@ -217,6 +217,7 @@ export const deleteStation: RequestHandler = async (req, res) => {
             name_station: station.name,
             sensor: {
                 id_sensor: sensors[i]._id, 
+                name: sensors[i].name,
                 min_config: sensors[i].min_config,
                 max_config: sensors[i].max_config,
                 type: sensors[i].type,
