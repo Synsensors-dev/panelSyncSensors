@@ -141,33 +141,63 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
     if ( !sensorFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
 
-    //Se compensa la zona horaria
-    const current_date = new Date(new Date().getTime() + config.TIME_ZONE);
+    const current_date = new Date();
     const date:any = [];
 
-    //si son solicitadas las lecturas de los ultimos 30 días
-    if ( time == 30 ){
-        const dayInMilliseconds = 1000*60*60*24;
+    //Hours
+    if ( time == 12 || time == 24){
 
-        //seteamos la hora a las 0:00:00:00
-        current_date.setHours(0);
-        current_date.setMinutes(0);
-        current_date.setSeconds(0);
-        current_date.setMilliseconds(0);
+        const last_hour = new Date();
 
+        //seteamos la ultima hora
+        last_hour.setMinutes(0);
+        last_hour.setSeconds(0);
+        last_hour.setMilliseconds(0);
 
-        //almacenamos el día actual
-        date[0] = current_date;
+        //almacenamos la ultima hora completa
+        date[0] = last_hour;
 
-        //Bucleamos obteniendo los otros 29 días anteriores
-        for ( let i = 1; i < 30 ; i++){
-            date[i] = new Date( date[i-1] - dayInMilliseconds );
+        //Bucleamos obteniendo las horas restantes 
+        for ( let i = 1; i < time ; i++){
+            date[i] = new Date( date[i-1] - config.MILISECONDS_HOUR);
         }
 
         //invertimos el orden
         date.reverse();
+        
+        //almacenamos la hora actual (con sus minutos extras)
+        date.push(current_date);
+    }
 
-    } else {
+
+    //Days
+    if ( time == 7 || time == 30 ){
+
+        const last_day = new Date();
+
+        //seteamos la hora a las 0:00:00:00
+        last_day.setHours(0);
+        last_day.setMinutes(0);
+        last_day.setSeconds(0);
+        last_day.setMilliseconds(0);
+
+        //almacenamos el día actual
+        date[0] = last_day;
+
+        //Bucleamos obteniendo los otros 29 días anteriores
+        for ( let i = 1; i < time ; i++){
+            date[i] = new Date( date[i-1] - config.MILISECONDS_DAY );
+        }
+
+        //invertimos el orden
+        date.reverse();
+        
+        //insertamos la fecha actual
+        date.push(current_date);
+    } 
+
+    //Months
+    if ( time == 3 || time == 6 ){
 
         //almacenamos el ultimo mes
         date[0] = new Date( current_date.getFullYear(), current_date.getMonth() );
@@ -184,10 +214,20 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
 
         //invertimos el orden
         date.reverse();
+        
         //insertamos la fecha actual
         date.push(current_date);
     }
 
+
+    return res.status(200).send({ success: true, data:{date}, message: "Lecturas encontradas con éxito."});
+
+    
+
+
+
+
+/*
     let values:any = [];
 
     for ( let i = 0; i < date.length - 1; i++ ){
@@ -234,4 +274,5 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
     }
 
     return res.status(200).send({ success: true, data:{'name_sensor': sensorFound.name, 'time': date, 'readings': values}, message: "Lecturas encontradas con éxito."});
+*/
 }
