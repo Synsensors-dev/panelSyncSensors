@@ -3,6 +3,7 @@ import { Types } from 'mongoose';
 import Reading from './reading.model'
 import Sensor from '../Sensor/sensor.model';
 import Station from '../Station/station.model';
+import Company from '../Company/company.model';
 import { createAlert } from '../Alert/alert.controller';
 import { signToken } from "../../middlewares/jwt";
 import config from '../../config/config'
@@ -228,4 +229,22 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
     }
 
     return res.status(200).send({ success: true, data:{'name_sensor': sensorFound.name, 'time': date, 'readings': values}, message: "Lecturas encontradas con éxito."});
+}
+
+export const companyReadings: RequestHandler = async (req, res) => {
+    const id_company = req.params.id_company;
+
+    //se valida el id_company
+    if ( !Types.ObjectId.isValid( id_company) )
+    return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id_sensor ingresado no es válido.' });
+
+    const companyFound = await Company.findById( id_company );
+
+    //Se valida la existencia de la compañia ingresada
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
+
+    const date = new Date( new Date() + );
+
+
 }
