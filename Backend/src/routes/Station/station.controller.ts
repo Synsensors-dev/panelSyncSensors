@@ -5,7 +5,7 @@ import Company from '../Company/company.model';
 import Reading from '../Reading/reading.model';
 import Sensor from '../Sensor/sensor.model';
 import config from '../../config/config'
-import { createTimeArray , createTimeFormat} from '../../middlewares/createTimeArray';
+import { createTimeArray , createTimeFormat } from '../../middlewares/createTime';
 
 /**
  * Función encargada de agregar una nueva estación al sistema. 

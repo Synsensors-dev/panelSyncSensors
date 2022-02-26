@@ -6,7 +6,7 @@ import Station from '../Station/station.model';
 import { createAlert } from '../Alert/alert.controller';
 import { signToken } from "../../middlewares/jwt";
 import config from '../../config/config'
-import { createTimeArray , createTimeFormat} from '../../middlewares/createTimeArray';
+import { createTimeArray , createTimeFormat } from '../../middlewares/createTime';
 
 
 /**
