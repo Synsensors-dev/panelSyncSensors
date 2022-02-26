@@ -5,6 +5,7 @@ import Company from '../Company/company.model';
 import Reading from '../Reading/reading.model';
 import Sensor from '../Sensor/sensor.model';
 import config from '../../config/config'
+import { createTimeArray , createTimeFormat} from '../../middlewares/createTimeArray';
 
 /**
  * Función encargada de agregar una nueva estación al sistema. 
@@ -252,52 +253,12 @@ export const deleteStation: RequestHandler = async (req, res) => {
     if ( !companyFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
     
-    //se compenza la zona horaria
-    const current_date = new Date( new Date().getTime() + config.TIME_ZONE);
-    const date:any = [];
-
-    //si son solicitadas las lecturas de los ultimos 30 días
-    if ( time == 30 ){
-        const dayInMilliseconds = 1000*60*60*24;
-
-        //seteamos la hora a las 0:00:00:00
-        current_date.setHours(0);
-        current_date.setMinutes(0);
-        current_date.setSeconds(0);
-        current_date.setMilliseconds(0);
-
-
-        //almacenamos el día actual
-        date[0] = current_date;
-
-        //Bucleamos obteniendo los otros 29 días anteriores
-        for ( let i = 1; i < 30 ; i++){
-            date[i] = new Date( date[i-1] - dayInMilliseconds );
-        }
-
-        //invertimos el orden
-        date.reverse();
-
-    } else {
-
-        //almacenamos el ultimo mes
-        date[0] = new Date( current_date.getFullYear(), current_date.getMonth() );
-
-        //obtenemos los ultimos N° meses
-        for (let i = 1; i < time; i++ ) {
-
-            if ( date[i-1].getMonth() == 0 ){
-                date[i] = new Date( date[i-1].getUTCFullYear() - 1, 11 );
-            } else {
-                date[i] = new Date( date[i-1].getFullYear(), date[i-1].getMonth() - 1 );
-            }
-        }
-
-        //invertimos el orden
-        date.reverse();
-        //insertamos la fecha actual
-        date.push(current_date);
+    //se valida el time
+    if ( time!=12 && time!=24 && time!=7 && time!=30 && time!=3 && time!=6 ){
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: el valor de time es inválido.' });
     }
+    
+    const date = createTimeArray(time);
 
     //Obtenemos las estaciones asociadas a la compañia
     const stations_company = await Station.find({ "id_company": id_company , "readings_station": true });
@@ -305,33 +266,33 @@ export const deleteStation: RequestHandler = async (req, res) => {
     let array_stations:any = [];
 
     //iteramos en las estaciones obtenidas
-    for (let k=0; k < stations_company.length; k++) {
+    for (let k = 0; k < stations_company.length; k++) {
         
-        let values:any = [];
+        //se obtienen todas las lecturas dentro del margen de fechas
+        const readings = await Reading.find({ "id_station": stations_company[k]._id, "type_sensor":type_sensor, "createdAt": {"$gte": date[0], "$lte": date[ date.length - 1] }}).sort({ createdAt: 1 });
 
-        //obtenemos las lecturas asociadas a esa estación y al tipo de sensor ingresado
-        for (let i = 0; i < date.length - 1; i++){
-            
-            //obtenemos las lecturas
-            let readings_date = await Reading.find({ "id_station": { "_id":stations_company[k]._id }, "type_sensor": type_sensor , "createdAt": {"$gte": date[i], "$lt": date[i+1] }});
-            
-            //verificamos la existencia de lecturas en el mes
-            if ( readings_date.length > 0 ){
-                let reading_prom = 0;
+        let values = [];
 
-                //sumamos los valores de las lecturas
-                for ( let j = 0; j < readings_date.length; j++ ){
-                    reading_prom += readings_date[j].value;
-                }
+        //se procesan las lecturas separandolas por cada tipo de time
+        for ( let i = 0 ; i < date.length - 1; i++){
+
+            let sum = 0;
+            let count = 0;
+
+            //bucleamos en las lecturas
+            for ( let j = 0; j < readings.length; j++){
                 
-                //calculamos el promedio simple
-                reading_prom = reading_prom / readings_date.length;
-    
-                //guardamos el promedio
-                values.push(reading_prom);
+                if ( readings[j].createdAt >= date[i] && readings[j].createdAt < date[i+1]){
+                    sum += readings[j].value;
+                    count ++;
+                }
+            }
 
+            if (count == 0 ){
+                values.push(0)
             } else {
-                values.push(null);
+                //se almacena el promedio
+                values.push(sum / count);
             }
         }
 
@@ -346,23 +307,7 @@ export const deleteStation: RequestHandler = async (req, res) => {
         
     };
 
-    if ( time == 30 ){
-
-        //cambiamos el formato de las fechas a aaaa/mm/dd
-        for ( let i = 0; i < date.length; i++ ){
-            date[i] = date[i].toISOString().substring(0,10);
-        }
-
-    } else {
-        const month_names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-        
-        //pasamos la fecha de formato Date a String para el retorno al front
-        for ( let i = 0; i < date.length - 1; i++ ){
-            date[i] =  month_names[date[i].getMonth()];
-        }
-        //borramos el curret_date
-        date.pop();
-    }
+    createTimeFormat(date, time);
 
     return res.status(200).send({ success: true, data:{"time": date, "stations": array_stations}, message: "Estaciones y lecturas encontradas con éxito."});
 }
