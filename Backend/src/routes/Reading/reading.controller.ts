@@ -122,7 +122,7 @@ export const sensorReadings: RequestHandler = async (req, res) => {
 }
 
 /**
- * Función encargada de obtener las lecturas asociadas a un sensor, filtradas por 30 días, 3 meses y 6 meses
+ * Función encargada de obtener las lecturas asociadas a un sensor, filtradas por 12hrs, 24hrs, 7 días, 30 días, 3 meses y 6 meses
  * @route Post '/readings/graphic/:id_sensor'
  * @param req Request de la petición, se espera que tenga el id del sensor
  * @param res Response, retorna un object con succes: true, data: {readings:{}}, message: "String" de las lecturas asociadas al sensor.
@@ -140,6 +140,11 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
     //Se valida la existencia del sensor ingresado
     if ( !sensorFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
+
+    //se valida el time
+    if ( time!=12 && time!=24 && time!=7 && time!=30 && time!=3 && time!=6 ){
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: el valor de time es inválido.' });
+    }
 
     const current_date = new Date();
     const date:any = [];
@@ -169,7 +174,6 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
         date.push(current_date);
     }
 
-
     //Days
     if ( time == 7 || time == 30 ){
 
@@ -191,7 +195,7 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
 
         //invertimos el orden
         date.reverse();
-        
+
         //insertamos la fecha actual
         date.push(current_date);
     } 
@@ -219,60 +223,65 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
         date.push(current_date);
     }
 
+    //se obtienen todas las lecturas dentro del margen de fechas
+    const readings = await Reading.find({ "id_sensor": id_sensor, "createdAt": {"$gte": date[0], "$lte": date[ date.length - 1] }}).sort({ createdAt: 1 });
 
-    return res.status(200).send({ success: true, data:{date}, message: "Lecturas encontradas con éxito."});
+    let values = [];
 
-    
+    //se procesan las lecturas separandolas por cada tipo de time
+    for ( let i = 0 ; i < date.length - 1; i++){
 
+        let sum = 0;
+        let count = 0;
 
-
-
-/*
-    let values:any = [];
-
-    for ( let i = 0; i < date.length - 1; i++ ){
+        //bucleamos en las lecturas
+        for ( let j = 0; j < readings.length; j++){
             
-        //Obtenemos las lecturas de cada día
-        let readings_days = await Reading.find({ "id_sensor": id_sensor, "createdAt": {"$gte": date[i], "$lt": date[i+1] }});
-    
-        //verificamos la existencia de lecturas en el mes
-        if ( readings_days.length > 0 ){
-            let reading_prom = 0;
-
-            //sumamos los valores de las lecturas
-            for ( let j = 0; j < readings_days.length; j++ ){
-                reading_prom += readings_days[j].value;
+            if ( readings[j].createdAt >= date[i] && readings[j].createdAt < date[i+1]){
+                sum += readings[j].value;
+                count ++;
             }
-            
-            //calculamos el promedio simple
-            reading_prom = reading_prom / readings_days.length;
+        }
 
-            //guardamos el promedio
-            values.push(reading_prom);
+        if (count == 0 ){
+            values.push(0)
         } else {
-            values.push(null);
+            //se almacena el promedio
+            values.push(sum / count);
         }
     }
 
-
-    if ( time == 30 ){
-
-        //cambiamos el formato de las fechas a aaaa/mm/dd
-        for ( let i = 0; i < date.length; i++ ){
-            date[i] = date[i].toISOString().substring(0,10);
-        }
-
-    } else {
-        const month_names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    //Cambiamos el formato de las horas
+    if ( time == 12 || time == 24 ){
         
-        //pasamos la fecha de formato Date a String para el retorno al front
-        for ( let i = 0; i < date.length - 1; i++ ){
-            date[i] =  month_names[date[i].getMonth()];
+        for ( let i = 0; i < date.length; i++ ){
+            date[i] = date[i].getHours();
         }
-        //borramos el curret_date
-        date.pop();
     }
+
+    //Cambiamos el formato de los días
+    if ( time == 7 || time == 30 ){
+
+        for ( let i = 0; i < date.length; i++ ){
+            const date_time_zone = new Date( date[i].getTime() - config.TIME_ZONE);
+
+            date[i] = date_time_zone.toISOString().substring(0,10);
+        }
+    } 
+
+    //Cambiamos el formato de los meses
+    if ( time == 3 || time == 6 ){
+        const month_names = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+        
+        for ( let i = 0; i < date.length - 1; i++ ){
+            const date_time_zone = new Date( date[i].getTime() - config.TIME_ZONE);
+
+            date[i] =  month_names[date_time_zone.getMonth()];
+        }
+    }
+
+    //Se borra la ultima fecha
+    date.pop();
 
     return res.status(200).send({ success: true, data:{'name_sensor': sensorFound.name, 'time': date, 'readings': values}, message: "Lecturas encontradas con éxito."});
-*/
 }
