@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { SharedModule } from '../../../shared/shared.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -26,6 +26,7 @@ import { SensorViewComponent } from './sensor-view/sensor-view.component';
     ModalModule.forRoot(),
     ReactiveFormsModule
     
-  ]
+  ],
+  providers:[DatePipe]
 })
 export class ParameterSensorsViewModule { }
