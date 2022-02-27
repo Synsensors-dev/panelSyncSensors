@@ -42,14 +42,11 @@
           <div class="data-box box">
     
             <div class="data-box-title">
-              Uptime del Sistema
+              Numero de lecturas en la ultima semana
             </div>
     
-            <div class="data-box-content"
-            [class.green]="systemUptime>96"
-            [class.yellow]="systemUptime<=96 && systemUptime>90"
-            [class.red]="systemUptime<90">
-                {{systemUptime}}%
+            <div class="data-box-content green">
+                {{numberOfReadings}}
             </div>
     
             <div *ngIf="systemUptimeDanger" class="data-box-footer">
