@@ -21,12 +21,19 @@
     font-size: 20px;
     color:green
 }
+.switch{
+    margin-left: 10px;
+}
 .row{
     justify-content: center;
     margin-block: 10px;
 }
-.section-title p{
+.section-subtitle p{
     color: gray;
+}
+.section-title{
+    display:flex;
+    flex-direction: row;
 }
 .label{
     text-align: center;
@@ -51,4 +58,14 @@ input{
     overflow:hidden;
     border-radius: 30px;
     box-shadow: $boxshadow;
+}
+.hrow{
+   justify-content: left;
+   h5{
+       margin-left: 30px;
+   }
+}
+.defaultAlertMessage{
+    text-align: center;
+    color:lightblue;
 }

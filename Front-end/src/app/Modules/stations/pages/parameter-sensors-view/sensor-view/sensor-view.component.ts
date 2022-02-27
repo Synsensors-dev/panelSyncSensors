@@ -18,13 +18,15 @@ export class SensorViewComponent implements OnInit {
 
 
   constructor(private location:Location , private fb:FormBuilder , private sensorsService:SensorsService) { }
-  sensorId:any
-  retainer:any //Recibe el objeto con la informacion que viene en la ruta
-  stationName:any 
-  max_config:any
-  min_config:any
+  sensorId:any;
+  retainer:any; //Recibe el objeto con la informacion que viene en la ruta
+  stationName:any; 
+  max_config:any;
+  min_config:any;
+  isChecked:any;
 
   ngOnInit(): void {
+    this.isChecked=true;
     //getState() retorna el state enviado a esta ruta, es decir un objeto con el id de la estacion
     this.retainer=this.location.getState()
     console.log(this.retainer)
@@ -76,6 +78,10 @@ export class SensorViewComponent implements OnInit {
   }
   successModalClose(){
     this.successModal.hide()
+  }
+
+  alertSwitch(){
+    this.isChecked=!this.isChecked
   }
 
 
