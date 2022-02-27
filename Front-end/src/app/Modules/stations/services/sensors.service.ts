@@ -73,5 +73,12 @@ export class SensorsService {
     return this.http.post<apiResponse>(this.apiURL+ `readings/graphic/${sensorId}`,{time:timeRange})
 
   }
+  /**
+   * 
+   * @returns objeto con el numero de readings de la ultima semana de la compañia con la que una cuenta tenga una sesión iniciada.
+   */
+  getNumberOfReadingsLastWeek(){
+    return this.http.get<apiResponse>(this.apiURL+ `readings/week/${this.auth.getUserCompanyId()}`)
+  }
   
 }

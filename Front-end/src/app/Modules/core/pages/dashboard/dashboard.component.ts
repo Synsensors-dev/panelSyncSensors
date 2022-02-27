@@ -1,4 +1,6 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
+import { apiResponse } from '../../../shared/interfaces/apiResponse';
 import { SensorsService } from '../../../stations/services/sensors.service';
 import { DashboardAlertsService } from '../../services/dashboard-alerts.service';
 
@@ -12,6 +14,7 @@ export class DashboardComponent implements OnInit {
   systemUptimeDanger:boolean=false;
 
   numberOfAlerts:number;
+  numberOfReadings:number;
   dangerNumberOfAlerts:number=20;
   numberOfAlertsDanger:boolean;
   numberOfAlertsPercentage:number;
@@ -25,7 +28,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.dashboardAlertsService.getQuantityOfRecentAlerts().subscribe((response)=>{
+    this.dashboardAlertsService.getQuantityOfRecentAlerts().subscribe((response:apiResponse)=>{
       if(response.success){
         this.numberOfAlerts=response.data.quantity_alerts;
         this.numberOfAlertsPercentage=response.data.pertencage;
@@ -39,7 +42,7 @@ export class DashboardComponent implements OnInit {
       }
     })
 
-    this.sensorsService.getActiveSensors().subscribe((response)=>{
+    this.sensorsService.getActiveSensors().subscribe((response:apiResponse)=>{
       if(response.success){
         this.totalSensors=response.data.quantitySensors;
         this.activeSensors=response.data.quantitySensorsON;
@@ -50,6 +53,14 @@ export class DashboardComponent implements OnInit {
         }
       }else{
         console.log(response.message);
+      }
+    })
+
+    this.sensorsService.getNumberOfReadingsLastWeek().subscribe((response:apiResponse)=>{
+      if(response.success){
+        this.numberOfReadings=response.data.quantity;
+      }else{
+        console.log(response.message)
       }
     })
 
