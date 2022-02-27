@@ -35,6 +35,10 @@ const sensorSchema = new Schema({
         type: Date,
         default: null
     },
+    custom_alert: {
+        type: Boolean,
+        default: false
+    },
     token_reading: {
         type: String,
         default: null,

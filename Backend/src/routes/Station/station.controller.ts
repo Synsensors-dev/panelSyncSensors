@@ -217,6 +217,7 @@ export const deleteStation: RequestHandler = async (req, res) => {
             name_station: station.name,
             sensor: {
                 id_sensor: sensors[i]._id, 
+                name: sensors[i].name,
                 min_config: sensors[i].min_config,
                 max_config: sensors[i].max_config,
                 type: sensors[i].type,
@@ -251,7 +252,8 @@ export const deleteStation: RequestHandler = async (req, res) => {
     //Se valida la existencia de la compañia
     if ( !companyFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
-        
+    
+    //se compenza la zona horaria
     const current_date = new Date();
     const date:any = [];
 

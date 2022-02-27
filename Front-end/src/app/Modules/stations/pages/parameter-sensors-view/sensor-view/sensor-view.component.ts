@@ -27,8 +27,11 @@ export class SensorViewComponent implements OnInit {
   min_config:any
   aux:any
   actualDay:any
+   isChecked:any;
+
 
   ngOnInit(): void {
+    this.isChecked=true;
     //getState() retorna el state enviado a esta ruta, es decir un objeto con el id de la estacion
     this.aux=new Date();
     this.actualDay=this.datePipe.transform(this.aux,"yyyy-MM-dd");
@@ -70,19 +73,35 @@ export class SensorViewComponent implements OnInit {
     })   
   }
   updateAlertOcurrency(){
-    let totalMinutes:number = this.sensorForm.get('alert_days').value*1440 + this.sensorForm.get('alert_hours').value*60 + this.sensorForm.get('alert_minutes').value
-    console.log(totalMinutes)
-    this.sensorsService.updateAlertOcurrency(this.sensorId,totalMinutes).subscribe((response)=>{
-      if(response.success){
-        console.log(response)
-      }else{
-        console.log(response.message);
-      }
-    })
+    if(this.isChecked){
+      let totalMinutes:number = this.sensorForm.get('alert_days').value*1440 + this.sensorForm.get('alert_hours').value*60 + this.sensorForm.get('alert_minutes').value
+      console.log(totalMinutes)
+      this.sensorsService.updateAlertOcurrency(this.sensorId,totalMinutes).subscribe((response:apiResponse)=>{
+        if(response.success){
+          console.log(response)
+        }else{
+          console.log(response.message);
+        }
+      })
+
+    }else{
+      this.sensorsService.setDefaultAlertOcurrency(this.sensorId).subscribe((response:apiResponse)=>{
+        if(response.success){
+          console.log(response.message)
+        }else{
+          console.log(response)
+        }
+      })
+    }
+   
   }
   successModalClose(){
     this.successModal.hide()
   }
+ alertSwitch(){
+    this.isChecked=!this.isChecked
+  }
+
 
   makePDF(){
     var element = document.getElementById("pdfContent");
@@ -93,7 +112,6 @@ export class SensorViewComponent implements OnInit {
       doc.addImage(imgData,0,0,208,imgHeight);
       doc.save("sensor.pdf")
     })*/
-
 
     html2canvas((element),{
         onclone: function (clonedDoc) {
