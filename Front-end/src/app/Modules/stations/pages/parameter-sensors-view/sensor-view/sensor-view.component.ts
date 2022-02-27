@@ -20,14 +20,15 @@ export class SensorViewComponent implements OnInit {
 
 
   constructor(private location:Location , private fb:FormBuilder , private sensorsService:SensorsService , private datePipe:DatePipe) { }
-  sensorId:any
-  retainer:any //Recibe el objeto con la informacion que viene en la ruta
+  sensorId:any;
+  retainer:any; //Recibe el objeto con la informacion que viene en la ruta
   stationName:any 
-  max_config:any
-  min_config:any
-  aux:any
-  actualDay:any
-   isChecked:any;
+  sensorName:any;
+  max_config:any;
+  min_config:any;
+  aux:any;
+  actualDay:any;
+  isChecked:any;
 
 
   ngOnInit(): void {
@@ -41,6 +42,7 @@ export class SensorViewComponent implements OnInit {
     this.stationName=this.retainer.stationName
     this.min_config=this.retainer.min_config
     this.max_config=this.retainer.max_config
+    this.sensorName=this.retainer.sensorName;
 
     this.sensorForm=this.fb.group({
       min_config:[],
