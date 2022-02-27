@@ -3,7 +3,7 @@
     <div class="row">
 
         <div class="col stationName green">
-            <p>{{stationName}} - nombreSensor</p>
+            <p>{{stationName}} - {{sensorName}}</p>
         </div>
         <div class="col">
           <div class="reportTitles" id="show">
@@ -61,7 +61,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Sensor nombreSensor - {{stationName}}</h4>
+          <h4 class="modal-title">Sensor {{sensorName}} - {{stationName}}</h4>
           <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

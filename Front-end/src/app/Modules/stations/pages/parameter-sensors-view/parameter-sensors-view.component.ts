@@ -43,8 +43,8 @@ export class ParameterSensorsViewComponent implements OnInit {
   
   }
 
-  goToSensor(id:any,name:any,minConfig:any,maxConfig:any){
-    this.router.navigate([`stations/${this.sensorParameterName}/sensor`],{state:{sensorId:id,stationName:name,min_config:minConfig,max_config:maxConfig}});
+  goToSensor(id:any,name:any,minConfig:any,maxConfig:any,sensorName:any){
+    this.router.navigate([`stations/${this.sensorParameterName}/sensor`],{state:{sensorId:id,stationName:name,min_config:minConfig,max_config:maxConfig,sensorName:sensorName}});
   }
   sortMinToMax(){
     this.sortedArray=this.stations.sort((n1,n2)=>{
