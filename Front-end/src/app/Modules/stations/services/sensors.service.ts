@@ -57,6 +57,14 @@ export class SensorsService {
   }
   /**
    * 
+   * @param sensorId id del sensor
+   * @returns mensaje de exito al actualizar parametros predeterminados de ocurrencia de alertas
+   */
+  setDefaultAlertOcurrency(sensorId:any){
+    return this.http.get<apiResponse>(this.apiURL+ `sensor/custom_alert/${sensorId}`)
+  }
+  /**
+   * 
    * @param sensorId id sensor
    * @returns Alertas asociadas a un sensor
    */

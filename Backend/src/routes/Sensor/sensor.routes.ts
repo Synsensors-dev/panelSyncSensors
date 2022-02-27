@@ -28,6 +28,6 @@ router.put('/sensor/alert_time/:id', sensorCtrl.updateAlertTime);
 router.get('/panel/sensors/:id_company', sensorCtrl.sensorsON);
 
 // Modificar el valor de custom_alert (apagándolo)
-router.put('/sensor/custom_alert/:id', sensorCtrl.customAlertTime);
+router.get('/sensor/custom_alert/:id', sensorCtrl.customAlertTime);
 
 export default router;
