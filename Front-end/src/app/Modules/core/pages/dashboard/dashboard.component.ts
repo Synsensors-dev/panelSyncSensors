@@ -1,4 +1,3 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { apiResponse } from '../../../shared/interfaces/apiResponse';
 import { SensorsService } from '../../../stations/services/sensors.service';
