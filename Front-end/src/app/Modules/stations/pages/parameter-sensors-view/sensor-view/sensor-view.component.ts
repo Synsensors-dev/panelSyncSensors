@@ -66,15 +66,27 @@ export class SensorViewComponent implements OnInit {
     })   
   }
   updateAlertOcurrency(){
-    let totalMinutes:number = this.sensorForm.get('alert_days').value*1440 + this.sensorForm.get('alert_hours').value*60 + this.sensorForm.get('alert_minutes').value
-    console.log(totalMinutes)
-    this.sensorsService.updateAlertOcurrency(this.sensorId,totalMinutes).subscribe((response)=>{
-      if(response.success){
-        console.log(response)
-      }else{
-        console.log(response.message);
-      }
-    })
+    if(this.isChecked){
+      let totalMinutes:number = this.sensorForm.get('alert_days').value*1440 + this.sensorForm.get('alert_hours').value*60 + this.sensorForm.get('alert_minutes').value
+      console.log(totalMinutes)
+      this.sensorsService.updateAlertOcurrency(this.sensorId,totalMinutes).subscribe((response:apiResponse)=>{
+        if(response.success){
+          console.log(response)
+        }else{
+          console.log(response.message);
+        }
+      })
+
+    }else{
+      this.sensorsService.setDefaultAlertOcurrency(this.sensorId).subscribe((response:apiResponse)=>{
+        if(response.success){
+          console.log(response.message)
+        }else{
+          console.log(response)
+        }
+      })
+    }
+   
   }
   successModalClose(){
     this.successModal.hide()
