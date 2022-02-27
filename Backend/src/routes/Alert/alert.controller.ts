@@ -30,7 +30,7 @@ export async function createAlert( reading:any, sensor:any ){
     const alertSaved = new Alert(newAlert);
     await alertSaved.save();
     await reading.save();
-
+    
     //se genera un token con tiempo de expiración asociado aL tiempo de la alerta + ALPHA
     const token = signToken( reading._id , (( sensor.alert_time * config.SECONDS_MINUTE) + config.ALPHA )); 
 

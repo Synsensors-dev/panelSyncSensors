@@ -10,7 +10,9 @@ export default {
     TIME_STATUS_VALIDATOR: "* * * 12 *",     //variable que indica el margen de tiempo en que se inicia el statusValidator (1 minuto)
     TIME_ZONE: 1000*60*60*3,                 //tiempo de diferencia de la zona horaria (3hrs)
     WEEK_IN_MILISECONDS: 7*24*60*60*1000 ,  //1 semana en milisegundos
-    
+    MILISECONDS_DAY: 1000*60*60*24,          // 1 día en milisegundos
+    MILISECONDS_HOUR: 1000*60*60,           // 1 hora en milisegundos
+
     //quantity
     LIMIT_READINGS : 100,                   //limite de lecturas a retornar al front en el endpoint sensorReadings
     LIMIT_ALERTS: 20,                       //limite de lecturas a retornar al front en el endpoint recentAlerts
