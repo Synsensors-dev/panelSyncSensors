@@ -1,27 +1,36 @@
-<div class="container">
+<div class="container" id="pdfContent">
     <!-- Barra superior -->
     <div class="row">
 
         <div class="col stationName green">
-            <p>{{stationName}} - nombreSensor</p>
+            <p>{{stationName}} - {{sensorName}}</p>
+        </div>
+        <div class="col">
+          <div class="reportTitles" id="show">
+            <h3>Reporte</h3>
+            <h5>Generado: {{actualDay}} </h5>
+          </div>
         </div>
 
         <div class="col urIcons">
-
+          <div class="icons" id="upperBar">
             <div class="btn-group float-right" dropdown>
-                <button type="button" class="btn btn-transparent" dropdownToggle>
-                  <i class="green icon-settings"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-                  <p class="dropdown-item" data-toggle="modal" (click)="myModal.show()">Editar Sensor</p>
-                </div>
+              <button type="button" class="btn btn-transparent" dropdownToggle>
+                <i class="green icon-settings"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                <p class="dropdown-item" data-toggle="modal" (click)="myModal.show()">Editar Sensor</p>
+              </div>
             </div>
 
-            <div class="btn-group float-right" dropdown>
+            <div (click)="makePDF()" class="btn-group float-right" dropdown>
                 <button type="button" class="btn btn-transparent" disabled="true">
-                    <i class="cil-wifi-signal-4 green"></i>
+                    <i class="fa fa-save green"></i>
                 </button>
             </div>
+          </div>
+
+
 
         </div>
         
@@ -36,9 +45,9 @@
     </div>
 
     <!-- Historial de alertas -->
-    <div class="row rw2">
-      <div class="hidden">
-        <div class="scrolleable-box">
+    <div class="row rw2" id="rw2">
+      <div class="hidden" id="hidden">
+        <div class="scrolleable-box" id="scBox">
           <app-sensor-alerts-history [sensorId]="sensorId"></app-sensor-alerts-history>
   
         </div>
@@ -52,7 +61,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Sensor nombreSensor - {{stationName}}</h4>
+          <h4 class="modal-title">Sensor {{sensorName}} - {{stationName}}</h4>
           <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -61,7 +70,10 @@
 
           <form [formGroup]="sensorForm">
             <div class="section-title">
-              <h4>Limites de medida</h4>
+              <h4>Límites de medida</h4>
+
+            </div>
+            <div class="section-subtitle">
               <p>Límites superiores e inferiores del sensor, en caso de que se detecte una lectura fuera del límite establecido se emitirá una alerta</p>
 
             </div>
@@ -104,53 +116,82 @@
             </div>
             <hr>
             <div class="section-title">
-              <h4>Ocurrencía de alertas</h4>
-              <p>Cada cuanto el sensor emite alertas en caso de que se detecten valores fuera de los Límites</p>
+              <h4>Ocurrencía de alertas personalizada</h4>
+              <label class="switch switch-label switch-pill switch-success" (change)="alertSwitch()">
+                <input type="checkbox" class="switch-input" [checked]="isChecked">
+                <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+              </label> 
+            </div>
+            <div class="section-subtitle">
+              <p>ON: Se puede configurar un tiempo de alertas a elección, en caso de haber parametros fuera de rango se emitirán alertas cada cuanto tiempo se haya establecido.</p>
+              <p>OFF: Se establece el tiempo de alertas predeterminado. 30 minutos para la primera alerta, el doble para la siguente, es decir 1 hora para la segunda.</p>
+            </div>
+
+            <div class="section-body">
+
+              <div class="custom-time-alerts" *ngIf="isChecked">
+
+                <div class="row hrow">
+                  <h5>Establecer tiempo de alerta personalizado:</h5>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <p class="label">Días</p>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="icon-clock"></i></span>
+                        </div>
+                        <input
+                        id="alert_days"
+                        type="number"
+                        formControlName="alert_days"
+                        >
+                    </div>
+                  </div>
+                  <div class="col">
+                    <p class="label">Horas</p>
+                    <div class="input-group ">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="icon-clock"></i></span>
+                        </div>
+                        <input
+                        id="alert_hours"
+                        type="number"
+                        formControlName="alert_hours"
+                        >
+                    </div>
+                  </div>
+                  <div class="col">
+                    <p class="label">Minutos</p>
+                    <div class="input-group ">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="icon-clock"></i></span>
+                        </div>
+                        <input
+                        id="alert_minutes"
+                        type="number"
+                        formControlName="alert_minutes"
+                        >
+                    </div>
+                  </div>
+    
+                </div>
+
+              </div>
+
+              <div *ngIf="!isChecked">
+                <div class="row">
+                  <h3 class="defaultAlertMessage">Tiempo de alertas predeterminado seleccionado.</h3>
+                </div>
+
+              </div>
+
+      
 
             </div>
 
-            <div class="row">
-              <div class="col">
-                <p class="label">Días</p>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="icon-clock"></i></span>
-                    </div>
-                    <input
-                    id="alert_days"
-                    type="number"
-                    formControlName="alert_days"
-                    >
-                </div>
-              </div>
-              <div class="col">
-                <p class="label">Horas</p>
-                <div class="input-group ">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="icon-clock"></i></span>
-                    </div>
-                    <input
-                    id="alert_hours"
-                    type="number"
-                    formControlName="alert_hours"
-                    >
-                </div>
-              </div>
-              <div class="col">
-                <p class="label">Minutos</p>
-                <div class="input-group ">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="icon-clock"></i></span>
-                    </div>
-                    <input
-                    id="alert_minutes"
-                    type="number"
-                    formControlName="alert_minutes"
-                    >
-                </div>
-              </div>
-
-            </div>
+         
 
           </form>
 

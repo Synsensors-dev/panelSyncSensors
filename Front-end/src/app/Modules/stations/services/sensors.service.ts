@@ -57,6 +57,14 @@ export class SensorsService {
   }
   /**
    * 
+   * @param sensorId id del sensor
+   * @returns mensaje de exito al actualizar parametros predeterminados de ocurrencia de alertas
+   */
+  setDefaultAlertOcurrency(sensorId:any){
+    return this.http.get<apiResponse>(this.apiURL+ `sensor/custom_alert/${sensorId}`)
+  }
+  /**
+   * 
    * @param sensorId id sensor
    * @returns Alertas asociadas a un sensor
    */
@@ -72,6 +80,13 @@ export class SensorsService {
   getSensorGraphicReadings(sensorId:any,timeRange:any){
     return this.http.post<apiResponse>(this.apiURL+ `readings/graphic/${sensorId}`,{time:timeRange})
 
+  }
+  /**
+   * 
+   * @returns objeto con el numero de readings de la ultima semana de la compañia con la que una cuenta tenga una sesión iniciada.
+   */
+  getNumberOfReadingsLastWeek(){
+    return this.http.get<apiResponse>(this.apiURL+ `readings/week/${this.auth.getUserCompanyId()}`)
   }
   
 }

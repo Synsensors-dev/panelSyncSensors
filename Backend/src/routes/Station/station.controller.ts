@@ -218,6 +218,7 @@ export const deleteStation: RequestHandler = async (req, res) => {
             name_station: station.name,
             sensor: {
                 id_sensor: sensors[i]._id, 
+                name: sensors[i].name,
                 min_config: sensors[i].min_config,
                 max_config: sensors[i].max_config,
                 type: sensors[i].type,
@@ -254,10 +255,9 @@ export const deleteStation: RequestHandler = async (req, res) => {
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
     
     //se valida el time
-    if ( time!=12 && time!=24 && time!=7 && time!=30 && time!=3 && time!=6 ){
+    if ( time!=12 && time!=24 && time!=7 && time!=30 && time!=3 && time!=6 )
         return res.status(400).send({ success: false, data:{}, message: 'ERROR: el valor de time es inválido.' });
-    }
-    
+ 
     const date = createTimeArray(time);
 
     //Obtenemos las estaciones asociadas a la compañia

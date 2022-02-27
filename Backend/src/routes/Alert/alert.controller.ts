@@ -45,6 +45,11 @@ export async function createAlert( reading:any, sensor:any ){
     const last_alert = new Date();
     await Sensor.findByIdAndUpdate( sensor._id ,{ "last_alert": last_alert });
 
+    //se actualiza el alert_time a exponencial si está definido por default
+    if ( !sensor.custom_alert ){
+        await Sensor.findByIdAndUpdate(sensor._id, {"alert_time": sensor.alert_time * 2});
+    }
+
     //se envía el correo con la alerta a la compañia
     sendEmailAlert(companyFound, stationFound, sensor, alertSaved);
 }
@@ -115,9 +120,9 @@ export const quantityAlerts: RequestHandler = async (req, res) => {
     
     const date = new Date(); //fecha actual
 
-    //se definen los tiempos de inicio de la semana actual y la anterior + las 3 hrs de la zona horaria
-    const current_week = new Date( date.getTime() - config.WEEK_IN_MILISECONDS + config.TIME_ZONE);
-    const last_week = new Date (date.getTime() - (config.WEEK_IN_MILISECONDS * 2) + config.TIME_ZONE) ;
+    //se definen los tiempos de inicio de la semana actual y la anterior
+    const current_week = new Date( date.getTime() - config.WEEK_IN_MILISECONDS );
+    const last_week = new Date (date.getTime() - (config.WEEK_IN_MILISECONDS * 2) ) ;
 
     //se obtiene la cantidad de alertas de la semana actual y la semana anterior
     const quantityAlertCurrentWeek = await Alert.find({ "id_company": id_company , "createdAt": {"$gte": current_week}} ).count();
