@@ -16,6 +16,10 @@ export const options = {
     },
     apis: [
         "./src/routes/User/user.routes.ts",
+        "./src/routes/Company/company.routes.ts",
+        "./src/routes/Reading/reading.routes.ts",
+        "./src/routes/Alert/alert.routes.ts",
+        "./src/routes/Sensor/sensor.routes.ts",
+        "./src/routes/Station/station.routes.ts"
     ]
-
 }
