@@ -3,9 +3,12 @@ import morgan from 'morgan';
 import cors, { CorsOptions } from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUI from 'swagger-ui-express';
 import passportMiddleware from './middlewares/passport'
 import { createRoles } from "./libs/initialSetup";
 import { statusValidator } from "./libs/statusValidator";
+import { options } from "./libs/swaggerOptions";
 
 // Load enviroments variables
 dotenv.config();
@@ -23,6 +26,8 @@ const corsConfig: CorsOptions = {
     credentials: true
 };
 
+const specs = swaggerJsDoc(options);
+
 // Settings
 app.set('port', process.env.PORT || 4000);
 
@@ -34,7 +39,9 @@ app.use(cors(corsConfig));
 app.use(passport.initialize());
 passport.use(passportMiddleware);
 
+
 // Routes
 app.use(indexRoutes);
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs));    //Documentation
 
 export default app;
