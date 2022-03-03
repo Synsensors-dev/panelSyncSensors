@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProfileViewComponent } from './pages/profile-view/profile-view.component';
+import { UserListViewComponent } from './pages/user-list-view/user-list-view.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,11 @@ const routes: Routes = [
         path:'profile',
         data:{title:'Perfil'},
         component:ProfileViewComponent
+      },
+      {
+        path:'users-list',
+        data:{title:'Lista Usuarios'},
+        component:UserListViewComponent
       }
 
     ]

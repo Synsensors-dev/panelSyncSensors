@@ -48,6 +48,9 @@ export class DefaultLayoutComponent implements  OnInit{
   toProfile(){
     this.router.navigate(["users/profile"])
   }
+  toUsersList(){
+    this.router.navigate(["users/users-list"])
+  }
 
   createRoutes(response:any){
     for (var item of response.data.typesSensors) {
