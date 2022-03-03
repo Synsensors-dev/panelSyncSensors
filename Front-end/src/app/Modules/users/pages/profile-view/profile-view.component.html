@@ -1,0 +1,179 @@
+<div class="container">
+    <!--Foto de perfil y cargo-->
+    <div class="row">
+        <div class="col-3">
+            <img src="https://lastfm.freetls.fastly.net/i/u/770x0/dc7c6af4bfa9aa6ef3b94db42f80cd8b.jpg" alt="Avatar">
+            <div class="uploadImg">
+                <label for="file-upload" class="custom-file-upload">
+                    Cambiar Imagen
+                </label>
+                <input id="file-upload" style="display: none;" type="file" accept="image/*">
+                
+            </div>
+        </div>
+        <div class="col profileSum">
+            <div class="profileSumName">
+                <h1>Usada Pekora</h1>
+            </div>
+            <div class="profileSumCompany">
+                <h2>
+                    Usada Constructions
+                </h2>
+            </div>
+            <div class="profileSumMail">
+                <a href="mailto:pekopeko@gmail.com">pekopeko@gmail.com</a>
+                <p> -Encargada de Medioambiente</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!--Account-->
+    <div class="profileDataContainer" [formGroup]="profileForm">
+
+        <div class="row">
+            <h3>Cuenta</h3>
+        </div>
+    
+        <!--Username-->
+        <div class="row">
+            <div class="col-3">
+                <p class="inputLabel">
+                    Rut
+                </p>
+            </div>
+            <div class="col">
+
+                <div class="input-group mgtop">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-id-card-o"></i></span>
+                    </div>
+                    <input
+                    type="rut"
+                    id="rut"
+                    formControlName="rut">
+                </div>
+
+            </div>
+    
+        </div>
+        <!--Email-->
+        <div class="row">
+            <div class="col-3">
+                <p class="inputLabel">
+                    Email
+    
+                </p>
+    
+            </div>
+            <div class="col">
+                <div class="input-group mgtop">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-at"></i></span>
+                    </div>
+                    <input
+                    type="email"
+                    id="email"
+                    formControlName="email">
+                </div>
+    
+            </div>
+    
+        </div>
+        <!--Password-->
+        <div class="row">
+            <div class="col-3">
+                <p class="inputLabel">
+                    Contraseña
+    
+                </p>
+    
+            </div>
+            
+            <div class="col">
+                <div class="input-group mgtop">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-key"></i></span>
+                    </div>
+                    <input
+                    type="password"
+                    id="password"
+                    formControlName="password">
+                </div>
+            </div>
+    
+        </div>
+        <!--Full name-->
+        <div class="row">
+            <div class="col-3">
+                <p class="inputLabel">
+                    Nombre Completo
+    
+                </p>
+            </div>
+            <div class="col">
+
+                <div class="input-group mgtop">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-user-o"></i></span>
+                    </div>
+                    <input
+                    type="text"
+                    id="fullName"
+                    formControlName="fullName">
+                </div>
+    
+            </div>
+    
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <p class="inputLabel">
+                    Empresa
+    
+                </p>
+            </div>
+            <div class="col">
+
+                <div class="input-group mgtop">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
+                    </div>
+                    <input
+                    type="text"
+                    id="company"
+                    formControlName="company">
+                </div>
+    
+            </div>
+    
+        </div>
+        <!--Title-->
+        <div class="row">
+            <div class="col-3">
+                <p class="inputLabel">
+                    Rol
+    
+                </p>
+            </div>
+            <div class="col">
+
+                <div class="input-group mgtop">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-star"></i></span>
+                    </div>
+                    <input
+                    type="text"
+                    id="role"
+                    formControlName="role">
+                </div>
+    
+            </div>
+    
+        </div>
+
+    </div>
+    
+
+</div>

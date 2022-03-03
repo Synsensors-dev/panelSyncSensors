@@ -28,7 +28,12 @@ export const routes: Routes = [
       {
         path: 'stations',
         loadChildren: () => import('./Modules/stations/stations.module').then(m=>m.StationsModule)
+      },
+      {
+        path: 'users',
+        loadChildren: () => import('./Modules/users/users.module').then(m=>m.UsersModule)
       }
+
     ]
   },
   {
