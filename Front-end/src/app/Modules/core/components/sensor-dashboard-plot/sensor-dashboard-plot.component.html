@@ -10,6 +10,8 @@
                 Rango de tiempo:
             </div>
             <select (change)="captureTimeRange($event.target.value)">
+                <option value="12">Ultimas 12 Horas</option>
+                <option value="24">Ultimas 24 Horas</option>
                 <option value="30">Ultimos 30 Días</option>
                 <option value="3">Ultimos 3 Meses</option>
                 <option value="6">Ultimos 6 meses</option>
