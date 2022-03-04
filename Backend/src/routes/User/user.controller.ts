@@ -206,5 +206,5 @@ export const usersList: RequestHandler = async (req, res) => {
         };
     });
 
-    return res.status(200).send({ success: true, data:{ usersFiltered }, message: 'Usuarios encontrados con exito.' });
+    return res.status(200).send({ success: true, data: usersFiltered , message: 'Usuarios encontrados con exito.' });
 }
