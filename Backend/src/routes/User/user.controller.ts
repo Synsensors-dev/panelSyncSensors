@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import config from '../../config/config';
 import Role from "../../models/role.model";
 import { sendEmailForgotPassword, sendFirstRegistrationEmail, sendEmailNewPassword } from "../../middlewares/sendEmail";
+import { Types } from "mongoose";
 
 dotenv.config();
 
@@ -146,4 +147,30 @@ export const newPassword: RequestHandler = async (req, res) => {
 
         return res.status(200).send({ success: true, data:{}, message: 'Contraseña actualizada con exito.' });
     });   
+}
+
+/**
+ * Función encargada de obtener un usuario del sistema y retornar los datos de el para su posterior visualización.
+ * @route Get '/user/:id'
+ * @param req Request de la petición, se espera que tenga el id del usuario.
+ * @param res Response, retorna un object con succes: true, data: { user:{} }, message: "String" del usuario si todo sale bien.
+ */
+export const readUser: RequestHandler = async (req, res) => {
+    const _idUser = req.params.id;
+
+    //se valida el _id ingresado del usuario
+    if ( !Types.ObjectId.isValid( _idUser ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const userFound = await User.findById( _idUser );
+
+    //se valida la existencia del usuario en el sistema
+    if ( !userFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: El usuario solicitado no existe en el sistema.' });
+
+    return res.status(200).send( { success: true, data:{ 
+        name: userFound.name,
+        email: userFound.email,
+        roles: userFound.roles
+    }, message: 'Usario encontrado con éxito.'});
 }

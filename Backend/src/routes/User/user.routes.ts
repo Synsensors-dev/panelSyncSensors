@@ -11,6 +11,7 @@ router.post( '/user/signup', userCtrl.signUp );
 router.post( '/user/signin', userCtrl.signIn );
 
 // Mostrar un usuario
+router.get('/user/:id', userCtrl.readUser);
 
 // Modificar un usuario
 
