@@ -7,6 +7,7 @@ import config from '../../config/config';
 import Role from "../../models/role.model";
 import { sendEmailForgotPassword, sendFirstRegistrationEmail, sendEmailNewPassword } from "../../middlewares/sendEmail";
 import { Types } from "mongoose";
+import Company from '../Company/company.model';
 
 dotenv.config();
 
@@ -162,7 +163,7 @@ export const readUser: RequestHandler = async (req, res) => {
     if ( !Types.ObjectId.isValid( _idUser ) )
         return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
 
-    const userFound = await User.findById( _idUser );
+    const userFound = await User.findById( _idUser ).populate("roles");
 
     //se valida la existencia del usuario en el sistema
     if ( !userFound )
@@ -171,6 +172,39 @@ export const readUser: RequestHandler = async (req, res) => {
     return res.status(200).send( { success: true, data:{ 
         name: userFound.name,
         email: userFound.email,
-        roles: userFound.roles
+        roles: userFound.roles.map( (rol: { name: string; }) => rol.name)
     }, message: 'Usario encontrado con éxito.'});
+}
+
+/**
+ * Función encargada de obtener una lista de usuarios asociados a una compañia ingresada.
+ * @route Get '/users/:id_company'
+ * @param req Request de la petición, se espera que tenga el id de la compañia
+ * @param res Response, retorna un object con succes: true, data: { userList }, message: "String" de los usuarios si todo sale bien.
+ */
+export const usersList: RequestHandler = async (req, res) => {
+    const id_company = req.params.id_company;
+
+    //se valida el id_company
+    if ( !Types.ObjectId.isValid( id_company ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const companyFound = await Company.findById( id_company );
+
+    //se valida la existencia del usuario en el sistema
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
+
+    const usersCompany = await User.find({ "id_company": id_company }).populate("roles");
+
+    //se filtran los datos de la tabla
+    const usersFiltered = usersCompany.map( user => {
+        return {
+            name: user.name,
+            roles: user.roles.map( (rol: { name: string; }) => rol.name),
+            status: "No definido"
+        };
+    });
+
+    return res.status(200).send({ success: true, data:{ usersFiltered }, message: 'Usuarios encontrados con exito.' });
 }

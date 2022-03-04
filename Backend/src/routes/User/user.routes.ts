@@ -23,6 +23,9 @@ router.post('/user/forgotPassword', userCtrl.forgotPassword );
 // Reiniciar o crear contraseña
 router.put('/user/resetPassword/:token', userCtrl.newPassword );
 
+//Obtener una lista de usuarios con (nombre, rol y status) asociados a una compañia -> status aún no definido
+router.get('/users/:id_company', userCtrl.usersList);
+
 //Ruta de prueba passport (para probar el acceso via token)
 router.get('/special', passport.authenticate('jwt', {session: false}), (req, res) => {
     res.send('Succes');
