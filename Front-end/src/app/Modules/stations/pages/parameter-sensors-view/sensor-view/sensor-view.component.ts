@@ -87,7 +87,7 @@ export class SensorViewComponent implements OnInit {
   }
   updateAlertOcurrency(){
     if(this.isChecked){
-      let totalMinutes:number = this.sensorForm.get('alert_days').value*1440 + this.sensorForm.get('alert_hours').value*60 + this.sensorForm.get('alert_minutes').value
+      let totalMinutes:number = this.sensorConfigForm.get('alert_days').value*1440 + this.sensorConfigForm.get('alert_hours').value*60 + this.sensorConfigForm.get('alert_minutes').value
       console.log(totalMinutes)
       this.sensorsService.updateAlertOcurrency(this.sensorId,totalMinutes).subscribe((response:apiResponse)=>{
         if(response.success){
@@ -159,16 +159,16 @@ export class SensorViewComponent implements OnInit {
             if(responseMinutes/1440>0){
               days=Math.floor(responseMinutes/1440);
               responseMinutes=responseMinutes%1440
-              this.sensorForm.get("alert_days").setValue(days)
+              this.sensorConfigForm.get("alert_days").setValue(days)
             }
             if(responseMinutes/60>0){
               hours=Math.floor(responseMinutes/60)
               responseMinutes=responseMinutes%60
-              this.sensorForm.get("alert_hours").setValue(hours)
+              this.sensorConfigForm.get("alert_hours").setValue(hours)
             }
             if(responseMinutes!=0){
               minutes=responseMinutes;
-              this.sensorForm.get("alert_minutes").setValue(minutes)
+              this.sensorConfigForm.get("alert_minutes").setValue(minutes)
             }
           }
           this.sensorConfigModal.show()
