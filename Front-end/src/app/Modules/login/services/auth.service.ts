@@ -12,6 +12,7 @@ export class AuthService {
 
   private apiURL= bckEndapiURL
   private user_company_id:string;
+  private logged_user_role:string;
 
   constructor(private http:HttpClient, private router:Router) { }
 
@@ -80,6 +81,17 @@ export class AuthService {
 
   sendResetPasswordRequest(userEmail:any){
     return this.http.post<apiResponse>(this.apiURL + `user/forgotPassword`,{email:userEmail})
+  }
+
+  setUserRole(){
+    //Hay que editar para que sea con token en vez de id
+    /*this.http.get<apiResponse>(this.apiURL + `user/`).subscribe((response)=>{
+      this.logged_user_role=response.data.roles[0];
+      console.log(this.logged_user_role)
+    })*/
+  }
+  getUserRole(){
+    return this.logged_user_role
   }
 
 

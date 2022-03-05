@@ -27,6 +27,7 @@ export class DefaultLayoutComponent implements  OnInit{
 
   ngOnInit(): void {
 
+
       this.sensorService.getSensorTypesOfCompany().subscribe((response:apiResponse)=>{
         console.log(response)
         if(this.navItems.length==1){
