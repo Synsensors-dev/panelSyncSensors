@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
 import { NavBarService } from '../../Modules/core/services/nav-bar.service';
 import { AuthService } from '../../Modules/login/services/auth.service';
 import { apiResponse } from '../../Modules/shared/interfaces/apiResponse';
@@ -20,7 +21,7 @@ export class DefaultLayoutComponent implements  OnInit{
   waterStations=navRoutes.waterStations;
   airStations=navRoutes.airStations;
 
-  constructor(private authService:AuthService, private sensorService:SensorsService){
+  constructor(private authService:AuthService, private sensorService:SensorsService, private router:Router){
   }
   
 
@@ -43,6 +44,9 @@ export class DefaultLayoutComponent implements  OnInit{
   }
   logOut(){
     this.authService.logOut();
+  }
+  toProfile(){
+    this.router.navigate(["users/profile"])
   }
 
   createRoutes(response:any){

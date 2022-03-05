@@ -279,7 +279,7 @@ export const readPanelStations: RequestHandler = async (req, res) => {
             value = reading.value;
         }
         
-        //se arama el objeto estación
+        //se arma el objeto estación
         const stationPanel = {
             id_station: station._id,
             name_station: station.name,
@@ -327,7 +327,10 @@ export const updateAlertTime: RequestHandler = async (req, res) => {
   
     //se actualiza el alert_time desde la BD
     await Sensor.findByIdAndUpdate( _idSensor, { "alert_time": alert_time });
-    
+
+    //se actualiza la variable alerta personalizada en el sensor
+    await Sensor.findByIdAndUpdate( _idSensor, { "custom_alert": true });
+
     return res.status(200).send( { success: true, data:{}, message: 'Alert_time actualizado de manera correcta.'});
 }
 
@@ -357,4 +360,58 @@ export const sensorsON: RequestHandler = async (req, res) => {
         quantitySensors: quantitySensorsCompany,
         quantitySensorsON: quantitySensorsCompanyON
     }, message: 'Cantidad de sensores encontrados con éxito'});
+}
+
+/**
+ * Función encargada modificar el valor de custom_alert reiniciandolo al tiempo de alertas por default (30min) y 
+ * apagando (cambiando a false) la variable custom_alert del sensor
+ * @route Put '/sensor/custom_alert/:id'
+ * @param req Request de la petición, se espera que tenga el id del sensor
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" del custom_alert si todo sale bien
+ */
+export const customAlertTime: RequestHandler = async (req, res) => {
+    const _idSensor = req.params.id;
+
+    //se valida el _id ingresado del sensor
+    if ( !Types.ObjectId.isValid( _idSensor ) )
+    return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const sensorFound = await Sensor.findById( _idSensor );
+
+    //se valida la existencia del sensor en el sistema
+    if ( !sensorFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
+
+    //se actualiza el valor de custom_alert desde la BD
+    await Sensor.findByIdAndUpdate(_idSensor, {"custom_alert": false});
+
+    //se actualiza el alert_time al valor por default (30min)
+    await Sensor.findByIdAndUpdate(_idSensor, {"alert_time": 30});
+
+    return res.status(200).send( { success: true, data:{}, message: 'Custom_alert actualizada de manera correcta.'});
+}
+
+/**
+ * Función encargada obtener el valor boleano de custom_alert y retornarlo al front con el valor de alert_time en minutos
+ * @route Get '/sensor/custom_alert/value/:id'
+ * @param req Request de la petición, se espera que tenga el id del sensor
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" del custom_alert si todo sale bien
+ */
+export const readCustomAlertTime: RequestHandler = async (req, res) => {
+    const _idSensor = req.params.id;
+
+    //se valida el _id ingresado del sensor
+    if ( !Types.ObjectId.isValid( _idSensor ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const sensorFound = await Sensor.findById( _idSensor );
+
+    //se valida la existencia del sensor en el sistema
+    if ( !sensorFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
+
+    return res.status(200).send( { success: true, data:{
+        custom_alert: sensorFound.custom_alert, 
+        time: sensorFound.alert_time 
+    }, message: 'Custom_alert econtrado' });
 }

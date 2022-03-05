@@ -42,7 +42,7 @@
     
     <div class="row">
 
-        <div (click)="goToSensor(item.sensor.id_sensor,item.name_station,item.sensor.min_config,item.sensor.max_config)" *ngFor="let item of sortedArray" class="card"
+        <div (click)="goToSensor(item.sensor.id_sensor,item.name_station,item.sensor.min_config,item.sensor.max_config,item.sensor.name)" *ngFor="let item of sortedArray" class="card"
         [ngClass]="{
             'red': item.sensor.last_reading > item.sensor.max_config ||  item.sensor.min_config > item.sensor.last_reading ,
             'green': item.sensor.last_reading > item.sensor.min_config &&  item.sensor.max_config > item.sensor.last_reading,

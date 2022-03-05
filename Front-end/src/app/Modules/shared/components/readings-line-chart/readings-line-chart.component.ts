@@ -9,7 +9,7 @@ import { SensorsService } from '../../../stations/services/sensors.service';
 })
 export class ReadingsLineChartComponent implements OnInit {
   @Input() sensorId:string;
-  timeRange:number=30;
+  timeRange:number=12;
   isLoading=true; //Variable que determina si el componente esta cargando o no
   constructor(private sensorService:SensorsService) { }
 

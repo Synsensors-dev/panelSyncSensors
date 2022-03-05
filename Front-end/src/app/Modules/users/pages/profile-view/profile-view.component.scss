@@ -1,0 +1,46 @@
+@import "../../../../../scss/colorPalette.scss";
+img{
+    border-radius: 50%;
+    width: 200px;
+    height: auto;
+    border: lightgray solid 2px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.row{
+    margin: 20px;
+}
+h2{
+    color: lightslategray;
+}
+input{
+    width: 60%;
+    min-width: 200px;
+}
+.inputLabel{
+    color:gray;
+    font-size: 16px;
+}
+.uploadImg{
+    text-align: center;
+    label{
+        color:#20a8d8;
+        cursor:pointer;
+        
+    }
+    label:hover{
+        color: navy;
+        text-decoration: underline;
+    }
+}
+.profileSumMail{
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    align-items: baseline;
+    float: left;
+    p{
+        color: $green;
+    }
+}

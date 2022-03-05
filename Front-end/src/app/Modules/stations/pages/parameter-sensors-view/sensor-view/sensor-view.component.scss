@@ -21,12 +21,19 @@
     font-size: 20px;
     color:green
 }
+.switch{
+    margin-left: 10px;
+}
 .row{
     justify-content: center;
     margin-block: 10px;
 }
-.section-title p{
+.section-subtitle p{
     color: gray;
+}
+.section-title{
+    display:flex;
+    flex-direction: row;
 }
 .label{
     text-align: center;
@@ -45,10 +52,35 @@ input{
     justify-content: right;
 }
 .scrolleable-box{
+    height: 300px;
     overflow-y:auto;
 }
 .hidden{
-    overflow:hidden;
     border-radius: 30px;
-    box-shadow: $boxshadow;
+
+    border: solid 1px lightgray;
+    overflow: hidden;
+}
+.reportTitles{
+    display:none;
+    h3,h5{
+        width: fit-content;
+        text-align: center;
+        margin: auto;
+    }
+}
+button{
+    i{
+        cursor:pointer;
+    }
+}
+.hrow{
+   justify-content: left;
+   h5{
+       margin-left: 30px;
+   }
+}
+.defaultAlertMessage{
+    text-align: center;
+    color:lightblue;
 }
