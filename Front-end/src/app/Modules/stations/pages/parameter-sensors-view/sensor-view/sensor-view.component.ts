@@ -135,4 +135,38 @@ export class SensorViewComponent implements OnInit {
       doc.save("sensor.pdf")
     })
     }
+
+    openParameterPop(){
+      this.sensorsService.getCustomAlertStatus(this.sensorId).subscribe((response:apiResponse)=>{
+        if(response.success){
+          console.log(response)
+          this.isChecked=response.data.custom_alert
+          if(this.isChecked==true){
+            let responseMinutes=response.data.time;
+            let days:number;
+            let hours:number;
+            let minutes:number;
+            if(responseMinutes/1440>0){
+              days=Math.floor(responseMinutes/1440);
+              responseMinutes=responseMinutes%1440
+              this.sensorForm.get("alert_days").setValue(days)
+            }
+            if(responseMinutes/60>0){
+              hours=Math.floor(responseMinutes/60)
+              responseMinutes=responseMinutes%60
+              this.sensorForm.get("alert_hours").setValue(hours)
+            }
+            if(responseMinutes!=0){
+              minutes=responseMinutes;
+              this.sensorForm.get("alert_minutes").setValue(minutes)
+            }
+          }
+          this.myModal.show()
+        }else{
+          console.log(response.message)
+        }
+      })
+    
+    }
 }
+
