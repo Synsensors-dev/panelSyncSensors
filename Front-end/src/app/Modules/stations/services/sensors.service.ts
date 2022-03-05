@@ -88,5 +88,9 @@ export class SensorsService {
   getNumberOfReadingsLastWeek(){
     return this.http.get<apiResponse>(this.apiURL+ `readings/week/${this.auth.getUserCompanyId()}`)
   }
+
+  getCustomAlertStatus(sensorId:any){
+    return this.http.get<apiResponse>(this.apiURL+ `sensor/custom_alert/value/${sensorId}`)
+  }
   
 }
