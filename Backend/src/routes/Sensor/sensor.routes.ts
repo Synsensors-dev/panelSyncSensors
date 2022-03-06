@@ -186,7 +186,49 @@ router.delete('/sensor/:id', sensorCtrl.deleteSensor);
  */
 router.get('/sensor/types/:id_company', sensorCtrl.typesOfSensors);
 
-// Modificar min_config & max_config de un sensor
+/**
+ * @swagger
+ * /sensor/config/{id}:
+ *  put:
+ *    summary: Modificar min_config & max_config de un sensor
+ *    tags: [Sensor]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idSensor'
+ *    requestBody:
+ *      required: true
+ *      content:
+ *          application/json:
+ *              schema:
+ *                  properties:
+ *                      min_config:
+ *                          type: number   
+ *                          description: Límite inferior de lectura del sensor
+ *                      max_config:
+ *                          type: number
+ *                          description: Límite superior de lectura del sensor
+ *                  example:
+ *                      min_config: 5
+ *                      max_config: 28
+ *    responses:
+ *      200:
+ *        description: Min_config y Max_config actualizados de manera correcta.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: El sensor ingresado no existe en el sistema. O, no se ingresó valores para min y max
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.put('/sensor/config/:id', sensorCtrl.updateMinAndMax);
 
 /**
