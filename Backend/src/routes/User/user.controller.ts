@@ -152,8 +152,8 @@ export const newPassword: RequestHandler = async (req, res) => {
 
 /**
  * Función encargada de obtener un usuario del sistema y retornar los datos de el para su posterior visualización.
- * @route Get '/user/:id'
- * @param req Request de la petición, se espera que tenga el id del usuario.
+ * @route Get '/user/:token'
+ * @param req Request de la petición, se espera que tenga el token del usuario.
  * @param res Response, retorna un object con succes: true, data: { user:{} }, message: "String" del usuario si todo sale bien.
  */
 export const readUser: RequestHandler = async (req, res) => {
