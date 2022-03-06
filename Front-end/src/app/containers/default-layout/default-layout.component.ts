@@ -27,6 +27,7 @@ export class DefaultLayoutComponent implements  OnInit{
 
   ngOnInit(): void {
 
+
       this.sensorService.getSensorTypesOfCompany().subscribe((response:apiResponse)=>{
         console.log(response)
         if(this.navItems.length==1){
@@ -47,6 +48,9 @@ export class DefaultLayoutComponent implements  OnInit{
   }
   toProfile(){
     this.router.navigate(["users/profile"])
+  }
+  toUsersList(){
+    this.router.navigate(["users/users-list"])
   }
 
   createRoutes(response:any){
