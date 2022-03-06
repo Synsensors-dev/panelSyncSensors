@@ -96,7 +96,34 @@ router.post('/sensor', sensorCtrl.createSensor);
 // Modificar un sensor
 router.put('/sensor/:id', sensorCtrl.updateSensor);
 
-// Mostrar un sensor
+/**
+ * @swagger
+ * /sensor/{id}:
+ *  get:
+ *    summary: Obtener un sensor a través del ID
+ *    tags: [Sensor]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idSensor'
+ *    responses:
+ *      200:
+ *        description: Sensor encontrado con éxito.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: El sensor solicitado no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.get('/sensor/:id', sensorCtrl.readSensor);
 
 // Eliminar un sensor
