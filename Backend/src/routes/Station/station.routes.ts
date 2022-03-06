@@ -276,7 +276,34 @@ router.put('/station/:id', stationCtrl.updateStation);
  */
 router.get('/station/:id', stationCtrl.readStation);
 
-// Eliminar una estación
+/**
+ * @swagger
+ * /station/{id}:
+ *  delete:
+ *    summary: Borrar una estación a través del ID
+ *    tags: [Station]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idStation'
+ *    responses:
+ *      200:
+ *        description: Estación eliminada de manera correcta.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: La estación solicitada no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.delete('/station/:id', stationCtrl.deleteStation);
 
 // Obtener estaciones asociadas a una compañia (vistaPanel)
