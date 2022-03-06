@@ -363,7 +363,7 @@ router.post('/panel/stations', stationCtrl.readPanelStations);
  * @swagger
  * /panel/graphic/{id_company}:
  *  post:
- *    summary: Obtener un objeto con las estaciones y promedio de las lecturas del ultimo time
+ *    summary: Obtener un objeto con las estaciones y promedio de las lecturas del ultimo tiempo
  *    tags: [Station]
  *    parameters:
  *      - $ref: '#/components/parameters/idCompany'

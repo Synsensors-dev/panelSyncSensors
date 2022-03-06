@@ -10,7 +10,7 @@ const router = Router();
  *    Company:
  *      type: object
  *      properties:
- *          id:
+ *          _id:
  *              type: string
  *              description: id de la compañia
  *          name: 
