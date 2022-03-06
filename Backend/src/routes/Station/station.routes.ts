@@ -81,6 +81,13 @@ const router = Router();
  *          schema:
  *              type: string
  *              description: id de la estación
+ *      idCompany:
+ *          in: path
+ *          name: id_company
+ *          required: true
+ *          schema:
+ *              type: string
+ *              description: id de la compañia
  */
 
 /**
@@ -306,16 +313,112 @@ router.get('/station/:id', stationCtrl.readStation);
  */
 router.delete('/station/:id', stationCtrl.deleteStation);
 
-// Obtener estaciones asociadas a una compañia (vistaPanel)
+/**
+ * @swagger
+ * /panel/stations:
+ *  post:
+ *    summary: Obtener estaciones asociadas a una compañia (vistaPanel)
+ *    tags: [Station]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *          application/json:
+ *              schema:
+ *                  properties:
+ *                      id_company:
+ *                          type:
+ *                          description:
+ *                      type:
+ *                          type:
+ *                          description:
+ *                  required: 
+ *                      - id_company
+ *                      - type
+ *                  example:
+ *                      id_company: 61f0eace3e60ea8911111729
+ *                      type: TEMPERATURE_AIR   
+ *    responses:
+ *      200:
+ *        description: Estaciones encontradas con exito.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: La compañia solicitada no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.post('/panel/stations', stationCtrl.readPanelStations);
 
 // Obtener un objeto con las estaciones y promedio de las lecturas de los ultimos 7 meses
 router.post('/panel/graphic/:id_company', stationCtrl.stationGraphic);
 
-// Obtener un objeto con las estaciones y los tipos de sensores asociados a ella
+/**
+ * @swagger
+ * /panel/stations/types/{id_company}:
+ *  get:
+ *    summary: Obtener un objeto con las estaciones y los tipos de sensores asociados a ella
+ *    tags: [Station]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idCompany'
+ *    responses:
+ *      200:
+ *        description: Estaciones y tipos de sensores encontrados con éxito.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: La compañia ingresada no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.get('/panel/stations/types/:id_company', stationCtrl.stationSensorTypes);
-
-// Obtener un arreglo con los nombres de las estaciones, latitudes y longitudes
+/**
+ * @swagger
+ * /station/coordinates/{id_company}:
+ *  get:
+ *    summary: Obtener un arreglo con los nombres de las estaciones, latitudes y longitudes
+ *    tags: [Station]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idCompany'
+ *    responses:
+ *      200:
+ *        description: Coordenadas encontradas con éxito.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: La compañia ingresada no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.get('/station/coordinates/:id_company', stationCtrl.stationCoordinates);
 
 export default router;
