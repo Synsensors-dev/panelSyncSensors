@@ -165,10 +165,64 @@ router.put('/sensor/config/:id', sensorCtrl.updateMinAndMax);
 // Modificar el tiempo de alerta (para los correos)
 router.put('/sensor/alert_time/:id', sensorCtrl.updateAlertTime);
 
-// Obtener sensores activos 
+/**
+ * @swagger
+ * /panel/sensors/{id_company}:
+ *  get:
+ *    summary: Obtener sensores activos
+ *    tags: [Sensor]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idCompany'
+ *    responses:
+ *      200:
+ *        description: Cantidad de sensores encontrados con éxito
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: La compañia ingresada no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.get('/panel/sensors/:id_company', sensorCtrl.sensorsON);
 
-// Modificar el valor de custom_alert (apagándolo)
-router.get('/sensor/custom_alert/:id', sensorCtrl.customAlertTime);
+/**
+ * @swagger
+ * /sensor/custom_alert/{id_sensor}:
+ *  put:
+ *    summary: Modificar el valor de custom_alert (apagándolo)
+ *    tags: [Sensor]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idSensor'
+ *    responses:
+ *      200:
+ *        description: Custom_alert actualizada de manera correcta.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: El sensor ingresado no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
+router.put('/sensor/custom_alert/:id', sensorCtrl.customAlertTime);
 
 export default router;
