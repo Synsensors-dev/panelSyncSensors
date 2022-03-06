@@ -326,11 +326,11 @@ router.delete('/station/:id', stationCtrl.deleteStation);
  *              schema:
  *                  properties:
  *                      id_company:
- *                          type:
- *                          description:
+ *                          type: string
+ *                          description: id de la compañia
  *                      type:
- *                          type:
- *                          description:
+ *                          type: string
+ *                          description: tipo de sensor
  *                  required: 
  *                      - id_company
  *                      - type
@@ -359,7 +359,52 @@ router.delete('/station/:id', stationCtrl.deleteStation);
  */
 router.post('/panel/stations', stationCtrl.readPanelStations);
 
-// Obtener un objeto con las estaciones y promedio de las lecturas de los ultimos 7 meses
+/**
+ * @swagger
+ * /panel/graphic/{id_company}:
+ *  post:
+ *    summary: Obtener un objeto con las estaciones y promedio de las lecturas del ultimo time
+ *    tags: [Station]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idCompany'
+ *    requestBody:
+ *      required: true
+ *      content:
+ *          application/json:
+ *              schema:
+ *                  properties:
+ *                      type_sensor:
+ *                          type:
+ *                          description:
+ *                      time:
+ *                          type:
+ *                          description:
+ *                  required: 
+ *                      - type_sensor
+ *                      - time
+ *                  example:
+ *                      type_sensor: TEMPERATURE_AIR
+ *                      time: 12 
+ *    responses:
+ *      200:
+ *        description: Estaciones encontradas con exito.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: La compañia solicitada no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.post('/panel/graphic/:id_company', stationCtrl.stationGraphic);
 
 /**
