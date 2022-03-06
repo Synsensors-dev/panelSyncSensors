@@ -34,7 +34,7 @@ const router = Router();
  *          id_gateway: 
  *              type: string
  *              description: id del puente asociado a la estación
- *          id_company
+ *          id_company:
  *              type: string
  *              description: id de la compañia asociada a la estación
  *      required:
@@ -88,6 +88,82 @@ const router = Router();
  * tags: 
  *  name: Station
  *  description: Station Endpoints
+ */
+
+/**
+ * @swagger
+ * /station:
+ *  post:
+ *    summary: Agregar una nueva estación
+ *    tags: [Station]
+ *    requestBody:
+ *        required: true
+ *        content: 
+ *            application/json:
+ *                schema:
+ *                  type: object
+ *                  properties:
+ *                      id_gateway:
+ *                          type: string
+ *                          description: id del puente asociado a la estación
+ *                          example: 61f0eace3e60ea8911111729
+ *                      id_company:
+ *                          type: string
+ *                          description: id de la compañia asociada a la estación
+ *                          example: 61f0eace3e60ea8911111729
+ *                      data:
+ *                          type: object
+ *                          properties:
+ *                              name: 
+ *                                  type: string
+ *                                  description: nombre de la estación
+ *                                  example: Refrigerador 1
+ *                              latitude:
+ *                                  type: number
+ *                                  description: latitud de la ubicación de la estación
+ *                                  example: 34
+ *                              longitude:
+ *                                  type: number
+ *                                  description: longitud de la ubicación de la estación
+ *                                  example: 34
+ *                              type: 
+ *                                  type: string
+ *                                  description: tipo de estación
+ *                                  example: Frío
+ *                              status:
+ *                                  type: string
+ *                                  description: estado de la estación
+ *                                  example: Buena
+ *                              location_notes: 
+ *                                  type: string
+ *                                  description: notas de la estación
+ *                                  example: ubicada en el subterraneo de la Universidad
+ *                                        
+ *    responses:
+ *      201:
+ *        description: Estación agregada con éxito al sistema
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: La compañia ingresada no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      301:
+ *        description: Datos a agregar inválidos
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'    
  */
 router.post('/station', stationCtrl.createStation);
 
