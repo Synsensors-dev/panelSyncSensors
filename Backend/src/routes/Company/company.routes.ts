@@ -69,19 +69,34 @@ router.put('/company/:id', companyCtrl.updateCompany);
  *      - $ref: '#/components/parameters/idCompany'
  *    responses:
  *      200:
- *        description: Compañía encontrada
+ *        description: Compañia encontrada con éxito.
  *        content: 
  *          application/json:
  *            schema:
  *            $ref: '#/components/schemas/Company'
  *      404:
- *        description: Compañia no encontrada
+ *        description: ERROR: La compañia solicitada no existe en el sistema.
  *      400:
- *        description: Id ingresado inválido
+ *        description: ERROR: El id ingresado no es válido.
  */
 router.get('/company/:id', companyCtrl.readCompany);
 
-// Eliminar una compañía
+/**
+ * @swagger
+ * /company/{id}:
+ *  delete:
+ *    summary: Borrar una compañia a través del ID
+ *    tags: [Company]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idCompany'
+ *    responses:
+ *      200:
+ *        description: Compañia eliminada de manera correcta.
+ *      404:
+ *        description: ERROR: La compañia solicitada no existe en el sistema.
+ *      400:
+ *        description: ERROR: El id ingresado no es válido.
+ */
 router.delete('/company/:id', companyCtrl.deleteCompany);
 
 export default router;
