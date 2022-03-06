@@ -126,7 +126,34 @@ router.put('/sensor/:id', sensorCtrl.updateSensor);
  */
 router.get('/sensor/:id', sensorCtrl.readSensor);
 
-// Eliminar un sensor
+/**
+ * @swagger
+ * /sensor/{id}:
+ *  delete:
+ *    summary: Borrar una sensor a través del ID
+ *    tags: [Sensor]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idSensor'
+ *    responses:
+ *      200:
+ *        description: Sensor eliminado de manera correcta.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: El sensor solicitado no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.delete('/sensor/:id', sensorCtrl.deleteSensor);
 
 // Obtener lista de sensores existentes asociados a una compañia
