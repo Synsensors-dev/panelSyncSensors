@@ -3,83 +3,98 @@ import * as stationCtrl from './station.controller';
 
 const router = Router();
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Station:
+ *      type: object
+ *      properties:
+ *          _id:
+ *              type: string
+ *              description: id de la estación
+ *          name: 
+ *              type: string
+ *              description: nombre de la estación
+ *          latitude:
+ *              type: number
+ *              description: latitud de la ubicación de la estación
+ *          longitude:
+ *              type: number
+ *              description: longitud de la ubicación de la estación
+ *          type: 
+ *              type: string
+ *              description: tipo de estación
+ *          status:
+ *              type: string
+ *              description: estado de la estación
+ *          location_notes: 
+ *              type: string
+ *              description: notas de la estación
+ *          id_gateway: 
+ *              type: string
+ *              description: id del puente asociado a la estación
+ *          id_company
+ *              type: string
+ *              description: id de la compañia asociada a la estación
+ *      required:
+ *          - name
+ *          - latitude
+ *          - longitude
+ *          - type
+ *          - status
+ *          - location_notes
+ *      example:
+ *          name: Regrigerador del laboratorio 
+ *          latitude: 43
+ *          longitude: 43
+ *          type: Frío
+ *          status: bien
+ *          location_notes: Ubicada en el subterraneo
+ * 
+ *    ObjectReturn: 
+ *      type: object
+ *      properties:
+ *          success:
+ *              type: boolean
+ *              description: variable true o false dependiendo el return
+ *          data:
+ *              type: object
+ *              description: objecto vacío o con valores dependiendo el return
+ *          message: 
+ *              type: string
+ *              description: mensaje del return
+ *      required:
+ *          - success
+ *          - data
+ *          - message
+ *      example:
+ *          success: true
+ *          data: {}
+ *          message: mensaje de la ejecución
+ * 
+ *  parameters:
+ *      idStation:
+ *          in: path
+ *          name: id
+ *          required: true
+ *          schema:
+ *              type: string
+ *              description: id de la estación
+ */
+
+/**
+ * @swagger
+ * tags: 
+ *  name: Station
+ *  description: Station Endpoints
+ */
 router.post('/station', stationCtrl.createStation);
 
 // Modificar una estación
 router.put('/station/:id', stationCtrl.updateStation);
 
-/**
- * @swagger
- * /station/{id}:
- *  get:
- *    summary: Obtener los datos de una estación
- *    tags: [Station]
- *    parameters:
- *        - in: path
- *          name: id
- *          required: true
- *          schema:
- *              type: string
- *          description: id de la estación *    
- * responses:
- *      200:
- *        description: Estación encontrada
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                  id: 
- *                      type: string
- *                      description: id generado por mongodb
- *                  name:
- *                      type: string
- *                      description: nombre de la estación
- *                  latitude:
- *                      type: number
- *                      description: latitud de la ubicación de la estación
- *                  longitude:
- *                      type: number
- *                      description: longitud de la ubicación de la estación
- *                  tipo: 
- *                      type: string
- *                      description: tipo de estación
- *                  status:
- *                      type: boolean
- *                      description: estado de la estación 
- *                  location_notes:
- *                      type: string
- *                      description: notas de la estación
- *                  id_gateway:
- *                      type: string
- *                      description: id del puente
- *                  id_company:
- *                      type: string
- *                      description: id de la compañia
- *              required:
- *                  - name
- *                  - latitude
- *                  - longitude
- *                  - tipo
- *                  - status
- *                  - location_notes
- *                  - id_gateway
- *                  - id_company
- *              example:
- *                  id: 620dd2bf208318e3b53fbf4e
- *                  name: Estación 1
- *                  latitude: 34
- *                  longitude: 34
- *                  tipo: Frigorífico
- *                  status: Buena
- *                  location_notes: Ubicada en el subterraneo de la U
- *                  id_gateway: 620dd2bf208318e3b53fbf4e
- *                  id_company: 620dd2bf208318e3b53fbf4e
- *      400:
- *        description: ID inválido
- *      404:
- *        description: Error de inexistencia
- */
+
 router.get('/station/:id', stationCtrl.readStation);
 
 // Eliminar una estación
