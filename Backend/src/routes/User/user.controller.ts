@@ -157,23 +157,29 @@ export const newPassword: RequestHandler = async (req, res) => {
  * @param res Response, retorna un object con succes: true, data: { user:{} }, message: "String" del usuario si todo sale bien.
  */
 export const readUser: RequestHandler = async (req, res) => {
-    const _idUser = req.params.id;
+    const token = req.params.token;
 
-    //se valida el _id ingresado del usuario
-    if ( !Types.ObjectId.isValid( _idUser ) )
-        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+    //se verifica que el token sea válido
+    jwt.verify(token, config.jwtSecret, async function( err: any , decodedToken: any ){
 
-    const userFound = await User.findById( _idUser ).populate("roles");
+        //se valida si expiró o es defectuoso
+        if ( err )
+            return res.status(400).send({ success: false, data:{}, message:'ERROR: Token incorrecto o expirado'});
 
-    //se valida la existencia del usuario en el sistema
-    if ( !userFound )
-        return res.status(404).send({ success: false, data:{}, message: 'ERROR: El usuario solicitado no existe en el sistema.' });
+        const _id = decodedToken;
+        const userFound = await User.findById(_id).populate("roles");
 
-    return res.status(200).send( { success: true, data:{ 
-        name: userFound.name,
-        email: userFound.email,
-        roles: userFound.roles.map( (rol: { name: string; }) => rol.name)
-    }, message: 'Usario encontrado con éxito.'});
+        //Se valida la existencia del usuario
+        if ( !userFound )
+            return res.status(404).send({ success: false, data:{}, message: 'Error: el usuario ingresado no existe en el sistema.' });
+    
+
+        return res.status(200).send( { success: true, data:{ 
+            name: userFound.name,
+            email: userFound.email,
+            roles: userFound.roles.map( (rol: { name: string; }) => rol.name)
+        }, message: 'Usario encontrado con éxito.'});
+    }); 
 }
 
 /**
