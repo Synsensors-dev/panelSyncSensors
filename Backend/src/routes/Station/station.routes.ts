@@ -246,7 +246,34 @@ router.post('/station', stationCtrl.createStation);
  */
 router.put('/station/:id', stationCtrl.updateStation);
 
-
+/**
+ * @swagger
+ * /station/{id}:
+ *  get:
+ *    summary: Obtener una estación a través del ID
+ *    tags: [Station]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idStation'
+ *    responses:
+ *      200:
+ *        description: Estación encontrada con éxito.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: La estación solicitada no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.get('/station/:id', stationCtrl.readStation);
 
 // Eliminar una estación
