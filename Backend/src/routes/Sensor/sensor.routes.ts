@@ -156,7 +156,34 @@ router.get('/sensor/:id', sensorCtrl.readSensor);
  */
 router.delete('/sensor/:id', sensorCtrl.deleteSensor);
 
-// Obtener lista de sensores existentes asociados a una compañia
+/**
+ * @swagger
+ * /sensor/types/{id_company}:
+ *  get:
+ *    summary: Obtener lista de sensores existentes asociados a una compañia
+ *    tags: [Sensor]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idCompany'
+ *    responses:
+ *      200:
+ *        description: Tipos de sensores encontrados.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: La compañia ingresada no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.get('/sensor/types/:id_company', sensorCtrl.typesOfSensors);
 
 // Modificar min_config & max_config de un sensor
@@ -199,7 +226,7 @@ router.get('/panel/sensors/:id_company', sensorCtrl.sensorsON);
  * @swagger
  * /sensor/custom_alert/{id_sensor}:
  *  put:
- *    summary: Modificar el valor de custom_alert (apagándolo)
+ *    summary: Modificar el valor de custom_alert apagandolo y reiniciando los parámetros de alertas por default de manera exponencial
  *    tags: [Sensor]
  *    parameters:
  *      - $ref: '#/components/parameters/idSensor'
