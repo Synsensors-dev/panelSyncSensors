@@ -160,7 +160,7 @@ router.delete('/sensor/:id', sensorCtrl.deleteSensor);
  * @swagger
  * /sensor/types/{id_company}:
  *  get:
- *    summary: Obtener lista de sensores existentes asociados a una compañia
+ *    summary: Obtener lista de los tipos de sensores existentes asociados a una compañia
  *    tags: [Sensor]
  *    parameters:
  *      - $ref: '#/components/parameters/idCompany'
@@ -189,7 +189,47 @@ router.get('/sensor/types/:id_company', sensorCtrl.typesOfSensors);
 // Modificar min_config & max_config de un sensor
 router.put('/sensor/config/:id', sensorCtrl.updateMinAndMax);
 
-// Modificar el tiempo de alerta (para los correos)
+/**
+ * @swagger
+ * /sensor/alert_time/{id}:
+ *  put:
+ *    summary: Modificar el tiempo de envío de las alertas al correo electrónico del usuario
+ *    tags: [Sensor]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idSensor'
+ *    requestBody:
+ *      required: true
+ *      content:
+ *          application/json:
+ *              schema:
+ *                  properties:
+ *                      alert_time:
+ *                          type: number   
+ *                          description: tiempo de envío de las alertas en minutos
+ *                  required: 
+ *                      - alert_time
+ *                  example:
+ *                      alert_time: 20
+ *    responses:
+ *      200:
+ *        description: Alert_time actualizado de manera correcta.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: El sensor ingresado no existe en el sistema. O, no se ingresó valor para alert_time.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.put('/sensor/alert_time/:id', sensorCtrl.updateAlertTime);
 
 /**
