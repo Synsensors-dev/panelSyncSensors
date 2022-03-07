@@ -178,7 +178,7 @@ router.post('/station', stationCtrl.createStation);
  * @swagger
  * /station/{id}:
  *  put:
- *    summary: Agregar una nueva estación
+ *    summary: Editar una estación 
  *    tags: [Station]
  *    parameters:
  *      - $ref: '#/components/parameters/idStation'
