@@ -6,44 +6,46 @@ const router = Router();
  * @swagger
  * components:
  *  schemas:
- *    Sensor:
+ *    SensorADD:
  *      type: object
  *      properties:
- *          _id:
+ *          id_station: 
  *              type: string
- *              description: id del sensor
- *          name: 
- *              type: string
- *              description: nombre del sensor
- *          type:
- *              type: string
- *              description: tipo de sensor
- *          frecuency:
- *              type: number
- *              description: frecuencia de lectura en minutos
- *          min_config: 
- *              type: number
- *              description: limite de lectura inferior
- *          max_config:
- *              type: number
- *              description: limite de lectura superior
- *          status:
- *              type: boolean
- *              description: estado del sensor (encendido o apagado)
+ *              description: id de la estación asociada al sensor
+ *              example: 61f0eace3e60ea8911111222
+ *          data:
+ *              type: object
+ *              properties:
+ *                  _id:
+ *                      type: string
+ *                      description: id del sensor
+ *                  name: 
+ *                      type: string
+ *                      description: nombre del sensor
+ *                      example: TEMP890324
+ *                  type:
+ *                      type: string
+ *                      description: tipo de sensor
+ *                      example: TEMPERATURE_AIR
+ *                  frecuency:
+ *                      type: number
+ *                      description: frecuencia de lectura en minutos
+ *                      example: 7
+ *                  min_config: 
+ *                      type: number
+ *                      description: limite de lectura inferior
+ *                      example: 5
+ *                  max_config:
+ *                      type: number
+ *                      description: limite de lectura superior
+ *                      example: 15
+ *                  status:
+ *                      type: boolean
+ *                      description: estado del sensor (encendido o apagado)
+ *                      example: true
  *      required:
- *          - name
- *          - type
- *          - frecuency
- *          - min_config
- *          - max_config
- *          - status
- *      example:
- *          name: TEMP02823
- *          type: TEMPERATRURE_AIR
- *          frecuency: 30
- *          min_config: 10
- *          max_config: 30
- *          status: true
+ *          - id_station
+ *          - data
  * 
  *    ObjectReturn: 
  *      type: object
@@ -90,7 +92,44 @@ const router = Router();
  *  description: Sensor Endpoints
  */
 
-// Agregar un nuevo sensor
+/**
+ * @swagger
+ * /sensor:
+ *  post:
+ *    summary: Agregar un nuevo sensor
+ *    tags: [Sensor]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *          application/json:
+ *              schema:
+ *                  $ref: '#/components/schemas/SensorADD'
+ *    responses:
+ *      201:
+ *        description: Sensor agregado con éxito al sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: La estación ingresada no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      301:
+ *        description: Los datos a agregar son inválidos.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.post('/sensor', sensorCtrl.createSensor);
 
 // Modificar un sensor
