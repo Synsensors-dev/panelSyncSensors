@@ -6,7 +6,7 @@ const router = Router();
  * @swagger
  * components:
  *  schemas:
- *    SensorADD:
+ *    SensorAdd:
  *      type: object
  *      properties:
  *          id_station: 
@@ -103,7 +103,7 @@ const router = Router();
  *      content:
  *          application/json:
  *              schema:
- *                  $ref: '#/components/schemas/SensorADD'
+ *                  $ref: '#/components/schemas/SensorAdd'
  *    responses:
  *      201:
  *        description: Sensor agregado con éxito al sistema.
@@ -132,7 +132,46 @@ const router = Router();
  */
 router.post('/sensor', sensorCtrl.createSensor);
 
-// Modificar un sensor
+/**
+ * @swagger
+ * /sensor:
+ *  put:
+ *    summary: Modificar un sensor
+ *    tags: [Sensor]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idSensor'
+ *    requestBody:
+ *      required: true
+ *      content:
+ *          application/json:
+ *              schema:
+ *                  $ref: '#/components/schemas/SensorAdd'
+ *    responses:
+ *      201:
+ *        description: Sensor modificado con éxito del sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: El sensor a modificar no existe en el sistema. O, la estación ingresada no existe en el sistema. 
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      301:
+ *        description: Los datos a agregar son inválidos.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.put('/sensor/:id', sensorCtrl.updateSensor);
 
 /**
