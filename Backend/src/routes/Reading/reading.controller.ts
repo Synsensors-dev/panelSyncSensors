@@ -145,7 +145,7 @@ export const readingSensorGraphic: RequestHandler = async (req, res) => {
 
     //se valida el time
     if ( time!=12 && time!=24 && time!=7 && time!=30 && time!=3 && time!=6 )
-        return res.status(400).send({ success: false, data:{}, message: 'ERROR: el valor de time es inválido.' });
+        return res.status(301).send({ success: false, data:{}, message: 'ERROR: el valor de time es inválido.' });
     
     const date = createTimeArray(time);
 

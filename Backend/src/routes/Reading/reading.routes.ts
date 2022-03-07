@@ -7,6 +7,22 @@ const router = Router();
  * @swagger
  * components:
  *  schemas:
+ *    Reading:
+ *      type: object
+ *      properties:
+ *          id_sensor:
+ *              type: string
+ *              description: id del sensor asociado a la lectura ingresada
+ *          value: 
+ *              type: number
+ *              description: valor de la lectura captada por el sensor
+ *      required:
+ *          - id_sensor
+ *          - value 
+ *      example:
+ *          id_sensor: 61f0eace3e60ea8911111729
+ *          value: 28
+ * 
  *    ObjectReturn: 
  *      type: object
  *      properties:
@@ -52,7 +68,44 @@ const router = Router();
  *  description: Reading Endpoints
  */
 
-// Agregar una nueva lectura
+/**
+ * @swagger
+ * /reading:
+ *  post:
+ *    summary: Agregar una nueva lectura al sistema
+ *    tags: [Reading]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *          application/json:
+ *              schema:
+ *                  $ref: '#/components/schemas/Reading'
+ *    responses:
+ *      201: 
+ *        description: Lectura agregada con éxito al sistema. O, Esta lectura generó una alerta, pero aún no es tiempo de enviarla. O, Lectura y Alerta agregada con éxito al sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: El sensor ingresado no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      301:
+ *        description: Los datos a agregar son inválidos.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.post('/reading', readingCtrl.createReading);
 
 /**
@@ -85,12 +138,58 @@ router.post('/reading', readingCtrl.createReading);
  */
 router.get('/readings/:id_sensor', readingCtrl.sensorReadings);
 
-// Obtener lista de lecturas asociadas a un sensor, filtradas por 30 días, 3 meses y 6 meses
+/**
+ * @swagger
+ * /readings/graphic/{id_sensor}:
+ *  post:
+ *    summary: Obtener lista de lecturas asociadas a un sensor, filtradas por 30 días, 3 meses y 6 meses
+ *    tags: [Reading]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idSensor'
+ *    requestBody:
+ *      required: true
+ *      content:
+ *          application/json:
+ *              schema:
+ *                  properties:
+ *                      time:
+ *                          type: number
+ *                          description: rango de tiempo a retornar lecturas
+ *                  required:
+ *                      - time
+ *                  example: 
+ *                      time: 12
+ *    responses:
+ *      200: 
+ *        description: Lecturas encontradas con éxito.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: El sensor ingresado no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido. 
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      301:
+ *        description: El valor de time es inválido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.post('/readings/graphic/:id_sensor', readingCtrl.readingSensorGraphic);
 
 /**
  * @swagger
- * /readings/{id_sensor}:
+ * /readings/week/{id_company}:
  *  get:
  *    summary: Obtener cantidad de lecturas de la ultima semana asociadas a una compañia
  *    tags: [Reading]
