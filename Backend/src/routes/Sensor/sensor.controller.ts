@@ -441,4 +441,6 @@ export const updateNameSensor: RequestHandler = async (req, res) => {
 
     //se actualiza el name
     await Sensor.findByIdAndUpdate( _idSensor, { "name": new_name });
+
+    return res.status(200).send( { success: true, data:{}, message: 'Sensor actualizado de manera correcta.'});
 }

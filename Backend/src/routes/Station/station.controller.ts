@@ -476,8 +476,10 @@ export const stationCoordinates: RequestHandler = async (req, res) => {
 
     //se valida la existencia del sensor en el sistema
     if ( !stationFound )
-        return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La estación ingresado no existe en el sistema.' });
 
     //se actualiza el name
     await Station.findByIdAndUpdate( _idStation, { "name": new_name });
+
+    return res.status(200).send( { success: true, data:{}, message: 'Estación actualizada de manera correcta.'});
 }
