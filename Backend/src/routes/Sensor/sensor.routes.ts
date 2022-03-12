@@ -33,4 +33,7 @@ router.get('/sensor/custom_alert/:id', sensorCtrl.customAlertTime);
 //Obtener un true or false si custom_alert está activo, en caso de true obtener su valor en minutos
 router.get('/sensor/custom_alert/value/:id', sensorCtrl.readCustomAlertTime);
 
+//Cambiar nombre sensor
+router.put('/sensor/name/:id', sensorCtrl.updateNameSensor);
+
 export default router;

@@ -415,3 +415,30 @@ export const readCustomAlertTime: RequestHandler = async (req, res) => {
         time: sensorFound.alert_time 
     }, message: 'Custom_alert econtrado' });
 }
+
+/**
+ * Función encargada de modificar el nombre del sensor
+ * @route Put '/sensor/name/:id'
+ * @param req Request de la petición, se espera que tenga el id del sensor
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" del name si todo sale bien
+ */
+export const updateNameSensor: RequestHandler = async (req, res) => {
+    const _idSensor = req.params.id;
+    const new_name = req.params.body;
+
+    if ( !new_name )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: no se ingresó un name.' });
+
+    //se valida el _id ingresado del sensor
+    if ( !Types.ObjectId.isValid( _idSensor ) )
+    return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const sensorFound = await Sensor.findById( _idSensor );
+
+    //se valida la existencia del sensor en el sistema
+    if ( !sensorFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: El sensor ingresado no existe en el sistema.' });
+
+    //se actualiza el name
+    await Sensor.findByIdAndUpdate( _idSensor, { "name": new_name });
+}

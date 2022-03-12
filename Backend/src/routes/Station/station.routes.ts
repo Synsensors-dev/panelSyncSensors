@@ -27,4 +27,7 @@ router.get('/panel/stations/types/:id_company', stationCtrl.stationSensorTypes);
 // Obtener un arreglo con los nombres de las estaciones, latitudes y longitudes
 router.get('/station/coordinates/:id_company', stationCtrl.stationCoordinates);
 
+//Cambiar nombre sensor
+router.put('/sensor/name/:id', stationCtrl.updateNameStation);
+
 export default router;
