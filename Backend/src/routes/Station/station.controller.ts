@@ -456,10 +456,10 @@ export const stationCoordinates: RequestHandler = async (req, res) => {
 }
 
 /**
- * Función encargada de obtener un arreglo con el nombre de las estaciones, latitudes y longitudes
- * @route Get 'station/coordinates/:id_company'
- * @param req Request de la petición, se espera que tenga el id de la compañia.
- * @param res Response, retorna un object con succes: true, data: { Array }, message: "String" si todo sale bien.
+ * Función encargada de modificar el nombre de la estación
+ * @route Put '/station/name/:id'
+ * @param req Request de la petición, se espera que tenga el id de la estación
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" del name si todo sale bien
  */
  export const updateNameStation: RequestHandler = async (req, res) => {
     const _idStation = req.params.id;
@@ -474,7 +474,7 @@ export const stationCoordinates: RequestHandler = async (req, res) => {
 
     const stationFound = await Station.findById( _idStation );
 
-    //se valida la existencia del sensor en el sistema
+    //se valida la existencia de la estación en el sistema
     if ( !stationFound )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: La estación ingresado no existe en el sistema.' });
 
