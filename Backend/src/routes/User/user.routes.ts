@@ -28,7 +28,7 @@ const router = Router();
  *          data: {}
  *          message: mensaje de la ejecución
  * 
-  *  parameters:
+ *   parameters:
  *      token:
  *          in: path
  *          name: token
@@ -36,6 +36,13 @@ const router = Router();
  *          schema:
  *              type: string
  *              description: token generado para recuperar la contraseña
+ *      idCompany:
+ *          in: path
+ *          name: id_company
+ *          required: true
+ *          schema: 
+ *              type: string
+ *              description: id de la compañia a la cual están asociado el o los usuarios
  */
 
 /**
@@ -155,7 +162,6 @@ router.post( '/user/signup', userCtrl.signUp );
  */
 router.post( '/user/signin', userCtrl.signIn );
 
-<<<<<<< HEAD
 /**
  * @swagger
  * /user/forgotPassword:
@@ -241,10 +247,64 @@ router.post('/user/forgotPassword', userCtrl.forgotPassword );
  */
 router.put('/user/resetPassword/:token', userCtrl.newPassword );
 
-//Obtener una lista de usuarios con (nombre, rol y status) asociados a una compañia -> status aún no definido
+/**
+ * @swagger
+ * /users/{id_company}:
+ *  get:
+ *    summary: Obtener una lista de usuarios con (nombre, rol y status) asociados a una compañia -> status aún no definido
+ *    tags: [User]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idCompany'
+ *    responses:
+ *      200:
+ *        description: Usuarios encontrados con exito.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: La compañia ingresada no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.get('/users/:id_company', userCtrl.usersList);
 
-// Mostrar un usuario
+/**
+ * @swagger
+ * /user/{token}:
+ *  get:
+ *    summary: Obtener un usuario a partir de un token de inicio de sesión
+ *    tags: [User]
+ *    parameters:
+ *      - $ref: '#/components/parameters/token'
+ *    responses:
+ *      200:
+ *        description: Usario encontrado con éxito.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: El usuario ingresado no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: Token incorrecto o expirado
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.get('/user/:token', userCtrl.readUser);
 
 //Ruta de prueba passport (para probar el acceso via token)
