@@ -5,27 +5,34 @@
 <ng-container>
     <div class="chartHeader" [ngClass]="{'hidden': isLoading}">
 
-        <div class="selectButton" >
-            <div class="selectTitle">
-                Rango de tiempo:
+        <div class="headerButtons">
+
+            <div class="selectButton" >
+                <div class="selectTitle">
+                    Rango de tiempo:
+                </div>
+                <select (change)="captureTimeRange($event.target.value)">
+                    <option value="12">Ultimas 12 Horas</option>
+                    <option value="24">Ultimas 24 Horas</option>
+                    <option value="30">Ultimos 30 Días</option>
+                    <option value="3">Ultimos 3 Meses</option>
+                    <option value="6">Ultimos 6 meses</option>
+                </select>
             </div>
-            <select (change)="captureTimeRange($event.target.value)">
-                <option value="12">Ultimas 12 Horas</option>
-                <option value="24">Ultimas 24 Horas</option>
-                <option value="30">Ultimos 30 Días</option>
-                <option value="3">Ultimos 3 Meses</option>
-                <option value="6">Ultimos 6 meses</option>
-            </select>
+    
+            <div class="selectButton">
+                <div class="selectTitle">
+                    Tipo de Sensor:
+                </div>
+                <select [(ngModel)]="selectedOption" (change)="capture()">
+                    <option *ngFor="let item of selectSensorTypes ; let i = index" [selected]="i == 0" [value]="item.name">{{toSpanish(item.name)}}</option>
+                </select>
+            </div>
+
         </div>
 
-        <div class="selectButton">
-            <div class="selectTitle">
-                Tipo de Sensor:
-            </div>
-            <select [(ngModel)]="selectedOption" (change)="capture()">
-                <option *ngFor="let item of selectSensorTypes ; let i = index" [selected]="i == 0" [value]="item.name">{{toSpanish(item.name)}}</option>
-            </select>
-        </div>
+        
+
     </div>
     
     <div class="chart-wrapper" [ngClass]="{'hidden': isLoading}">

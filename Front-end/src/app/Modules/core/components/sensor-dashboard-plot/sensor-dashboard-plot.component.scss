@@ -1,6 +1,6 @@
 .chart-wrapper{
     width: 100%;
-    height: 85%;
+    height: 90%;
 }
 .hidden{
     display:none;
@@ -28,8 +28,21 @@
 @media (max-width:600px) {
     .chart-wrapper{
         width: 100%;
-        height: 500px;
+        height: 400px;
         padding-bottom: 60px;
+    }
+    .headerButtons{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: auto;
+        .selectButton{
+            right: none;
+            float: none;
+            margin: none;
+            position:unset;
+        }
     }
 
     
