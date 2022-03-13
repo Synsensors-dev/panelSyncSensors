@@ -410,7 +410,7 @@ router.get('/panel/sensors/:id_company', sensorCtrl.sensorsON);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.put('/sensor/custom_alert/:id', sensorCtrl.customAlertTime);
+router.get('/sensor/custom_alert/:id', sensorCtrl.customAlertTime);
 
 /**
  * @swagger

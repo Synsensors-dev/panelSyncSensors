@@ -424,7 +424,7 @@ export const readCustomAlertTime: RequestHandler = async (req, res) => {
  */
 export const updateNameSensor: RequestHandler = async (req, res) => {
     const _idSensor = req.params.id;
-    const new_name = req.params.body;
+    const new_name = req.body.name;
 
     if ( !new_name )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: no se ingresó un name.' });
