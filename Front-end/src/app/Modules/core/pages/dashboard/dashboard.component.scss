@@ -18,7 +18,7 @@
     background: #555; 
   }
 .rw1{
-    height: 400px;
+    height: fit-content;
 }
 .rw2{
     height: 200px; 
@@ -30,6 +30,7 @@
 }
 .noPadding{
     padding: 4px!important;
+    max-height: 100%;
 }
 .box{
     background: $light-gray;

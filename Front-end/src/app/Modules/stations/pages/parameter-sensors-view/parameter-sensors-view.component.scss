@@ -103,7 +103,18 @@ ul {
         .btn{
             margin: 5px;
         }
-
+    }
+    .optionsBar{
+        justify-content: center;
+        
+    }
+    .btn-group{
+        margin: none;
+    }
+    .colorsBg{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     
 }

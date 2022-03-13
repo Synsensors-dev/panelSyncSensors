@@ -1,5 +1,5 @@
 .chart-wrapper{
-    width: 800px;
+    width: 60vw;
 }
 .hidden{
     display:none;
@@ -27,6 +27,15 @@
 @media (max-width:600px) {
     .chart-wrapper{
         width: 90vw;
+    }
+    .chartHeader{
+        display: flex;
+        justify-content: center;
+        .selectButton{
+            right: none;
+            float: none;
+            position: unset;
+        }
     }
     
 }
