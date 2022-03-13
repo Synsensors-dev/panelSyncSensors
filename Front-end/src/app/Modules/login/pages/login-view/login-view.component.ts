@@ -32,13 +32,13 @@ export class LoginViewComponent implements OnInit {
       email:email,
       password:password
     }
-    this.auth.signIn(loginData).subscribe((response:apiResponse)=>{
+    this.auth.signIn(loginData).subscribe(async (response:apiResponse)=>{
       if(response.success){
         this.showErrorMessage=1;
-        localStorage.setItem('token',response.data.token);
-        localStorage.setItem('id_company',response.data.user.id_company);
+        sessionStorage.setItem('token',response.data.token);
+        sessionStorage.setItem('id_company',response.data.user.id_company);
+        await this.auth.setUserRole();
         this.router.navigate(["dashboard"]);
-        //console.log(response);
       }else{
         console.log(response.message);
       }

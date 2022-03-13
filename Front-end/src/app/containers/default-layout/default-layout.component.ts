@@ -20,6 +20,7 @@ export class DefaultLayoutComponent implements  OnInit{
 
   waterStations=navRoutes.waterStations;
   airStations=navRoutes.airStations;
+  isAdm;
 
   constructor(private authService:AuthService, private sensorService:SensorsService, private router:Router){
   }
@@ -34,8 +35,13 @@ export class DefaultLayoutComponent implements  OnInit{
         }else{
           this.flag=1
         }
-         
       })
+      if(this.authService.getUserRole()=="admin" || this.authService.getUserRole()=="super_admin"){
+        this.isAdm=true;
+      }else{
+        this.isAdm=false;
+      }
+      console.log(this.isAdm)
   }
 
 
@@ -47,6 +53,9 @@ export class DefaultLayoutComponent implements  OnInit{
   }
   toProfile(){
     this.router.navigate(["users/profile"])
+  }
+  toUsersList(){
+    this.router.navigate(["users/users-list"])
   }
 
   createRoutes(response:any){

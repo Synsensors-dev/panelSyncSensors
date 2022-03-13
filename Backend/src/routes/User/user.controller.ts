@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 import config from '../../config/config';
 import Role from "../../models/role.model";
 import { sendEmailForgotPassword, sendFirstRegistrationEmail, sendEmailNewPassword } from "../../middlewares/sendEmail";
+import { Types } from "mongoose";
+import Company from '../Company/company.model';
 
 dotenv.config();
 
@@ -146,4 +148,69 @@ export const newPassword: RequestHandler = async (req, res) => {
 
         return res.status(200).send({ success: true, data:{}, message: 'Contraseña actualizada con exito.' });
     });   
+}
+
+/**
+ * Función encargada de obtener un usuario del sistema y retornar los datos de el para su posterior visualización.
+ * @route Get '/user/:token'
+ * @param req Request de la petición, se espera que tenga el token del usuario.
+ * @param res Response, retorna un object con succes: true, data: { user:{} }, message: "String" del usuario si todo sale bien.
+ */
+export const readUser: RequestHandler = async (req, res) => {
+    const token = req.params.token;
+
+    //se verifica que el token sea válido
+    jwt.verify(token, config.jwtSecret, async function( err: any , decodedToken: any ){
+
+        //se valida si expiró o es defectuoso
+        if ( err )
+            return res.status(400).send({ success: false, data:{}, message:'ERROR: Token incorrecto o expirado'});
+
+        const _id = decodedToken;
+        const userFound = await User.findById(_id).populate("roles");
+
+        //Se valida la existencia del usuario
+        if ( !userFound )
+            return res.status(404).send({ success: false, data:{}, message: 'Error: el usuario ingresado no existe en el sistema.' });
+    
+
+        return res.status(200).send( { success: true, data:{ 
+            name: userFound.name,
+            email: userFound.email,
+            roles: userFound.roles.map( (rol: { name: string; }) => rol.name)
+        }, message: 'Usario encontrado con éxito.'});
+    }); 
+}
+
+/**
+ * Función encargada de obtener una lista de usuarios asociados a una compañia ingresada.
+ * @route Get '/users/:id_company'
+ * @param req Request de la petición, se espera que tenga el id de la compañia
+ * @param res Response, retorna un object con succes: true, data: { userList }, message: "String" de los usuarios si todo sale bien.
+ */
+export const usersList: RequestHandler = async (req, res) => {
+    const id_company = req.params.id_company;
+
+    //se valida el id_company
+    if ( !Types.ObjectId.isValid( id_company ) )
+        return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const companyFound = await Company.findById( id_company );
+
+    //se valida la existencia del usuario en el sistema
+    if ( !companyFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La compañia ingresada no existe en el sistema.' });
+
+    const usersCompany = await User.find({ "id_company": id_company }).populate("roles");
+
+    //se filtran los datos de la tabla
+    const usersFiltered = usersCompany.map( user => {
+        return {
+            name: user.name,
+            roles: user.roles.map( (rol: { name: string; }) => rol.name),
+            status: "No definido"
+        };
+    });
+
+    return res.status(200).send({ success: true, data: usersFiltered , message: 'Usuarios encontrados con exito.' });
 }
