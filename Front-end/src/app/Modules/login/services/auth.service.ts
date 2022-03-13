@@ -12,6 +12,7 @@ export class AuthService {
 
   private apiURL= bckEndapiURL
   private user_company_id:string;
+  private logged_user_role:string;
 
   constructor(private http:HttpClient, private router:Router) { }
 
@@ -40,7 +41,7 @@ export class AuthService {
    * True: Hay alguien logeado, False: no hay alguien logeado
    */
   loggedIn():boolean{
-    return !!localStorage.getItem('token')
+    return !!sessionStorage.getItem('token')
   }
 
   /**
@@ -48,15 +49,16 @@ export class AuthService {
    * @returns Retorna token de una sesion iniciada
    */
   getToken(){
-    return localStorage.getItem('token')
+    return sessionStorage.getItem('token')
   }
   /**
    * Desloguea una sesión eliminando el token del local storage
    */
 
   logOut(){
-    localStorage.removeItem('token')
-    localStorage.removeItem('id_company')
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('id_company')
+    sessionStorage.removeItem("role")
     this.router.navigate(['/login'])
   }
   /**
@@ -65,7 +67,7 @@ export class AuthService {
    */
 
   getUserCompanyId(){
-    return localStorage.getItem('id_company')
+    return sessionStorage.getItem('id_company')
   }
 
   /**
@@ -80,6 +82,15 @@ export class AuthService {
 
   sendResetPasswordRequest(userEmail:any){
     return this.http.post<apiResponse>(this.apiURL + `user/forgotPassword`,{email:userEmail})
+  }
+
+  async setUserRole(){
+    //Hay que editar para que sea con token en vez de id
+    let response = await this.http.get<apiResponse>(this.apiURL + `user/${this.getToken()}`).toPromise();
+    sessionStorage.setItem("role",response.data.roles[0])
+  }
+  getUserRole(){
+    return sessionStorage.getItem("role")
   }
 
 
