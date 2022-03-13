@@ -155,6 +155,7 @@ router.post( '/user/signup', userCtrl.signUp );
  */
 router.post( '/user/signin', userCtrl.signIn );
 
+<<<<<<< HEAD
 /**
  * @swagger
  * /user/forgotPassword:
@@ -239,6 +240,12 @@ router.post('/user/forgotPassword', userCtrl.forgotPassword );
  *            $ref: '#/components/schemas/ObjectReturn'
  */
 router.put('/user/resetPassword/:token', userCtrl.newPassword );
+
+//Obtener una lista de usuarios con (nombre, rol y status) asociados a una compañia -> status aún no definido
+router.get('/users/:id_company', userCtrl.usersList);
+
+// Mostrar un usuario
+router.get('/user/:token', userCtrl.readUser);
 
 //Ruta de prueba passport (para probar el acceso via token)
 router.get('/special', passport.authenticate('jwt', {session: false}), (req, res) => {
