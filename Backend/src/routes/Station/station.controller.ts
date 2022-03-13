@@ -454,3 +454,32 @@ export const stationCoordinates: RequestHandler = async (req, res) => {
 
     return res.status(200).send({ success: true, data: stationsFiltered, message: "Coordenadas encontradas con éxito."});
 }
+
+/**
+ * Función encargada de modificar el nombre de la estación
+ * @route Put '/station/name/:id'
+ * @param req Request de la petición, se espera que tenga el id de la estación
+ * @param res Response, retorna un object con succes: true, data: { }, message: "String" del name si todo sale bien
+ */
+ export const updateNameStation: RequestHandler = async (req, res) => {
+    const _idStation = req.params.id;
+    const new_name = req.params.body;
+
+    if ( !new_name )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: no se ingresó un name.' });
+
+    //se valida el _id ingresado de la estación
+    if ( !Types.ObjectId.isValid( _idStation ) )
+    return res.status(400).send({ success: false, data:{}, message: 'ERROR: El id ingresado no es válido.' });
+
+    const stationFound = await Station.findById( _idStation );
+
+    //se valida la existencia de la estación en el sistema
+    if ( !stationFound )
+        return res.status(404).send({ success: false, data:{}, message: 'ERROR: La estación ingresado no existe en el sistema.' });
+
+    //se actualiza el name
+    await Station.findByIdAndUpdate( _idStation, { "name": new_name });
+
+    return res.status(200).send( { success: true, data:{}, message: 'Estación actualizada de manera correcta.'});
+}
