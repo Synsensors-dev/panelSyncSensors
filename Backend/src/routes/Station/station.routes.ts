@@ -466,7 +466,46 @@ router.get('/panel/stations/types/:id_company', stationCtrl.stationSensorTypes);
  */
 router.get('/station/coordinates/:id_company', stationCtrl.stationCoordinates);
 
-//Cambiar nombre estación
+/**
+ * @swagger
+ * /station/name/{id}:
+ *  put:
+ *    summary: Editar el nombre de una estación 
+ *    tags: [Station]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idStation'
+ *    requestBody:
+ *        required: true
+ *        content: 
+ *            application/json:
+ *                schema:
+ *                  type: object
+ *                  properties:
+ *                      new_name:
+ *                          type: string
+ *                          description: nuevo nombre de la estación
+ *                          example: Refrigerador 1
+ *                                        
+ *    responses:
+ *      200:
+ *        description: Estación actualizada de manera correcta.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: No se ingresó un name. O, la estación no existe en el sistema
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'    
+ */
 router.put('/station/name/:id', stationCtrl.updateNameStation);
 
 export default router;

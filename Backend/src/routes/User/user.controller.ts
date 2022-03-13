@@ -189,7 +189,7 @@ export const readUser: RequestHandler = async (req, res) => {
 
         //Se valida la existencia del usuario
         if ( !userFound )
-            return res.status(404).send({ success: false, data:{}, message: 'Error: el usuario ingresado no existe en el sistema.' });
+            return res.status(404).send({ success: false, data:{}, message: 'Error: El usuario ingresado no existe en el sistema.' });
     
 
         return res.status(200).send( { success: true, data:{ 

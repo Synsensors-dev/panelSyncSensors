@@ -412,10 +412,76 @@ router.get('/panel/sensors/:id_company', sensorCtrl.sensorsON);
  */
 router.put('/sensor/custom_alert/:id', sensorCtrl.customAlertTime);
 
-//Obtener un true or false si custom_alert está activo, en caso de true obtener su valor en minutos
+/**
+ * @swagger
+ * /sensor/custom_alert/value/{id}:
+ *  get:
+ *    summary: Obtener un true or false si custom_alert está activo, en caso de true obtener su valor en minutos
+ *    tags: [Sensor]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idSensor'
+ *    responses:
+ *      200:
+ *        description: Custom_alert econtrado
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: El sensor ingresado no existe en el sistema.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ */
 router.get('/sensor/custom_alert/value/:id', sensorCtrl.readCustomAlertTime);
 
-//Cambiar nombre sensor
+/**
+ * @swagger
+ * /sensor/name/{id}:
+ *  put:
+ *    summary: Editar el nombre de un sensor
+ *    tags: [Sensor]
+ *    parameters:
+ *      - $ref: '#/components/parameters/idSensor'
+ *    requestBody:
+ *        required: true
+ *        content: 
+ *            application/json:
+ *                schema:
+ *                  type: object
+ *                  properties:
+ *                      new_name:
+ *                          type: string
+ *                          description: nuevo nombre del sensor
+ *                          example: TEMP92782
+ *                                        
+ *    responses:
+ *      200:
+ *        description: Sensor actualizado de manera correcta.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      404:
+ *        description: No se ingresó un name. O, el sensor no existe en el sistema
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'
+ *      400:
+ *        description: El id ingresado no es válido.
+ *        content: 
+ *          application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/ObjectReturn'    
+ */
 router.put('/sensor/name/:id', sensorCtrl.updateNameSensor);
 
 export default router;
