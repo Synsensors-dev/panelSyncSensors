@@ -57,20 +57,17 @@ export const createReading: RequestHandler = async (req, res) => {
         //se genera un token con tiempo de expiración asociado a la frecuencia de lectura + ALPHA
         const token = signToken( readingSaved._id , (sensorFound.frecuency * config.SECONDS_MINUTE  + config.ALPHA )); 
 
-        //se reinicia la cantidad de lecturas si es mayor a la definida como quantity
-        if ( sensorFound.quantity_readings > config.QUANTITY_READINGS_RESET ){
-
-            await Sensor.findByIdAndUpdate( sensorFound._id, { "quantity_readings": 0 });
-        }
+        //Se aumenta la cantidad de lecturas
+        sensorFound.quantity_readings++;
 
         //se almacena en el sensor el token, se actualiza el status y se suma una lectura en el quantity
-        await Sensor.findByIdAndUpdate( sensorFound._id, { "token_reading": token , "status": true, "quantity_readings": sensorFound.quantity_readings++});
+        await Sensor.findByIdAndUpdate( sensorFound._id, { "token_reading": token , "status": true, "quantity_readings": sensorFound.quantity_readings });
 
-        //si el contador de lecturas es igual a la cantida de lecturas minimo, se reinicia el alert_time al valor por default
-        if ( (sensorFound.quantity_readings + 1) == config.QUANTITY_READINGS_RESET ){ //es +1 ya que anteriormente se actualizó en la bd con ++
-
-            await Sensor.findByIdAndUpdate(sensorFound._id, {"alert_time": config.DEFAULT_ALERT_TIME });
+        //si el contador de lecturas es igual a la cantida de lecturas minimo post alertas, se reinicia el alert_time al valor por default y la cantidad de lecturas a 0
+        if ( sensorFound.quantity_readings  == config.QUANTITY_READINGS_RESET ){ 
+            await Sensor.findByIdAndUpdate(sensorFound._id, { "quantity_readings": 0, "alert_time": config.DEFAULT_ALERT_TIME });
         }
+
         return;
     }
 
