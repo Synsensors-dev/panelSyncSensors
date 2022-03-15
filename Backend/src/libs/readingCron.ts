@@ -13,7 +13,6 @@ export const createReadingsCron =  () => {
 
     //Se estructura el CRON 
     cron.schedule( config.TIME_READING_CRON, async () => { 
-        console.log("se agrega una lectura programada");
         const id_company_tester = config.ID_COMPANY_TESTER;
 
         //Buscar los 5 sensores de prueba con el id_company generado al crear la compañia de prueba
@@ -55,7 +54,6 @@ export const createReadingsCron =  () => {
 
     //Se estructura el CRON 
     cron.schedule( config.TIME_ALERT_CRON, async () => { 
-        console.log("se agrega una lectura y alerta programada");
         const id_company_tester = config.ID_COMPANY_TESTER;
 
         //Buscar los 5 sensores de prueba con el id_company generado al crear la compañia de prueba
