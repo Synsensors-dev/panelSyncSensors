@@ -51,14 +51,27 @@ export const createReading: RequestHandler = async (req, res) => {
     if ( value >= sensorFound.min_config && value <= sensorFound.max_config ){
 
         await readingSaved.save();
+        
+        res.status(201).send({ success: true, data: { _id: readingSaved._id }, message: 'Lectura agregada con éxito al sistema.' });
 
         //se genera un token con tiempo de expiración asociado a la frecuencia de lectura + ALPHA
         const token = signToken( readingSaved._id , (sensorFound.frecuency * config.SECONDS_MINUTE  + config.ALPHA )); 
 
-        //se almacena en el sensor el token y se actualiza el status
-        await Sensor.findByIdAndUpdate( sensorFound._id, { "token_reading": token , "status": true});
+        //se reinicia la cantidad de lecturas si es mayor a la definida como quantity
+        if ( sensorFound.quantity_readings > config.QUANTITY_READINGS_RESET ){
 
-        return res.status(201).send({ success: true, data: { _id: readingSaved._id }, message: 'Lectura agregada con éxito al sistema.' });
+            await Sensor.findByIdAndUpdate( sensorFound._id, { "quantity_readings": 0 });
+        }
+
+        //se almacena en el sensor el token, se actualiza el status y se suma una lectura en el quantity
+        await Sensor.findByIdAndUpdate( sensorFound._id, { "token_reading": token , "status": true, "quantity_readings": sensorFound.quantity_readings++});
+
+        //si el contador de lecturas es igual a la cantida de lecturas minimo, se reinicia el alert_time al valor por default
+        if ( (sensorFound.quantity_readings + 1) == config.QUANTITY_READINGS_RESET ){ //es +1 ya que anteriormente se actualizó en la bd con ++
+
+            await Sensor.findByIdAndUpdate(sensorFound._id, {"alert_time": config.DEFAULT_ALERT_TIME });
+        }
+        return;
     }
 
     const date = new Date();

@@ -20,6 +20,7 @@ export default {
     //quantity
     LIMIT_READINGS : 100,                   //limite de lecturas a retornar al front en el endpoint sensorReadings
     LIMIT_ALERTS: 20,                       //limite de lecturas a retornar al front en el endpoint recentAlerts
+    QUANTITY_READINGS_RESET: 10,               //Cantidad de lecturas ingresadas después de una alerta para reiniciar la exponencialidad a default
   
     ID_COMPANY_TESTER: "620dd2bf208318e3b53fbf4e",           //id de la compañia creada para testear
 
