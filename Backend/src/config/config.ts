@@ -14,6 +14,8 @@ export default {
     MILISECONDS_HOUR: 1000*60*60,           // 1 hora en milisegundos
     TIME_READING_CRON: "*/5 * * * *",         //variable que indica el tiempo de cración de lecturas por parte del cron (cada 5minutos)
     TIME_ALERT_CRON: "* */5 * * *",          //variable que indica el tiempo de cración de alertas por parte del cron (cada 5hr)
+    LIMIT_ALERT_TIME: 480,                  //480 minutos, 8 horas
+    DEFAULT_ALERT_TIME: 30,                 //30 minutos
 
     //quantity
     LIMIT_READINGS : 100,                   //limite de lecturas a retornar al front en el endpoint sensorReadings
