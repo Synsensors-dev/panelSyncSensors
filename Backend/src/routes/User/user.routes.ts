@@ -28,7 +28,7 @@ const router = Router();
  *          data: {}
  *          message: mensaje de la ejecución
  * 
- *   parameters:
+ *  parameters:
  *      token:
  *          in: path
  *          name: token

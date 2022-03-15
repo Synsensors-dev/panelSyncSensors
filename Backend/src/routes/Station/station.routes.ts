@@ -7,51 +7,6 @@ const router = Router();
  * @swagger
  * components:
  *  schemas:
- *    Station:
- *      type: object
- *      properties:
- *          _id:
- *              type: string
- *              description: id de la estación
- *          name: 
- *              type: string
- *              description: nombre de la estación
- *          latitude:
- *              type: number
- *              description: latitud de la ubicación de la estación
- *          longitude:
- *              type: number
- *              description: longitud de la ubicación de la estación
- *          type: 
- *              type: string
- *              description: tipo de estación
- *          status:
- *              type: string
- *              description: estado de la estación
- *          location_notes: 
- *              type: string
- *              description: notas de la estación
- *          id_gateway: 
- *              type: string
- *              description: id del puente asociado a la estación
- *          id_company:
- *              type: string
- *              description: id de la compañia asociada a la estación
- *      required:
- *          - name
- *          - latitude
- *          - longitude
- *          - type
- *          - status
- *          - location_notes
- *      example:
- *          name: Regrigerador del laboratorio 
- *          latitude: 43
- *          longitude: 43
- *          type: Frío
- *          status: bien
- *          location_notes: Ubicada en el subterraneo
- * 
  *    ObjectReturn: 
  *      type: object
  *      properties:
@@ -74,20 +29,20 @@ const router = Router();
  *          message: mensaje de la ejecución
  * 
  *  parameters:
- *      idStation:
- *          in: path
- *          name: id
- *          required: true
- *          schema:
- *              type: string
- *              description: id de la estación
- *      idCompany:
- *          in: path
- *          name: id_company
- *          required: true
- *          schema:
- *              type: string
- *              description: id de la compañia
+ *    idStation:
+ *       in: path
+ *       name: id
+ *       required: true
+ *       schema:
+ *           type: string
+ *           description: id de la estación
+ *    idCompany:
+ *       in: path
+ *       name: id_company
+ *       required: true
+ *       schema:
+ *           type: string
+ *           description: id de la compañia
  */
 
 /**
