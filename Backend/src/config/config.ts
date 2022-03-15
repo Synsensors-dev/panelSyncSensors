@@ -12,12 +12,14 @@ export default {
     WEEK_IN_MILISECONDS: 7*24*60*60*1000 ,  //1 semana en milisegundos
     MILISECONDS_DAY: 1000*60*60*24,          // 1 día en milisegundos
     MILISECONDS_HOUR: 1000*60*60,           // 1 hora en milisegundos
+    TIME_READING_CRON: "5 * * * *",         //variable que indica el tiempo de cración de lecturas por parte del cron
+    TIME_ALERT_CRON: "* 5 * * *",          //variable que indica el tiempo de cración de alertas por parte del cron
 
     //quantity
     LIMIT_READINGS : 100,                   //limite de lecturas a retornar al front en el endpoint sensorReadings
     LIMIT_ALERTS: 20,                       //limite de lecturas a retornar al front en el endpoint recentAlerts
   
-
+    ID_COMPANY_TESTER: "620dd2bf208318e3b53fbf4e",           //id de la compañia creada para testear
 
     //types of sensors
     TYPES : [ {
