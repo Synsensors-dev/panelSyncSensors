@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as userCtrl from './user.controller';
 import passport from 'passport';
+import { isAdmin } from "../../middlewares/authRoles";
 
 const router = Router();
 /**
@@ -113,7 +114,7 @@ const router = Router();
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'    
  */
-router.post( '/user/signup', userCtrl.signUp );
+router.post( '/user/signup', isAdmin, userCtrl.signUp );
 
 /**
  * @swagger
