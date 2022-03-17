@@ -24,13 +24,49 @@ export const isAdmin: RequestHandler = async (req, res, next) => {
 } 
 
 /**
- * Middleware que maneja la validacion del rol de super administrador
+ * Middleware que maneja la validacion del rol de administrador
  * @param req Request de la peticion, se espera que tenga el headers authorization
  * @param res Response, si algo falla con el token, retorna el mensaje de error
  * @param next Siguiente handler a cargar
  */
-export const isSuperAdmin: RequestHandler = async (req, res, next) => {
+ export const isSuperAdmin: RequestHandler = async (req, res, next) => {
 	roleValidation(req, res, next, "super_admin");
+} 
+
+/**
+ * Middleware que maneja la validacion de alguno de los 3 roles definidos -> User, Admin y SuperAdmin
+ * @param req Request de la peticion, se espera que tenga el headers authorization
+ * @param res Response, si algo falla con el token, retorna el mensaje de error
+ * @param next Siguiente handler a cargar
+ */
+ export const isRol: RequestHandler = async (req, res, next) => {
+
+	if ( !req.headers.authorization )
+		return res.status(400).send({ success: false, message: 'Los encabezados no tienen un parámetro de autorización.' });
+
+	const token = req.headers.authorization.split(' ')[1];
+
+	if ( !token )
+		return res.status(400).send({ success: false, message: 'Autorización de encabezado de sintaxis incorrecta.' });
+
+	const payload: any = jwt.verify(token, config.jwtSecret);
+
+	const _id = payload._id;
+
+    const user = await User.findById( _id ).populate("roles");;
+
+	if ( !user ){
+		return res.status(404).send({ success: false, message: 'Usuario no existente' });
+	}
+
+	for ( let i = 0; i < user.roles.length ; i++ ){
+		if ( user.roles[i].name == "user" ||  user.roles[i].name == "admin" || user.roles[i].name == "super_admin" ){
+			next();
+			return;
+		}
+	}
+
+	return res.status(400).send({ success: false, message: 'El Usuario ingresado no tiene un rol válido para acceder a la ruta' });
 } 
 
 /**
@@ -43,12 +79,12 @@ export const isSuperAdmin: RequestHandler = async (req, res, next) => {
 async function roleValidation (req:any, res:any, next:any, rol:any ){
 	
 	if ( !req.headers.authorization )
-		return res.status(400).send({ success: false, message: 'Headers dont have authorization param.' });
+		return res.status(400).send({ success: false, message: 'Los encabezados no tienen un parámetro de autorización.' });
 
 	const token = req.headers.authorization.split(' ')[1];
 
 	if ( !token )
-		return res.status(400).send({ success: false, message: 'Bad syntax header authorization.' });
+		return res.status(400).send({ success: false, message: 'Autorización de encabezado de sintaxis incorrecta.' });
 
 	const payload: any = jwt.verify(token, config.jwtSecret);
 
@@ -57,17 +93,21 @@ async function roleValidation (req:any, res:any, next:any, rol:any ){
     const user = await User.findById( _id ).populate("roles");;
 
 	if ( !user ){
-		return res.status(404).send({ success: false, message: 'User not exist.' });
+		return res.status(404).send({ success: false, message: 'Usuario no existente' });
 	}
 
 	for ( let i = 0; i < user.roles.length ; i++ ){
-		if ( user.roles[i].name == rol ){
-			console.log(user.roles[i].name);
-			next();
 
+		if ( user.roles[i].name == "super_admin" ){
+			next();
+			return;
+		}
+
+		if ( user.roles[i].name == rol ){
+			next();
 			return;
 		}
 	}
 
-	return res.status(400).send({ success: false, message: 'User without authorization to access the route.' });
+	return res.status(400).send({ success: false, message: 'Usuario sin autorización para acceder a esta ruta.' });
 }

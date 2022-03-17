@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as sensorCtrl from './sensor.controller';
+import { isRol, isAdmin, isSuperAdmin } from "../../middlewares/authRoles";
 
 const router = Router();
 /**
@@ -130,7 +131,7 @@ const router = Router();
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.post('/sensor', sensorCtrl.createSensor);
+router.post('/sensor', isSuperAdmin, sensorCtrl.createSensor);
 
 /**
  * @swagger
@@ -172,7 +173,7 @@ router.post('/sensor', sensorCtrl.createSensor);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.put('/sensor/:id', sensorCtrl.updateSensor);
+router.put('/sensor/:id', isSuperAdmin, sensorCtrl.updateSensor);
 
 /**
  * @swagger
@@ -202,7 +203,7 @@ router.put('/sensor/:id', sensorCtrl.updateSensor);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/sensor/:id', sensorCtrl.readSensor);
+router.get('/sensor/:id', isRol, sensorCtrl.readSensor);
 
 /**
  * @swagger
@@ -232,7 +233,7 @@ router.get('/sensor/:id', sensorCtrl.readSensor);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.delete('/sensor/:id', sensorCtrl.deleteSensor);
+router.delete('/sensor/:id', isSuperAdmin, sensorCtrl.deleteSensor);
 
 /**
  * @swagger
@@ -262,7 +263,7 @@ router.delete('/sensor/:id', sensorCtrl.deleteSensor);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/sensor/types/:id_company', sensorCtrl.typesOfSensors);
+router.get('/sensor/types/:id_company', isRol,  sensorCtrl.typesOfSensors);
 
 /**
  * @swagger
@@ -307,7 +308,7 @@ router.get('/sensor/types/:id_company', sensorCtrl.typesOfSensors);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.put('/sensor/config/:id', sensorCtrl.updateMinAndMax);
+router.put('/sensor/config/:id', isRol, sensorCtrl.updateMinAndMax);
 
 /**
  * @swagger

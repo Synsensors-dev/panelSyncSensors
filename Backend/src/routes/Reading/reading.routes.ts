@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as readingCtrl from './reading.controller';
+import { isRol } from "../../middlewares/authRoles";
 
 
 const router = Router();
@@ -136,7 +137,7 @@ router.post('/reading', readingCtrl.createReading);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/readings/:id_sensor', readingCtrl.sensorReadings);
+router.get('/readings/:id_sensor', isRol, readingCtrl.sensorReadings);
 
 /**
  * @swagger
@@ -185,7 +186,7 @@ router.get('/readings/:id_sensor', readingCtrl.sensorReadings);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.post('/readings/graphic/:id_sensor', readingCtrl.readingSensorGraphic);
+router.post('/readings/graphic/:id_sensor', isRol, readingCtrl.readingSensorGraphic);
 
 /**
  * @swagger
@@ -215,6 +216,6 @@ router.post('/readings/graphic/:id_sensor', readingCtrl.readingSensorGraphic);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/readings/week/:id_company', readingCtrl.companyReadings);
+router.get('/readings/week/:id_company', isRol, readingCtrl.companyReadings);
 
 export default router;

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as companyCtrl from './company.controller';
+import { isAdmin , isRol , isSuperAdmin } from "../../middlewares/authRoles";
 
 const router = Router();
 
@@ -106,7 +107,7 @@ const router = Router();
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.post('/company', companyCtrl.createCompany);
+router.post('/company', isSuperAdmin, companyCtrl.createCompany);
 
 /**
  * @swagger
@@ -148,7 +149,7 @@ router.post('/company', companyCtrl.createCompany);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.put('/company/:id', companyCtrl.updateCompany);
+router.put('/company/:id', isSuperAdmin, companyCtrl.updateCompany);
 
 /**
  * @swagger
@@ -178,7 +179,7 @@ router.put('/company/:id', companyCtrl.updateCompany);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/company/:id', companyCtrl.readCompany);
+router.get('/company/:id', isRol, companyCtrl.readCompany);
 
 /**
  * @swagger
@@ -208,6 +209,6 @@ router.get('/company/:id', companyCtrl.readCompany);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.delete('/company/:id', companyCtrl.deleteCompany);
+router.delete('/company/:id', isSuperAdmin, companyCtrl.deleteCompany);
 
 export default router;

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as userCtrl from './user.controller';
 import passport from 'passport';
-import { isAdmin } from "../../middlewares/authRoles";
+import { isAdmin , isRol } from "../../middlewares/authRoles";
 
 const router = Router();
 /**
@@ -276,7 +276,7 @@ router.put('/user/resetPassword/:token', userCtrl.newPassword );
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/users/:id_company', userCtrl.usersList);
+router.get('/users/:id_company', isAdmin, userCtrl.usersList);
 
 /**
  * @swagger
@@ -306,7 +306,7 @@ router.get('/users/:id_company', userCtrl.usersList);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/user/:token', userCtrl.readUser);
+router.get('/user/:token', isRol, userCtrl.readUser);
 
 //Ruta de prueba passport (para probar el acceso via token)
 router.get('/special', passport.authenticate('jwt', {session: false}), (req, res) => {
