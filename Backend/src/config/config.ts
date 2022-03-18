@@ -17,7 +17,10 @@ export default {
     LIMIT_READINGS : 100,                   //limite de lecturas a retornar al front en el endpoint sensorReadings
     LIMIT_ALERTS: 20,                       //limite de lecturas a retornar al front en el endpoint recentAlerts
   
-
+    //Roles
+    USER: "user",
+    ADMIN: "admin",
+    SUPER_ADMIN: "super_admin",
 
     //types of sensors
     TYPES : [ {

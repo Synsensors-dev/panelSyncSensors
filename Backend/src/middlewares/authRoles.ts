@@ -10,7 +10,7 @@ import User from "../routes/User/user.model";
  * @param next Siguiente handler a cargar
  */
 export const isUser: RequestHandler = async (req, res, next) => {
-	roleValidation(req, res, next, "user");
+	roleValidation(req, res, next, config.USER );
 } 
 
 /**
@@ -20,7 +20,7 @@ export const isUser: RequestHandler = async (req, res, next) => {
  * @param next Siguiente handler a cargar
  */
 export const isAdmin: RequestHandler = async (req, res, next) => {
-	roleValidation(req, res, next, "admin");
+	roleValidation(req, res, next, config.ADMIN);
 } 
 
 /**
@@ -30,7 +30,7 @@ export const isAdmin: RequestHandler = async (req, res, next) => {
  * @param next Siguiente handler a cargar
  */
  export const isSuperAdmin: RequestHandler = async (req, res, next) => {
-	roleValidation(req, res, next, "super_admin");
+	roleValidation(req, res, next, config.SUPER_ADMIN);
 } 
 
 /**
@@ -60,7 +60,7 @@ export const isAdmin: RequestHandler = async (req, res, next) => {
 	}
 
 	for ( let i = 0; i < user.roles.length ; i++ ){
-		if ( user.roles[i].name == "user" ||  user.roles[i].name == "admin" || user.roles[i].name == "super_admin" ){
+		if ( user.roles[i].name == config.USER ||  user.roles[i].name == config.ADMIN || user.roles[i].name == config.SUPER_ADMIN ){
 			next();
 			return;
 		}
@@ -98,7 +98,7 @@ async function roleValidation (req:any, res:any, next:any, rol:any ){
 
 	for ( let i = 0; i < user.roles.length ; i++ ){
 
-		if ( user.roles[i].name == "super_admin" ){
+		if ( user.roles[i].name == config.SUPER_ADMIN ){
 			next();
 			return;
 		}
