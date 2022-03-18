@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as sensorCtrl from './sensor.controller';
-import { isRol, isAdmin, isSuperAdmin } from "../../middlewares/authRoles";
+import { isRol, isSuperAdmin } from "../../middlewares/authRoles";
+import passport from 'passport';
 
 const router = Router();
 /**
@@ -131,7 +132,7 @@ const router = Router();
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.post('/sensor', isSuperAdmin, sensorCtrl.createSensor);
+router.post('/sensor', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }),  isSuperAdmin, sensorCtrl.createSensor);
 
 /**
  * @swagger
@@ -173,7 +174,7 @@ router.post('/sensor', isSuperAdmin, sensorCtrl.createSensor);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.put('/sensor/:id', isSuperAdmin, sensorCtrl.updateSensor);
+router.put('/sensor/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isSuperAdmin, sensorCtrl.updateSensor);
 
 /**
  * @swagger
@@ -203,7 +204,7 @@ router.put('/sensor/:id', isSuperAdmin, sensorCtrl.updateSensor);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/sensor/:id', isRol, sensorCtrl.readSensor);
+router.get('/sensor/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, sensorCtrl.readSensor);
 
 /**
  * @swagger
@@ -233,7 +234,7 @@ router.get('/sensor/:id', isRol, sensorCtrl.readSensor);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.delete('/sensor/:id', isSuperAdmin, sensorCtrl.deleteSensor);
+router.delete('/sensor/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isSuperAdmin, sensorCtrl.deleteSensor);
 
 /**
  * @swagger
@@ -263,7 +264,7 @@ router.delete('/sensor/:id', isSuperAdmin, sensorCtrl.deleteSensor);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/sensor/types/:id_company', isRol,  sensorCtrl.typesOfSensors);
+router.get('/sensor/types/:id_company', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol,  sensorCtrl.typesOfSensors);
 
 /**
  * @swagger
@@ -308,7 +309,7 @@ router.get('/sensor/types/:id_company', isRol,  sensorCtrl.typesOfSensors);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.put('/sensor/config/:id', isRol, sensorCtrl.updateMinAndMax);
+router.put('/sensor/config/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, sensorCtrl.updateMinAndMax);
 
 /**
  * @swagger
@@ -351,7 +352,7 @@ router.put('/sensor/config/:id', isRol, sensorCtrl.updateMinAndMax);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.put('/sensor/alert_time/:id', sensorCtrl.updateAlertTime);
+router.put('/sensor/alert_time/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, sensorCtrl.updateAlertTime);
 
 /**
  * @swagger
@@ -381,7 +382,7 @@ router.put('/sensor/alert_time/:id', sensorCtrl.updateAlertTime);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/panel/sensors/:id_company', sensorCtrl.sensorsON);
+router.get('/panel/sensors/:id_company', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, sensorCtrl.sensorsON);
 
 /**
  * @swagger
@@ -411,7 +412,7 @@ router.get('/panel/sensors/:id_company', sensorCtrl.sensorsON);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.put('/sensor/custom_alert/:id', sensorCtrl.customAlertTime);
+router.put('/sensor/custom_alert/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, sensorCtrl.customAlertTime);
 
 /**
  * @swagger
@@ -441,7 +442,7 @@ router.put('/sensor/custom_alert/:id', sensorCtrl.customAlertTime);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/sensor/custom_alert/value/:id', sensorCtrl.readCustomAlertTime);
+router.get('/sensor/custom_alert/value/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, sensorCtrl.readCustomAlertTime);
 
 /**
  * @swagger
@@ -483,6 +484,6 @@ router.get('/sensor/custom_alert/value/:id', sensorCtrl.readCustomAlertTime);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'    
  */
-router.put('/sensor/name/:id', sensorCtrl.updateNameSensor);
+router.put('/sensor/name/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, sensorCtrl.updateNameSensor);
 
 export default router;

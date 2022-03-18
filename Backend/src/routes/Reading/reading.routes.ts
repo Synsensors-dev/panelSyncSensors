@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as readingCtrl from './reading.controller';
 import { isRol } from "../../middlewares/authRoles";
+import passport from 'passport';
 
 
 const router = Router();
@@ -137,7 +138,7 @@ router.post('/reading', readingCtrl.createReading);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/readings/:id_sensor', isRol, readingCtrl.sensorReadings);
+router.get('/readings/:id_sensor', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, readingCtrl.sensorReadings);
 
 /**
  * @swagger
@@ -186,7 +187,7 @@ router.get('/readings/:id_sensor', isRol, readingCtrl.sensorReadings);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.post('/readings/graphic/:id_sensor', isRol, readingCtrl.readingSensorGraphic);
+router.post('/readings/graphic/:id_sensor', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, readingCtrl.readingSensorGraphic);
 
 /**
  * @swagger
@@ -216,6 +217,6 @@ router.post('/readings/graphic/:id_sensor', isRol, readingCtrl.readingSensorGrap
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/readings/week/:id_company', isRol, readingCtrl.companyReadings);
+router.get('/readings/week/:id_company', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, readingCtrl.companyReadings);
 
 export default router;

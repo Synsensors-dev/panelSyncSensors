@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as alertCtrl from './alert.controller';
 import { isAdmin, isRol } from "../../middlewares/authRoles";
+import passport from 'passport';
 
 
 const router = Router();
@@ -81,7 +82,7 @@ const router = Router();
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/alert/recent/:id_company', isRol, alertCtrl.recentAlerts);
+router.get('/alert/recent/:id_company', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, alertCtrl.recentAlerts);
 
 /**
  * @swagger
@@ -111,7 +112,7 @@ router.get('/alert/recent/:id_company', isRol, alertCtrl.recentAlerts);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/alert/quantity/:id_company', isRol, alertCtrl.quantityAlerts);
+router.get('/alert/quantity/:id_company', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, alertCtrl.quantityAlerts);
 
 /**
  * @swagger
@@ -141,6 +142,6 @@ router.get('/alert/quantity/:id_company', isRol, alertCtrl.quantityAlerts);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/alert/:id_sensor', isRol, alertCtrl.sensorAlerts);
+router.get('/alert/:id_sensor', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, alertCtrl.sensorAlerts);
 
 export default router;

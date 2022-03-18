@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as stationCtrl from './station.controller';
 import { isRol, isSuperAdmin } from "../../middlewares/authRoles";
+import passport from 'passport';
 
 const router = Router();
 
@@ -128,7 +129,7 @@ const router = Router();
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'    
  */
-router.post('/station', isSuperAdmin, stationCtrl.createStation);
+router.post('/station', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isSuperAdmin, stationCtrl.createStation);
 
 /**
  * @swagger
@@ -207,7 +208,7 @@ router.post('/station', isSuperAdmin, stationCtrl.createStation);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'    
  */
-router.put('/station/:id', isSuperAdmin, stationCtrl.updateStation);
+router.put('/station/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isSuperAdmin, stationCtrl.updateStation);
 
 /**
  * @swagger
@@ -237,7 +238,7 @@ router.put('/station/:id', isSuperAdmin, stationCtrl.updateStation);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/station/:id', isRol, stationCtrl.readStation);
+router.get('/station/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }),  isRol, stationCtrl.readStation);
 
 /**
  * @swagger
@@ -267,7 +268,7 @@ router.get('/station/:id', isRol, stationCtrl.readStation);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.delete('/station/:id', isSuperAdmin, stationCtrl.deleteStation);
+router.delete('/station/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isSuperAdmin, stationCtrl.deleteStation);
 
 /**
  * @swagger
@@ -313,7 +314,7 @@ router.delete('/station/:id', isSuperAdmin, stationCtrl.deleteStation);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.post('/panel/stations', isRol, stationCtrl.readPanelStations);
+router.post('/panel/stations', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, stationCtrl.readPanelStations);
 
 /**
  * @swagger
@@ -361,7 +362,7 @@ router.post('/panel/stations', isRol, stationCtrl.readPanelStations);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.post('/panel/graphic/:id_company', isRol, stationCtrl.stationGraphic);
+router.post('/panel/graphic/:id_company', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, stationCtrl.stationGraphic);
 
 /**
  * @swagger
@@ -420,7 +421,7 @@ router.get('/panel/stations/types/:id_company', isRol, stationCtrl.stationSensor
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/station/coordinates/:id_company', isRol, stationCtrl.stationCoordinates);
+router.get('/station/coordinates/:id_company', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, stationCtrl.stationCoordinates);
 
 /**
  * @swagger
@@ -462,6 +463,6 @@ router.get('/station/coordinates/:id_company', isRol, stationCtrl.stationCoordin
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'    
  */
-router.put('/station/name/:id', isRol, stationCtrl.updateNameStation);
+router.put('/station/name/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, stationCtrl.updateNameStation);
 
 export default router;
