@@ -6,6 +6,7 @@ import { SensorsService } from '../../../services/sensors.service';
 import { apiResponse } from '../../../../shared/interfaces/apiResponse';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { StationsService } from '../../../services/stations.service';
 
 @Component({
   selector: 'app-sensor-view',
@@ -21,10 +22,18 @@ export class SensorViewComponent implements OnInit {
   public sensorDataForm:FormGroup;
 
 
-  constructor(private location:Location , private fb:FormBuilder , private sensorsService:SensorsService , private datePipe:DatePipe) { }
+  constructor(
+    private location:Location , 
+    private fb:FormBuilder , 
+    private sensorsService:SensorsService , 
+    private datePipe:DatePipe , 
+    private stationService:StationsService
+    ){ }
+
   sensorId:any;
   retainer:any; //Recibe el objeto con la informacion que viene en la ruta
   stationName:any 
+  stationId:any
   sensorName:any;
   max_config:any;
   min_config:any;
@@ -45,6 +54,7 @@ export class SensorViewComponent implements OnInit {
     this.min_config=this.retainer.min_config
     this.max_config=this.retainer.max_config
     this.sensorName=this.retainer.sensorName;
+    this.stationId=this.retainer.stationId;
 
     this.sensorConfigForm=this.fb.group({
       min_config:[],
@@ -61,50 +71,71 @@ export class SensorViewComponent implements OnInit {
     this.sensorConfigForm.get('max_config').setValue(this.max_config)
   }
   uploadConfigChanges(){
-    this.updateMaxMin();
-    this.updateAlertOcurrency();
+    this.sensorConfigModal.hide()
+    if(this.updateMaxMin()&&this.updateAlertOcurrency()){
+      this.successModal.show();
+    }
   }
+
+
   uploadDataChanges(){
-    console.log(this.sensorDataForm.get('sensorName').value)
-    console.log(this.sensorDataForm.get('stationName').value)
-
+    this.sensorDataModal.hide()
+    if(this.updateStationName() &&   this.updateSensorName()){
+      this.successModal.show()
+    }
   }
 
-  updateMaxMin(){
+  async updateSensorName(){
+    const response:apiResponse=await this.sensorsService.changeSensorName(this.sensorDataForm.get("sensorName").value,this.sensorId).toPromise()
+    if(response.success){
+      return true;
+    }else{
+      return false;
+    }
+  }
+  async updateStationName(){
+    const response:apiResponse=await this.stationService.changeStationName(this.sensorDataForm.get("stationName").value,this.stationId).toPromise()
+    if(response.success){
+      return true
+    }else{
+      return false
+    }
+  }
 
-    this.sensorsService.updateSensorMinMax(
+
+  async updateMaxMin(){
+
+    const response:apiResponse= await this.sensorsService.updateSensorMinMax(
       this.sensorId,
       this.sensorConfigForm.get('min_config').value,
-      this.sensorConfigForm.get('max_config').value).
-      subscribe((response:apiResponse)=>{
-        if(response.success){
-          this.sensorConfigModal.hide()
-          this.successModal.show()
-        }else{
-          console.log(response.message);
-        }
-    })   
+      this.sensorConfigForm.get('max_config').value).toPromise();
+    
+    if(response.success){
+      return true
+    }else{
+      return false
+    }
+      
   }
-  updateAlertOcurrency(){
+  async updateAlertOcurrency(){
+
     if(this.isChecked){
       let totalMinutes:number = this.sensorConfigForm.get('alert_days').value*1440 + this.sensorConfigForm.get('alert_hours').value*60 + this.sensorConfigForm.get('alert_minutes').value
       console.log(totalMinutes)
-      this.sensorsService.updateAlertOcurrency(this.sensorId,totalMinutes).subscribe((response:apiResponse)=>{
-        if(response.success){
-          console.log(response)
-        }else{
-          console.log(response.message);
-        }
-      })
+       const response=await this.sensorsService.updateAlertOcurrency(this.sensorId,totalMinutes).toPromise()
+      if(response.success){
+        return true
+      }else{
+        return false
+      }
 
     }else{
-      this.sensorsService.setDefaultAlertOcurrency(this.sensorId).subscribe((response:apiResponse)=>{
-        if(response.success){
-          console.log(response.message)
-        }else{
-          console.log(response)
-        }
-      })
+      const response=await this.sensorsService.setDefaultAlertOcurrency(this.sensorId).toPromise()
+      if(response.success){
+        return true
+      }else{
+        return false
+      }
     }
   }
   successModalClose(){
@@ -177,6 +208,11 @@ export class SensorViewComponent implements OnInit {
         }
       })
     
+    }
+    openDataPop(){
+      this.sensorDataForm.get("sensorName").setValue(this.sensorName)
+      this.sensorDataForm.get("stationName").setValue(this.stationName)
+      this.sensorDataModal.show()
     }
 }
 

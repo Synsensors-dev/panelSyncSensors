@@ -86,11 +86,15 @@ export class SensorsService {
    * @returns objeto con el numero de readings de la ultima semana de la compañia con la que una cuenta tenga una sesión iniciada.
    */
   getNumberOfReadingsLastWeek(){
-    return this.http.get<apiResponse>(this.apiURL+ `readings/week/${this.auth.getUserCompanyId()}`)
+    return this.http.get<apiResponse>(this.apiURL+ `readings/week/${this.auth.getUserCompanyId()}`);
   }
 
   getCustomAlertStatus(sensorId:any){
-    return this.http.get<apiResponse>(this.apiURL+ `sensor/custom_alert/value/${sensorId}`)
+    return this.http.get<apiResponse>(this.apiURL+ `sensor/custom_alert/value/${sensorId}`);
+  }
+
+  changeSensorName(newname:any,sensorId:any){
+    return this.http.put<apiResponse>(this.apiURL+ `sensor/name/${sensorId}`,{name:newname});
   }
   
 }

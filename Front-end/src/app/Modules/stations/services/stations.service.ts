@@ -31,4 +31,8 @@ export class StationsService {
       return this.http.get<apiResponse>(this.apiURL + `station/coordinates/${this.auth.getUserCompanyId()}`)
     }
 
+    changeStationName(newname:any,stationId:any){
+      return this.http.put<apiResponse>(this.apiURL+ `station/name/${stationId}`,{name:newname});
+    }
+
 }

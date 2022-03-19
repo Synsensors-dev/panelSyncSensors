@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+import helmet from "helmet";
 import cors, { CorsOptions } from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
@@ -9,7 +10,7 @@ import passportMiddleware from './middlewares/passport'
 import { createRoles } from "./libs/initialSetup";
 import { statusValidator } from "./libs/statusValidator";
 import { options } from "./libs/swaggerOptions";
-import helmet from "helmet";
+import { createReadingsCron, createAlertCron } from "./libs/readingCron";
 
 // Load enviroments variables
 dotenv.config();
@@ -21,6 +22,8 @@ import indexRoutes from './routes/index.routes';
 const app = express();
 createRoles();
 statusValidator();
+createReadingsCron();
+createAlertCron();
 
 const corsConfig: CorsOptions = {
     origin: process.env.ORIGIN_FRONT_IP,

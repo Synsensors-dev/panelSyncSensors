@@ -20,7 +20,7 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
                   <p class="dropdown-item" data-toggle="modal" (click)="openParameterPop()">Editar Configuración del Sensor</p>
-                  <p class="dropdown-item" data-toggle="modal" (click)="sensorDataModal.show()">Editar Datos del Sensor</p>
+                  <p class="dropdown-item" data-toggle="modal" (click)="openDataPop()">Editar Datos del Sensor</p>
                 </div>
             </div>
 
@@ -213,13 +213,13 @@
     <div class="modal-dialog modal-success" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Cambios Realizados con exito</h4>
+          <h4 class="modal-title">Exito</h4>
           <button type="button" class="close" (click)="successModal.hide()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Valores minimos y maximos cambiados con exito</p>
+          <p>Los datos se han actualizado con satisfactoriamente.</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="successModalClose()">Cerrar</button>
@@ -229,7 +229,7 @@
   </div><!-- /.modal -->
 
   <!--Modal para editar nombre sensor y estación-->
-  <div bsModal #sensorDataModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div bsModal #sensorDataModal="bs-modal" class="modal fade dataModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -252,7 +252,7 @@
                       <p class="label">Cambiar Nombre Sensor</p>
                       <div class="input-group mgtop">
                           <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="icon-arrow-down"></i></span>
+                            <span class="input-group-text"><i class="icon-pencil"></i></span>
                           </div>
                           <input
                           type="text"
@@ -272,7 +272,7 @@
                 <p class="label">Cambiar nombre estación</p>
                 <div class="input-group">
                     <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="icon-clock"></i></span>
+                      <span class="input-group-text"><i class="icon-pencil"></i></span>
                     </div>
                     <input
                     id="stationName"

@@ -412,7 +412,8 @@ router.get('/panel/sensors/:id_company', passport.authenticate('jwt', {session: 
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.put('/sensor/custom_alert/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, sensorCtrl.customAlertTime);
+router.get('/sensor/custom_alert/:id', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, sensorCtrl.customAlertTime);
+
 
 /**
  * @swagger

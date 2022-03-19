@@ -95,7 +95,8 @@ export function createTimeFormat( date: any, time:any) {
     if ( time == 12 || time == 24 ){
         
         for ( let i = 0; i < date.length; i++ ){
-            date[i] = date[i].getHours();
+            const date_time_zone = new Date( date[i].getTime() - config.TIME_ZONE);
+            date[i] = date_time_zone.toISOString().substring(11,16);
         }
     }
 
