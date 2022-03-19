@@ -35,6 +35,10 @@ const sensorSchema = new Schema({
         type: Date,
         default: null
     },
+    quantity_readings: {
+        type: Number,
+        default: 0
+    },
     custom_alert: {
         type: Boolean,
         default: false

@@ -46,9 +46,15 @@ export async function createAlert( reading:any, sensor:any ){
     await Sensor.findByIdAndUpdate( sensor._id ,{ "last_alert": last_alert });
 
     //se actualiza el alert_time a exponencial si está definido por default
-    if ( !sensor.custom_alert ){
-        await Sensor.findByIdAndUpdate(sensor._id, {"alert_time": sensor.alert_time * 2});
-    }
+    if ( sensor.custom_alert == false){
+
+        if ( sensor.alert_time == config.LIMIT_ALERT_TIME ){
+            sensor.alert_time = config.DEFAULT_ALERT_TIME;
+            await Sensor.findByIdAndUpdate(sensor._id, sensor.alert_time);
+        } 
+
+        await Sensor.findByIdAndUpdate(sensor._id, {"alert_time": sensor.alert_time * 2, "quantity_readings": sensor.quantity_readings * 0 });
+    };
 
     //se envía el correo con la alerta a la compañia
     sendEmailAlert(companyFound, stationFound, sensor, alertSaved);
