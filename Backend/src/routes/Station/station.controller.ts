@@ -463,7 +463,7 @@ export const stationCoordinates: RequestHandler = async (req, res) => {
  */
  export const updateNameStation: RequestHandler = async (req, res) => {
     const _idStation = req.params.id;
-    const new_name = req.params.body;
+    const new_name = req.body.name;
 
     if ( !new_name )
         return res.status(404).send({ success: false, data:{}, message: 'ERROR: no se ingresó un name.' });
