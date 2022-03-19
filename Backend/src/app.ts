@@ -9,6 +9,7 @@ import passportMiddleware from './middlewares/passport'
 import { createRoles } from "./libs/initialSetup";
 import { statusValidator } from "./libs/statusValidator";
 import { options } from "./libs/swaggerOptions";
+import helmet from "helmet";
 
 // Load enviroments variables
 dotenv.config();
@@ -33,6 +34,7 @@ app.set('port', process.env.PORT || 4000);
 
 // Middlewares
 app.use(morgan('dev'));
+app.use(helmet());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors(corsConfig));
