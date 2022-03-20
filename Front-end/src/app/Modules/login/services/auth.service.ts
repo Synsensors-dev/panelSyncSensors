@@ -22,7 +22,6 @@ export class AuthService {
    * 
    */
   signUp(user:typeUser){
-    console.log(user)
     return this.http.post<apiResponse>(this.apiURL + 'user/signup',user)
   }
 

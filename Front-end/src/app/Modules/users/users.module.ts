@@ -6,6 +6,8 @@ import { ProfileViewComponent } from './pages/profile-view/profile-view.componen
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserListViewComponent } from './pages/user-list-view/user-list-view.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 
 @NgModule({
@@ -17,6 +19,9 @@ import { UserListViewComponent } from './pages/user-list-view/user-list-view.com
     CommonModule,
     UsersRoutingModule,
     SharedModule,
+    ReactiveFormsModule,
+    ButtonsModule.forRoot(),
+    ModalModule.forRoot(),
     ReactiveFormsModule
   ]
 })

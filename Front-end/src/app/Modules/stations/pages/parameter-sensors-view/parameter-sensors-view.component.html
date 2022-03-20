@@ -1,4 +1,9 @@
-<div class="container">
+
+<div *ngIf="isLoading" style="height: 100%;">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+
+<div class="container" *ngIf="!isLoading">
     <div class="row filtersRow">
         <div class="col glossary">
             <div class="colorsBg">
