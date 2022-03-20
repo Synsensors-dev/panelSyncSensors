@@ -13,7 +13,7 @@ export default {
     MILISECONDS_DAY: 1000*60*60*24,          // 1 día en milisegundos
     MILISECONDS_HOUR: 1000*60*60,           // 1 hora en milisegundos
     TIME_READING_CRON: "*/5 * * * *",         //variable que indica el tiempo de cración de lecturas por parte del cron (cada 5minutos)
-    TIME_ALERT_CRON: "* */5 * * *",          //variable que indica el tiempo de cración de alertas por parte del cron (cada 5hr)
+    TIME_ALERT_CRON: "* */10 * * *",          //variable que indica el tiempo de cración de alertas por parte del cron (cada 5hr)
     LIMIT_ALERT_TIME: 480,                  //480 minutos, 8 horas
     DEFAULT_ALERT_TIME: 30,                 //30 minutos
 
