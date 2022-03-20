@@ -3,7 +3,28 @@
     overflow-x:auto;
     max-height: 70vh;
     width: 100%;
+    margin: auto;
 }
 h2{
     margin-block: 30px;
+}
+.title-body{
+    width: 100%;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+button{
+    width: fit-content;
+    height: fit-content;
+}
+label{
+    height: fit-content;
+    margin-bottom: 0px;
+    h5{
+        height: fit-content;
+    }
+}
+.formInput{
+    margin-block: 20px;
 }
