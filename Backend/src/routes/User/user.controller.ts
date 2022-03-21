@@ -225,6 +225,7 @@ export const usersList: RequestHandler = async (req, res) => {
     const usersFiltered = usersCompany.map( user => {
         return {
             name: user.name,
+            email: user.email,
             roles: user.roles.map( (rol: { name: string; }) => rol.name),
             status: "No definido"
         };
