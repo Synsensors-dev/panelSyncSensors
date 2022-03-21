@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as userCtrl from './user.controller';
 import passport from 'passport';
+import { isAdmin , isRol } from "../../middlewares/authRoles";
 
 const router = Router();
 /**
@@ -113,7 +114,7 @@ const router = Router();
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'    
  */
-router.post( '/user/signup', userCtrl.signUp );
+router.post( '/user/signup', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isAdmin, userCtrl.signUp );
 
 /**
  * @swagger
@@ -275,7 +276,7 @@ router.put('/user/resetPassword/:token', userCtrl.newPassword );
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/users/:id_company', userCtrl.usersList);
+router.get('/users/:id_company', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isAdmin, userCtrl.usersList);
 
 /**
  * @swagger
@@ -305,11 +306,6 @@ router.get('/users/:id_company', userCtrl.usersList);
  *            schema:
  *            $ref: '#/components/schemas/ObjectReturn'
  */
-router.get('/user/:token', userCtrl.readUser);
-
-//Ruta de prueba passport (para probar el acceso via token)
-router.get('/special', passport.authenticate('jwt', {session: false}), (req, res) => {
-    res.send('Succes');
-});
+router.get('/user/:token', passport.authenticate('jwt', {session: false, failureRedirect: '/login' }), isRol, userCtrl.readUser);
 
 export default router;

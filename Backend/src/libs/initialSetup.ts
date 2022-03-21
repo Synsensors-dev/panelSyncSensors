@@ -1,4 +1,5 @@
 import Role from "../models/role.model";
+import config from "../config/config";
 
 /** 
  * Se encarga de crear los roles de usuarios en la BD. Verificando la existencia de ellos apenas arranca el software.
@@ -14,9 +15,9 @@ export const createRoles = async () => {
 
         // Crea los roles por default
         const values = await Promise.all([
-        new Role({ name: "user" }).save(),
-        new Role({ name: "admin" }).save(),
-        new Role({ name: "super_admin" }).save()
+        new Role({ name: config.USER }).save(),
+        new Role({ name: config.ADMIN }).save(),
+        new Role({ name: config.SUPER_ADMIN }).save()
         ]);
 
     } catch (error) {
