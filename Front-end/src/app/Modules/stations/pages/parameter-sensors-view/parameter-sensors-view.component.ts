@@ -16,6 +16,7 @@ export class ParameterSensorsViewComponent implements OnInit {
   stations:panelStation[]
   sortedArray=[];
   sensorParameterName:string;
+  isLoading:boolean=true;
   param;
   constructor(
     private router:Router,
@@ -35,6 +36,7 @@ export class ParameterSensorsViewComponent implements OnInit {
           this.stations=response.data
           this.sortedArray=this.stations;
           console.log(this.stations)
+          this.isLoading=false;
         }else{
           console.log(response.message);
         }
