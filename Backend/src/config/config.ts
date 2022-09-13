@@ -13,7 +13,7 @@ export default {
     MILISECONDS_DAY: 1000*60*60*24,          // 1 día en milisegundos
     MILISECONDS_HOUR: 1000*60*60,           // 1 hora en milisegundos
     TIME_READING_CRON: "*/5 * * * *",         //variable que indica el tiempo de cración de lecturas por parte del cron (cada 5minutos)
-    TIME_ALERT_CRON: "* */5 * * *",          //variable que indica el tiempo de cración de alertas por parte del cron (cada 5hr)
+    TIME_ALERT_CRON: "* */10 * * *",          //variable que indica el tiempo de cración de alertas por parte del cron (cada 5hr)
     LIMIT_ALERT_TIME: 480,                  //480 minutos, 8 horas
     DEFAULT_ALERT_TIME: 30,                 //30 minutos
 
@@ -22,6 +22,11 @@ export default {
     LIMIT_ALERTS: 20,                       //limite de lecturas a retornar al front en el endpoint recentAlerts
     QUANTITY_READINGS_RESET: 10,               //Cantidad de lecturas ingresadas después de una alerta para reiniciar la exponencialidad a default
   
+    //Roles
+    USER: "user",
+    ADMIN: "admin",
+    SUPER_ADMIN: "super_admin",
+
     ID_COMPANY_TESTER: "620dd2bf208318e3b53fbf4e",           //id de la compañia creada para testear
 
     //types of sensors

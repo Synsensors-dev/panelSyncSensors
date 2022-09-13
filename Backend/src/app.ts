@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+import helmet from "helmet";
 import cors, { CorsOptions } from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
@@ -36,6 +37,7 @@ app.set('port', process.env.PORT || 4000);
 
 // Middlewares
 app.use(morgan('dev'));
+app.use(helmet());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors(corsConfig));
