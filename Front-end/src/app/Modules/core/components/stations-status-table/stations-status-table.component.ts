@@ -1,0 +1,36 @@
+import { Component, OnInit } from '@angular/core';
+import { apiResponse } from '../../../shared/interfaces/apiResponse';
+import { TranslateService } from '../../../shared/services/translate.service';
+import { StationsService } from '../../../stations/services/stations.service';
+
+@Component({
+  selector: 'app-stations-status-table',
+  templateUrl: './stations-status-table.component.html',
+  styleUrls: ['./stations-status-table.component.scss']
+})
+export class StationsStatusTableComponent implements OnInit {
+  //Objeto con los header de la tabla
+  typesOfSensors=[]
+  //objeto con el contenido de la tabla
+  stations=[]
+  isLoading=true;
+
+  constructor(private stationsService:StationsService, private translate:TranslateService) { }
+
+  ngOnInit(): void {
+    this.stationsService.getStationsStatus().subscribe((response)=>{
+      if(response.success){
+        this.isLoading=false;
+        this.typesOfSensors=response.data.types_of_sensors;
+        this.translate.arrayToSpanish(this.typesOfSensors)
+        this.stations=response.data.stations;
+      }else{
+        console.log(response.message);
+      }
+    })
+  }
+  toArray(obj: object) {
+    return Object.keys(obj).map(key => obj[key])
+  }
+
+}

@@ -1,0 +1,181 @@
+<div class="container">
+    <!-- Barra superior -->
+    <div class="row">
+
+        <div class="col stationName green">
+            <p>{{stationName}} - Temperatura</p>
+        </div>
+
+        <div class="col urIcons">
+
+            <div class="btn-group float-right" dropdown>
+                <button type="button" class="btn btn-transparent" dropdownToggle>
+                  <i class="green icon-settings"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                  <p class="dropdown-item" data-toggle="modal" (click)="myModal.show()">Editar Sensor</p>
+                </div>
+            </div>
+
+            <div class="btn-group float-right" dropdown>
+                <button type="button" class="btn btn-transparent" disabled="true">
+                    <i class="cil-wifi-signal-4 green"></i>
+                </button>
+            </div>
+
+        </div>
+        
+
+    </div>
+
+
+    <!-- Grafico -->
+    <div class="row rw1">
+        <app-readings-line-chart></app-readings-line-chart>
+
+    </div>
+
+    <!-- Historial de alertas -->
+    <div class="row">
+
+        <app-sensor-alerts-history></app-sensor-alerts-history>
+
+    </div>
+</div>
+
+<!-- Modal para editar sensor -->
+ 
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Sensor Temperatura - {{stationName}}</h4>
+          <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form [formGroup]="sensorForm">
+            <div class="section-title">
+              <h4>Limites de medida</h4>
+              <p>Límites superiores e inferiores del sensor, en caso de que se detecte una lectura fuera del límite establecido se emitirá una alerta</p>
+
+            </div>
+
+              
+
+            <div class="row">
+
+                  <div class="col">
+
+                      <p class="label">Límite inferior de medida</p>
+                      <div class="input-group mgtop">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-arrow-down"></i></span>
+                          </div>
+                          <input
+                          type="number"
+                          id="min_config"
+                          formControlName="min_config"
+                          >
+                      </div>
+
+                  </div>
+
+                  <div class="col">
+                    <p class="label">Límite superior de medida</p>
+                    <div class="input-group mgtop">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="icon-arrow-up"></i></span>
+                        </div>
+                        <input
+                        id="max_config"
+                        type="number"
+                        formControlName="max_config"
+                        >
+                    </div>
+
+                  </div>
+                  
+            </div>
+            <hr>
+            <div class="section-title">
+              <h4>Ocurrencía de alertas</h4>
+              <p>Cada cuanto el sensor emite alertas en caso de que se detecten valores fuera de los Límites</p>
+
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <p class="label">Días</p>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-clock"></i></span>
+                    </div>
+                    <input
+                    id="alert_days"
+                    type="number"
+                    formControlName="alert_days"
+                    >
+                </div>
+              </div>
+              <div class="col">
+                <p class="label">Horas</p>
+                <div class="input-group ">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-clock"></i></span>
+                    </div>
+                    <input
+                    id="alert_hours"
+                    type="number"
+                    formControlName="alert_hours"
+                    >
+                </div>
+              </div>
+              <div class="col">
+                <p class="label">Minutos</p>
+                <div class="input-group ">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-clock"></i></span>
+                    </div>
+                    <input
+                    id="alert_minutes"
+                    type="number"
+                    formControlName="alert_minutes"
+                    >
+                </div>
+              </div>
+
+            </div>
+
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="myModal.hide()">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="saveChanges()">Guardar Cambios</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <!--modal Sucess-->
+  <div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-success" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Cambios Realizados con exito</h4>
+          <button type="button" class="close" (click)="successModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Valores minimos y maximos cambiados con exito</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="successModalClose()">Cerrar</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->

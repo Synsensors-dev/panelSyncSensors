@@ -1,0 +1,120 @@
+@import '../../../../../../node_modules/@coreui/coreui/scss/_variables.scss';
+@import '../../../../../scss/colorPalette.scss';
+.dot {
+    height: min-content;
+    width: fit-content;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 10%;
+    color: white;
+    margin: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+.colorsBg{
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    padding: 5px;
+    width: fit-content;
+    text-align: center;
+}
+.card{
+    width: 340px;
+    margin: 20px;
+    border-radius: 30px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    color: whitesmoke;
+    .temperature-text{
+        font-size: 50px;
+        font-weight: bold;
+    }
+    .f18{
+        font-size: 16px;
+    }
+}
+.row{
+    justify-content: center;
+}
+.filtersRow {
+    align-items: center;
+
+    .btn-group{
+
+        margin-left: 20px;
+        margin-right: 20px;
+
+
+        .btn{
+            padding: 5px;
+            width: 120px;
+            background-color: $green;
+            color: white;
+            border-radius: 10px;
+
+        }
+        
+    }
+}
+ul {
+    list-style-type: none;
+    padding:5px;
+    padding-left: 0px;
+    li {
+        float: left;
+    }
+}
+.optionsBar{
+    display: flex;
+    justify-content: right;
+
+}
+/*.rowHumedad{
+    justify-content: left;
+    margin-left: 30px;
+}*/
+.celsius{
+    font-weight: bolder;
+    margin-left: 5px;
+}
+.glossary{
+    flex-direction: column;
+}
+
+.red{
+    background-color: $red;
+
+}
+.green{
+    background-color:$light-green;
+}
+.gray{
+    background-color: gray;
+}
+.yellow{
+    background-color: $dark-yellow;
+}
+@media (max-width:600px) {
+    .card{
+        width: 90%;
+    }
+    .filtersRow{
+        justify-content: center;
+        .btn{
+            margin: 5px;
+        }
+    }
+    .optionsBar{
+        justify-content: center;
+        
+    }
+    .btn-group{
+        margin: none;
+    }
+    .colorsBg{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+}

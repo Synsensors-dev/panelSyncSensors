@@ -1,0 +1,147 @@
+<div class="container">
+
+    <div class="row">
+        <div class="title-body">
+            <h2>
+                Lista de Usuarios
+            </h2>
+            <button type="button" class="btn-pill btn-block btn-dark" (click)="newUserModal.show()">Agregar Usuario</button>
+        </div>
+
+    </div>
+
+    <div class="row scrolleable-box">
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of userList">
+                    <td>
+                        {{user.name}}
+                        
+                    </td>
+                    <td>
+                        {{user.roles[0]}}
+                    </td>
+                    <td>
+                        {{user.status}}
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+
+    </div>
+
+
+
+
+</div>
+
+
+<div bsModal #newUserModal="bs-modal" class="modal fade dataModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+            <div class="modal-header">
+            <h4 class="modal-title">Agregar Nuevo Usuario</h4>
+            <button type="button" class="close" (click)="newUserModal.hide()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+
+            <div class="modal-body">
+
+                <form [formGroup]="newUserForm">
+
+                    <div class="formInput">
+
+                        <label for="name"><h5>Nombre de colaborador</h5></label>
+                        <div class="input-group mgtop">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-user"></i></span>
+                            </div>
+                            <input
+                            [class.is-invalid]="newUserForm.get('name').touched && newUserForm.get('name').invalid"
+                            type="text"
+                            id="name"
+                            formControlName="name"
+                            class="form-control"
+                            >
+                      </div>
+
+                    </div>
+
+                    <div class="formInput">
+
+                        <label for="name"><h5>Correo Electronico</h5></label>
+                        <div class="input-group mgtop">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-user"></i></span>
+                            </div>
+                            <input
+                            [class.is-invalid]="newUserForm.get('email').touched && newUserForm.get('email').invalid"
+                            type="email"
+                            id="email"
+                            formControlName="email"
+                            class="form-control"
+                            >
+                      </div>
+
+                    </div>
+
+                    <div class="formInput">
+
+                        <label for="name"><h5>Rol</h5></label>
+                        <div class="input-group mgtop">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-user"></i></span>
+                            </div>
+                            <select  class="form-control"name="roles" id="roles" formControlName="roles">
+                                <option value="user">Usuario</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                      </div>
+
+                    </div>
+
+
+
+
+                </form>
+
+
+            </div>
+
+
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="newUserModal.hide()">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="addUser()">Guardar Cambios</button>
+            </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+   <!--modal Sucess-->
+   <div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-success" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Exito</h4>
+          <button type="button" class="close" (click)="successModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Nuevo Usuario Agregado con exito</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="successModal.hide()">Cerrar</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->

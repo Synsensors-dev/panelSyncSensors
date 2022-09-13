@@ -1,0 +1,29 @@
+<div *ngIf="isLoading" style="height: 100%;">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+<div class="container">
+
+    <div class="chartHeader" [ngClass]="{'hidden': isLoading}">
+        <div class="selectButton">
+            <div class="selectTitle">
+                Rango de tiempo:
+            </div>
+            <select (change)="captureTimeRange($event.target.value)">
+                <option value="12">Ultimas 12 Horas</option>
+                <option value="24">Ultimas 24 Horas</option>
+                <option value="30">Ultimos 30 Días</option>
+                <option value="3">Ultimos 3 Meses</option>
+                <option value="6">Ultimos 6 meses</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="chart-wrapper" [ngClass]="{'hidden': isLoading}">
+        <canvas baseChart class="chart"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [chartType]="lineChartType"></canvas>
+    </div>
+
+</div>

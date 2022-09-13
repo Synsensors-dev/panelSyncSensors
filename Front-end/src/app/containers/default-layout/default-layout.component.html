@@ -1,0 +1,83 @@
+<app-header
+  [navbarBrandRouterLink]="['/dashboard']"
+  [fixed]="true"
+  [navbarBrandFull]="{src: 'assets/img/brand/logo-syncsensors-1.png', width: 70, height: 25, alt: 'Synsensors Logo'}"
+  [navbarBrandMinimized]="{src: 'assets/img/brand/logo-syncsensors-1.png', width: 30, height: 30, alt: 'Syncsensors Logo'}"
+  [sidebarToggler]="'lg'"
+  [asideMenuToggler]="false"
+  [mobileAsideMenuToggler]="false">
+  <ul class="nav navbar-nav d-md-down-none">
+    <li class="nav-item px-3">
+      <a class="nav-link" href="#">Dashboard</a>
+    </li>
+    <li  *ngIf="isAdm" class="nav-item px-3">
+      <a class="nav-link" (click)="toUsersList() " style="cursor: pointer;">Usuarios</a>
+    </li>
+    <li class="nav-item px-3">
+      <a class="nav-link" href="#">Opciones</a>
+    </li>
+  </ul>
+  <ul class="nav navbar-nav ml-auto">
+    <li *ngIf="0" class="nav-item d-md-down-none">
+      <a class="nav-link" href="#"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
+    </li>
+    <li class="nav-item dropdown" dropdown placement="bottom right">
+      <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
+        <img src="assets/img/avatars/9.png" class="img-avatar" alt="admin@bootstrapmaster.com"/>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+        <a class="dropdown-item" (click)="toProfile()" style="cursor: pointer;"><i class="fa fa-user"></i> Perfil</a>
+        <a class="dropdown-item" href="#"><i class="fa fa-wrench"></i> Opciones</a>
+        <a class="dropdown-item" (click)="logOut()" style="cursor: pointer;"><i class="fa fa-lock"></i> Cerrar Sesion</a>
+      </div>
+    </li>
+  </ul>
+</app-header>
+
+
+<div class="app-body">
+  <app-sidebar *ngIf="flag==1" #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
+    <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
+    <app-sidebar-minimizer></app-sidebar-minimizer>
+  </app-sidebar>
+  <!-- Main content -->
+  <main class="main bg-white">
+    <!-- Breadcrumb -->
+    <!-- breaking change 'cui-breadcrumb' -->
+    <cui-breadcrumb>
+      <!-- Breadcrumb Menu-->
+      <li class="breadcrumb-menu d-md-down-none">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+          <a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>
+        </div>
+      </li>
+    </cui-breadcrumb>
+    <!-- deprecation warning for 'app-breadcrumb' -->
+    <!--<ol class="breadcrumb">-->
+      <!--<app-breadcrumb></app-breadcrumb>-->
+      <!--&lt;!&ndash; Breadcrumb Menu&ndash;&gt;-->
+      <!--<li class="breadcrumb-menu d-md-down-none">-->
+        <!--<div class="btn-group" role="group" aria-label="Button group with nested dropdown">-->
+          <!--<a class="btn" href="#"><i class="icon-speech"></i></a>-->
+          <!--<a class="btn" [routerLink]="['/dashboard']"><i class="icon-graph"></i> &nbsp;Dashboard</a>-->
+          <!--<a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>-->
+        <!--</div>-->
+      <!--</li>-->
+    <!--</ol>-->
+
+
+
+    <!--CONTENIDO-->
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div><!-- /.container-fluid -->
+    <!--CONTENIDO-->
+
+    
+  </main>
+</div>
+
+
+<app-footer>
+  <span><a>Panel de monitoreo ambiental</a> &copy; 2022 Syncsensors.</span>
+</app-footer>

@@ -1,0 +1,91 @@
+@import '../../../../../../scss/colorPalette.scss';
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+.green{
+    font-size: 20px;
+    color:green
+}
+.switch{
+    margin-left: 10px;
+}
+.row{
+    justify-content: center;
+    margin-block: 10px;
+}
+.section-subtitle p{
+    color: gray;
+}
+.section-title{
+    display:flex;
+    flex-direction: row;
+}
+.label{
+    text-align: center;
+    font-size: 14px;
+}
+.input-group{
+    justify-content: center;
+}
+input{
+    width: 70px;
+}
+.col{
+    justify-content: center;
+}
+.btnRow{
+    justify-content: right;
+}
+.scrolleable-box{
+    height: 300px;
+    overflow-y:auto;
+}
+.hidden{
+    border-radius: 30px;
+
+    border: solid 1px lightgray;
+    overflow: hidden;
+}
+.reportTitles{
+    display:none;
+    h3,h5{
+        width: fit-content;
+        text-align: center;
+        margin: auto;
+    }
+}
+button{
+    i{
+        cursor:pointer;
+    }
+}
+.hrow{
+   justify-content: left;
+   h5{
+       margin-left: 30px;
+   }
+}
+.defaultAlertMessage{
+    text-align: center;
+    color:lightblue;
+}
+.dataModal{
+    input{
+        width: max-content;
+    }
+}
